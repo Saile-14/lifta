@@ -1,13 +1,17 @@
 <h1>index</h1>
-
+<h2><%= t "hello" %> </h2>
 <%= link_to "Add lift you freak", new_lift_path if authenticated? %>
 
 <div>
 <% @lifts.each do |lift| %>
 
 <div>
+  <%=image_tag lift.image if lift.image.attached?%>
   <%=link_to lift.name , lift_path(lift.id) %>
   <p>hi hi</p>
 </div>
 </div>
+
+<h3><%= t "bye" %></h3>
+
 <% end %>

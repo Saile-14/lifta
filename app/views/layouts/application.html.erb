@@ -28,6 +28,9 @@
     <%= link_to "hom", root_path %>
     <%= button_to "blog bout", session_path, method: :delete if authenticated? %>
   </nav>
+  <div class="notice">
+  <%= flash[:notice] %>
+  </div>
   <main>
     <%= yield %>
   </main>

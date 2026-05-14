@@ -7,6 +7,18 @@
   <%= form.text_field :name %>
 </div>
 <div>
+  <%= form.label :description, style: "display: block" %>
+  <%= form.rich_textarea :description %>
+</div>
+<div>
+  <%= form.label :image, style: "display: block" %>
+  <%= form.file_field :image, accept: "image/*" %>
+</div>
+<div>
+<%= form.label :count, style: "display: block" %>
+<%= form.number_field :count %>
+</div>
+<div>
   <%= form.submit %>
 </div>
 

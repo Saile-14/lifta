@@ -1,5 +1,11 @@
 <h1>yeaaaaah buddy its</h1>
+<section class="product">
+<%= @lift.image if @lift.image.attached? %>
+
+<section class="product-info">
 <%= @lift.name %>
+<%= @lift.description %>
+</section>
 
 <%= link_to "Go back", lifts_path %>
 
@@ -8,3 +14,7 @@
 <%= button_to "deeeeeeeestroy!", @lift, method: :delete, data: {turbo_confirm: "u sure bud?"} %>
 
 </div>
+<div>
+ <%= render "count", lift: @lift %>
+</div>
+</section>

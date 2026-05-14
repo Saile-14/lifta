@@ -9,6 +9,10 @@ class LiftsController < ApplicationController
   def show
   end
 
+  def usershow
+    @user = User.find(params[:id])
+  end
+
   def new
     @lift = Lift.new
   end
@@ -41,7 +45,7 @@ class LiftsController < ApplicationController
   private
 
   def lift_params
-    params.expect(lift: [ :name ])
+    params.expect(lift: [ :name, :description, :image, :count ])
   end
 
   def load_lift

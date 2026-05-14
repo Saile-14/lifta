@@ -1,0 +1,12 @@
+<% if lift.count.positive? %>
+  <p><%= lift.count%> in stock </p>
+<% else %>
+<p>out of stock </p>
+<h5>sing me up for da mail </h5>
+
+<%= form_with model: [lift, Subscriber.new] do |form| %>
+<%= form.email_field :email, placeholder: "smash@amorinomail.com", required: true %>
+<%= form.submit "submit baby" %>
+<% end %>
+<% end %>
+

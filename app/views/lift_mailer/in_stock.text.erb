@@ -1,0 +1,6 @@
+bra nyheder,
+
+<%= @lift.name %> är tilbaxxxxxx
+<%= lift_url(@lift) %>
+
+avinstallera: <%= unsubscribe_url(token: params[:subscriber].generate_token_for(:unsubscribe)) %>
