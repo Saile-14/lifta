@@ -1,9 +1,8 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+david:
+  lift: squat
+  email: david@example.org
 
-one:
-  lift: one
-  email: MyString
-
-two:
-  lift: two
-  email: MyString
+chris:
+  lift: squat
+  email: chris@example.org

@@ -3,8 +3,8 @@ module Lift::Notifications
 
 
   included do
-  after_update_commit :notify_subscribers, if: :back_in_stock?
   has_many :subscribers, dependent: :destroy
+  after_update_commit :notify_subscribers, if: :back_in_stock?
   end
 
 
