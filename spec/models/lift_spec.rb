@@ -31,7 +31,7 @@ RSpec.describe Lift do
 
   describe "exercise enum" do
     it "supports squat, bench, and deadlift" do
-      expect(described_class.exercises).to eq("squat" => 0, "bench" => 1, "deadlift" => 2)
+      expect(described_class.exercises).to eq("squat" => "squat", "bench" => "bench", "deadlift" => "deadlift")
     end
   end
 
@@ -73,6 +73,14 @@ RSpec.describe Lift do
     it "applies the Epley formula for multi-rep sets" do
       lift = build(:lift, user: user, weight_lifted: 100, reps: 5)
       expect(lift.estimated_one_rep_max).to eq(100 * (1 + 5 / 30.0))
+    end
+  end
+
+  describe "#dots_score" do
+    it "matches Dots::Calculator using the estimated 1RM and snapshot bodyweight" do
+      lift = build(:lift, user: user, weight_lifted: 200, reps: 1, bodyweight_kg: 80)
+      expected = Dots::Calculator.new(weight_lifted: 200, bodyweight: 80, sex: user.sex).call
+      expect(lift.dots_score).to eq(expected)
     end
   end
 

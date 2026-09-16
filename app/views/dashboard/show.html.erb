@@ -1,0 +1,43 @@
+<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+
+<h1>Lifta</h1>
+
+<p>Signed in as <%= Current.user.email_address %> &middot; <%= link_to "Sign out", session_path, data: { turbo_method: :delete } %></p>
+
+<h2>Bodyweight</h2>
+<p>
+  <% if @current_bodyweight_kg %>
+    Current: <%= number_with_precision(@current_bodyweight_kg, precision: 1) %> kg
+    (<%= number_with_precision(WeightConversion.from_kg(@current_bodyweight_kg, "lb"), precision: 1) %> lb)
+  <% else %>
+    No bodyweight logged yet.
+  <% end %>
+</p>
+<%= link_to "Log bodyweight", new_bodyweight_entry_path %> |
+<%= link_to "Bodyweight history", bodyweight_entries_path %>
+
+<h2>Ranks</h2>
+<table border="1" cellpadding="4">
+  <tr><th>Exercise</th><th>Rank</th><th>DOTS %</th></tr>
+  <% @ranks.each do |exercise, tier| %>
+    <tr>
+      <td><%= exercise.capitalize %></td>
+      <td><%= tier ? tier.name.to_s.capitalize : "Unranked" %></td>
+      <td><%= tier ? "#{tier.fill_percent}%" : "-" %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "Log a lift", new_lift_path %> | <%= link_to "Lift history", lifts_path %></p>
+
+<h2>Recent lifts</h2>
+<ul>
+  <% @recent_lifts.each do |lift| %>
+    <li>
+      <%= lift.lifted_at %> &mdash; <%= lift.exercise.capitalize %>:
+      <%= lift.weight_lifted %> kg x <%= lift.reps %>
+      (<%= lift.benchmark.name.to_s.capitalize %>)
+    </li>
+  <% end %>
+</ul>

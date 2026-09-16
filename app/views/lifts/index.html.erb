@@ -1,0 +1,17 @@
+<h1>Lift history</h1>
+
+<table border="1" cellpadding="4">
+  <tr><th>Date</th><th>Exercise</th><th>Weight (kg)</th><th>Reps</th><th>Bodyweight (kg)</th><th>Rank</th></tr>
+  <% @lifts.each do |lift| %>
+    <tr>
+      <td><%= lift.lifted_at %></td>
+      <td><%= lift.exercise.capitalize %></td>
+      <td><%= lift.weight_lifted %></td>
+      <td><%= lift.reps %></td>
+      <td><%= lift.bodyweight_kg %></td>
+      <td><%= lift.benchmark.name.to_s.capitalize %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "Log another", new_lift_path %> | <%= link_to "Back", root_path %></p>

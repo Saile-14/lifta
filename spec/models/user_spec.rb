@@ -61,6 +61,26 @@ RSpec.describe User do
     end
   end
 
+  describe "#best_lift and #rank_for" do
+    let(:user) { create(:user) }
+
+    before { create(:bodyweight_entry, user: user, kilograms: 80) }
+
+    it "is nil for an exercise with no logged lifts" do
+      expect(user.best_lift(:squat)).to be_nil
+      expect(user.rank_for(:squat)).to be_nil
+    end
+
+    it "picks the lift with the highest DOTS score for that exercise" do
+      weaker = create(:lift, user: user, exercise: :squat, weight_lifted: 100, bodyweight_kg: 80)
+      stronger = create(:lift, user: user, exercise: :squat, weight_lifted: 150, bodyweight_kg: 80)
+      create(:lift, user: user, exercise: :bench, weight_lifted: 200, bodyweight_kg: 80)
+
+      expect(user.best_lift(:squat)).to eq(stronger)
+      expect(user.rank_for(:squat)).to eq(stronger.benchmark)
+    end
+  end
+
   describe "associations" do
     it "destroys dependent sessions, bodyweight_entries, and lifts" do
       %i[sessions bodyweight_entries lifts].each do |name|

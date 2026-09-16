@@ -1,7 +1,12 @@
 class Lift < ApplicationRecord
   belongs_to :user
 
-  enum :exercise, { squat: 0, bench: 1, deadlift: 2 }
+  # exercise is a string column. Rails' enum stores integers by default
+  # (even with the array form), which get serialized through the string
+  # column as text ("0") and then fail to deserialize back to a label
+  # (silently reading back as nil) -- so the mapping must use matching
+  # string values instead.
+  enum :exercise, { squat: "squat", bench: "bench", deadlift: "deadlift" }
 
   validates :exercise, presence: true
   validates :weight_lifted, numericality: { greater_than: 0 }
@@ -17,13 +22,16 @@ class Lift < ApplicationRecord
     weight_lifted.to_f * (1 + reps.to_i / 30.0)
   end
 
-  def benchmark
-    score = Dots::Calculator.new(
+  def dots_score
+    @dots_score ||= Dots::Calculator.new(
       weight_lifted: estimated_one_rep_max,
       bodyweight: bodyweight_kg,
       sex: user.sex
     ).call
-    Dots::Tier.for(score: score)
+  end
+
+  def benchmark
+    Dots::Tier.for(score: dots_score)
   end
 
   private

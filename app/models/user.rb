@@ -16,4 +16,12 @@ class User < ApplicationRecord
   def current_bodyweight_kg
     bodyweight_entries.order(recorded_at: :desc).first&.kilograms
   end
+
+  def best_lift(exercise)
+    lifts.where(exercise: exercise).max_by(&:dots_score)
+  end
+
+  def rank_for(exercise)
+    best_lift(exercise)&.benchmark
+  end
 end

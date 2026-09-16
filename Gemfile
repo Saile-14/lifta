@@ -1,5 +1,12 @@
 source "https://rubygems.org"
 
+# json 3.x made JSON.parse's options keyword-only, which breaks
+# activesupport 8.1.3.1's ActiveSupport::JSON.decode (calls
+# JSON.parse(json, options) positionally) -- pin to 2.x until that's
+# fixed upstream. Without this, reading any signed/encrypted cookie
+# (e.g. the session cookie) raises ArgumentError.
+gem "json", "~> 2.9"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.3"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
