@@ -4,6 +4,6 @@
     <div class="rank-row__fill rank-fill--<%= tier_name || "unranked" %>" style="width: <%= fill_percent || 0 %>%"></div>
   </div>
   <div class="rank-row__value">
-    <%= tier_name ? "#{tier_name.to_s.capitalize} · #{fill_percent}%" : "Unranked" %>
+    <%= tier_name ? "#{tier_name.to_s.capitalize} (#{fill_percent}%)" : "Unranked" %>
   </div>
 </div>
