@@ -1,14 +1,17 @@
-<h1>Bodyweight history</h1>
+<div class="box">
+  <div class="box__header">Bodyweight history</div>
+  <div class="box__body">
+    <table>
+      <tr><th>Recorded at</th><th>Kilograms</th><th>Pounds</th></tr>
+      <% @bodyweight_entries.each do |entry| %>
+        <tr>
+          <td><%= entry.recorded_at %></td>
+          <td><%= number_with_precision(entry.kilograms, precision: 1) %></td>
+          <td><%= number_with_precision(WeightConversion.from_kg(entry.kilograms, "lb"), precision: 1) %></td>
+        </tr>
+      <% end %>
+    </table>
 
-<table border="1" cellpadding="4">
-  <tr><th>Recorded at</th><th>Kilograms</th><th>Pounds</th></tr>
-  <% @bodyweight_entries.each do |entry| %>
-    <tr>
-      <td><%= entry.recorded_at %></td>
-      <td><%= number_with_precision(entry.kilograms, precision: 1) %></td>
-      <td><%= number_with_precision(WeightConversion.from_kg(entry.kilograms, "lb"), precision: 1) %></td>
-    </tr>
-  <% end %>
-</table>
-
-<p><%= link_to "Log another", new_bodyweight_entry_path %> | <%= link_to "Back", root_path %></p>
+    <p><%= link_to "Log another", new_bodyweight_entry_path, class: "btn-secondary" %> <%= link_to "Back", dashboard_path, class: "btn-secondary" %></p>
+  </div>
+</div>

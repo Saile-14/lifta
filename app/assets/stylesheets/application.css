@@ -1,10 +1,243 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+:root {
+  --bg: #ffffff;
+  --surface: #f7f7f5;
+  --border: #c7c7c2;
+  --border-strong: #9a9a93;
+  --navy: #1b3a6b;
+  --navy-dark: #12284d;
+  --red: #c6362c;
+  --text: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --link: #1b3a6b;
+
+  --tier-bronze: #a6631e;
+  --tier-silver: #5c5fb0;
+  --tier-gold: #c9971e;
+  --tier-platinum: #1e9e8c;
+  --tier-diamond: #2a78d6;
+  --tier-grandmaster: #c6362c;
+  --tier-track: #e6e4dd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--link);
+}
+
+h1, h2, h3 {
+  font-size: 1em;
+  margin: 0 0 8px;
+}
+
+/* Top nav: dense, bracketed links, navy bar -- matches the "portal" reference */
+.site-nav {
+  background: var(--navy);
+  color: #ffffff;
+  padding: 6px 12px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-weight: 600;
+}
+
+.site-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 2px 4px;
+}
+
+.site-nav a:hover {
+  text-decoration: underline;
+}
+
+.site-nav__brand {
+  margin-right: 8px;
+}
+
+.site-nav__spacer {
+  flex: 1;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+/* Bordered module -- the recurring "box" unit of the dense-portal layout */
+.box {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: 12px;
+}
+
+.box__header {
+  background: var(--navy);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 4px 8px;
+  font-size: 0.95em;
+}
+
+.box__body {
+  padding: 8px;
+  background: #ffffff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1em;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 4px 6px;
+  text-align: left;
+}
+
+th {
+  background: var(--surface);
+  font-weight: 600;
+}
+
+label {
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 2px;
+}
+
+input, select {
+  font-family: inherit;
+  font-size: 1em;
+  padding: 3px 5px;
+  border: 1px solid var(--border-strong);
+  background: #ffffff;
+  color: var(--text);
+}
+
+input[type="submit"], button {
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 600;
+  padding: 4px 12px;
+  background: var(--red);
+  color: #ffffff;
+  border: 1px solid var(--red);
+  cursor: pointer;
+}
+
+input[type="submit"]:hover, button:hover {
+  background: #a82c23;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  text-decoration: none;
+}
+
+.flash {
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.flash--notice {
+  background: #eef6ee;
+  border-color: #4a8f4a;
+  color: #245c24;
+}
+
+.flash--alert {
+  background: #fbecea;
+  border-color: var(--red);
+  color: #8a2a22;
+}
+
+.errors {
+  border: 1px solid var(--red);
+  background: #fbecea;
+  color: #8a2a22;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+}
+
+/* Rank meter: one row per lift, fill color keyed to tier (see rank-fill--*) */
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.rank-row:last-child {
+  border-bottom: none;
+}
+
+.rank-row__label {
+  width: 76px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.rank-row__track {
+  flex: 1;
+  height: 14px;
+  background: var(--tier-track);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.rank-row__fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.rank-fill--bronze      { background: var(--tier-bronze); }
+.rank-fill--silver      { background: var(--tier-silver); }
+.rank-fill--gold        { background: var(--tier-gold); }
+.rank-fill--platinum    { background: var(--tier-platinum); }
+.rank-fill--diamond     { background: var(--tier-diamond); }
+.rank-fill--grandmaster { background: var(--tier-grandmaster); }
+.rank-fill--unranked    { background: transparent; }
+
+.rank-row__value {
+  width: 120px;
+  flex-shrink: 0;
+  text-align: right;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}

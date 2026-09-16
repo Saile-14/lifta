@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Dashboard", type: :request do
   it "redirects unauthenticated visitors to sign in" do
-    get root_path
+    get dashboard_path
     expect(response).to redirect_to(new_session_path)
   end
 
@@ -12,7 +12,7 @@ RSpec.describe "Dashboard", type: :request do
     create(:lift, user: user, exercise: :squat, weight_lifted: 150, bodyweight_kg: 80)
     sign_in_as(user)
 
-    get root_path
+    get dashboard_path
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("Squat")

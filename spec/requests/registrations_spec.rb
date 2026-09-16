@@ -7,7 +7,7 @@ RSpec.describe "Registrations", type: :request do
         user: { email_address: "new@example.com", password: "password123", sex: "male", weight_unit: "kg" }
       }
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(dashboard_path)
       expect(User.find_by(email_address: "new@example.com")).to be_present
       expect(cookies["session_id"]).to be_present
     end

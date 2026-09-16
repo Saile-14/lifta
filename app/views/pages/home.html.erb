@@ -1,0 +1,38 @@
+<div class="grid">
+  <div class="box">
+    <div class="box__header">Welcome to Lifta</div>
+    <div class="box__body">
+      <p>Log your sex, bodyweight, and lifts. Every squat, bench, and deadlift is
+      scored with <a href="https://en.wikipedia.org/wiki/DOTS_(formula)">DOTS</a>
+      -- a published formula that adjusts for bodyweight and sex, so lifters of
+      any size land on the same ladder: bronze, silver, gold, platinum, diamond,
+      grandmaster.</p>
+      <p>
+        <%= link_to "Sign up", new_registration_path, class: "btn-secondary" %>
+        &nbsp;
+        <%= link_to "Sign in", new_session_path, class: "btn-secondary" %>
+      </p>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box__header">Example rank card</div>
+    <div class="box__body">
+      <%= render "shared/rank_row", label: "Squat", tier_name: :gold, fill_percent: 68.2 %>
+      <%= render "shared/rank_row", label: "Bench", tier_name: :silver, fill_percent: 52.0 %>
+      <%= render "shared/rank_row", label: "Deadlift", tier_name: :platinum, fill_percent: 79.5 %>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box__header">How it works</div>
+    <div class="box__body">
+      <ol>
+        <li>Sign up with your sex and unit preference (kg or lb).</li>
+        <li>Log a bodyweight entry.</li>
+        <li>Log a lift -- weight, reps, and exercise.</li>
+        <li>See your rank per lift update instantly on your dashboard.</li>
+      </ol>
+    </div>
+  </div>
+</div>

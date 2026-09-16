@@ -1,19 +1,26 @@
-<h1>Log bodyweight</h1>
+<div class="box">
+  <div class="box__header">Log bodyweight</div>
+  <div class="box__body">
+    <% if @bodyweight_entry.errors.any? %>
+      <div class="errors">
+        <% @bodyweight_entry.errors.full_messages.each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+    <% end %>
 
-<% @bodyweight_entry.errors.full_messages.each do |message| %>
-  <div style="color:red"><%= message %></div>
-<% end %>
+    <%= form_with scope: :bodyweight_entry, url: bodyweight_entries_path do |form| %>
+      <%= form.label :weight, "Weight" %><br>
+      <%= form.text_field :weight, required: true %>
+      <%= form.select :unit, %w[kg lb], selected: Current.user.weight_unit %><br><br>
 
-<%= form_with scope: :bodyweight_entry, url: bodyweight_entries_path do |form| %>
-  <%= form.label :weight, "Weight" %><br>
-  <%= form.text_field :weight, required: true %>
-  <%= form.select :unit, %w[kg lb], selected: Current.user.weight_unit %><br><br>
+      <%= form.label :recorded_at, "When (leave blank for now)" %><br>
+      <%= form.datetime_field :recorded_at %><br><br>
 
-  <%= form.label :recorded_at, "When (leave blank for now)" %><br>
-  <%= form.datetime_field :recorded_at %><br><br>
+      <%= form.submit "Save" %>
+    <% end %>
+    <br>
 
-  <%= form.submit "Save" %>
-<% end %>
-<br>
-
-<%= link_to "Back", root_path %>
+    <%= link_to "Back", dashboard_path %>
+  </div>
+</div>
