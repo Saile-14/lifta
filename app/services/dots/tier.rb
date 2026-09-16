@@ -13,7 +13,7 @@ module Dots
 
     def self.for(score:)
       pct = [ (score / WORLD_RECORD_DOTS) * 100.0, 100.0 ].min.round(1)
-      name = THRESHOLDS.find { |max_pct, _| pct <= max_pct }&.last || :elite
+      name = THRESHOLDS.find { |max_pct, _| pct <= max_pct }&.last || :grandmaster
       new(name, pct)
     end
   end
