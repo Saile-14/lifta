@@ -13,6 +13,9 @@
       <%= form.label :email_address %><br>
       <%= form.email_field :email_address, required: true %><br><br>
 
+      <%= form.label :username %><br>
+      <%= form.text_field :username, required: true, autocomplete: "off", maxlength: 20 %><br><br>
+
       <%= form.label :password %><br>
       <%= form.password_field :password, required: true, maxlength: 72 %><br><br>
 

@@ -1,9 +1,9 @@
 <div class="rank-row">
   <div class="rank-row__label"><%= label %></div>
   <div class="rank-row__track">
-    <div class="rank-row__fill rank-fill--<%= tier_name || "unranked" %>" style="width: <%= fill_percent || 0 %>%"></div>
+    <div class="rank-row__fill rank-fill--<%= tier&.name || "unranked" %>" style="width: <%= tier&.fill_percent || 0 %>%"></div>
   </div>
   <div class="rank-row__value">
-    <%= tier_name ? "#{tier_name.to_s.capitalize} (#{fill_percent}%)" : "Unranked" %>
+    <%= tier ? "#{tier.label} (#{tier.display_percent}%)" : "Unranked" %>
   </div>
 </div>

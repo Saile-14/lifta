@@ -29,3 +29,12 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      lift:
+        weight_lifted: "Weight"
+        bodyweight_kg: "Bodyweight"
+        lifted_at: "Date"
+      bodyweight_entry:
+        kilograms: "Bodyweight"
+        recorded_at: "Date"

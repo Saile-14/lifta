@@ -15,9 +15,9 @@
   <div class="box">
     <div class="box__header">Example rank card</div>
     <div class="box__body">
-      <%= render "shared/rank_row", label: "Squat", tier_name: :gold, fill_percent: 68.2 %>
-      <%= render "shared/rank_row", label: "Bench", tier_name: :silver, fill_percent: 52.0 %>
-      <%= render "shared/rank_row", label: "Deadlift", tier_name: :platinum, fill_percent: 79.5 %>
+      <%= render "shared/rank_row", label: "Squat", tier: Tier.new(68.2) %>
+      <%= render "shared/rank_row", label: "Bench", tier: Tier.new(52.0) %>
+      <%= render "shared/rank_row", label: "Deadlift", tier: Tier.new(79.5) %>
     </div>
   </div>
 

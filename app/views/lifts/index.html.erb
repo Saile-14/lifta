@@ -6,11 +6,11 @@
       <% @lifts.each do |lift| %>
         <tr>
           <td><%= lift.lifted_at %></td>
-          <td><%= lift.exercise.capitalize %></td>
+          <td><%= lift.exercise_name %></td>
           <td><%= lift.weight_lifted %></td>
           <td><%= lift.reps %></td>
           <td><%= lift.bodyweight_kg %></td>
-          <td><%= lift.benchmark.name.to_s.capitalize %></td>
+          <td><%= lift.tier&.label %></td>
         </tr>
       <% end %>
     </table>

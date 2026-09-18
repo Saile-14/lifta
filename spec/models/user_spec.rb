@@ -8,6 +8,12 @@ RSpec.describe User do
     end
   end
 
+  describe "username normalization" do
+    it "downcases, strips, and drops a leading @" do
+      expect(User.new(username: " @Iron_Mike ").username).to eq("iron_mike")
+    end
+  end
+
   describe "validations" do
     subject { build(:user) }
 
@@ -30,8 +36,37 @@ RSpec.describe User do
     end
 
     it "requires a password" do
-      user = User.new(email_address: "new@example.com", sex: :male)
+      user = User.new(email_address: "new@example.com", username: "newbie", sex: :male)
       expect(user).not_to be_valid
+    end
+
+    it "requires a unique username, ignoring case" do
+      create(:user, username: "ironmike")
+      subject.username = "IronMike"
+      expect(subject).not_to be_valid
+    end
+
+    it "only allows 3-20 letters, numbers and underscores in a username" do
+      %w[ab has-dash has.dot way_too_long_for_a_username].each do |bad|
+        subject.username = bad
+        expect(subject).not_to be_valid, "expected #{bad.inspect} to be rejected"
+      end
+
+      subject.username = "deadlift_dan_99"
+      expect(subject).to be_valid
+    end
+
+    it "reserves usernames that could pass for staff" do
+      subject.username = "admin"
+      expect(subject).not_to be_valid
+    end
+
+    it "requires a real time zone" do
+      subject.time_zone = "America/New_York"
+      expect(subject).to be_valid
+
+      subject.time_zone = "Mars/Olympus_Mons"
+      expect(subject).not_to be_valid
     end
   end
 
@@ -61,23 +96,47 @@ RSpec.describe User do
     end
   end
 
-  describe "#best_lift and #rank_for" do
+  describe "#bodyweight_on" do
     let(:user) { create(:user) }
 
-    before { create(:bodyweight_entry, user: user, kilograms: 80) }
+    before do
+      create(:bodyweight_entry, user: user, kilograms: 90, recorded_at: Time.zone.local(2026, 1, 10, 9))
+      create(:bodyweight_entry, user: user, kilograms: 85, recorded_at: Time.zone.local(2026, 3, 10, 9))
+    end
+
+    it "uses the latest weigh-in on or before the date" do
+      expect(user.bodyweight_on(Date.new(2026, 2, 1))).to eq(90)
+      expect(user.bodyweight_on(Date.new(2026, 3, 10))).to eq(85)
+    end
+
+    it "falls back to the first weigh-in for dates before any" do
+      expect(user.bodyweight_on(Date.new(2025, 12, 1))).to eq(90)
+    end
+  end
+
+  describe "#best_lift and #rank_for" do
+    let(:user) { create(:user) }
 
     it "is nil for an exercise with no logged lifts" do
       expect(user.best_lift(:squat)).to be_nil
       expect(user.rank_for(:squat)).to be_nil
     end
 
-    it "picks the lift with the highest DOTS score for that exercise" do
-      weaker = create(:lift, user: user, exercise: :squat, weight_lifted: 100, bodyweight_kg: 80)
-      stronger = create(:lift, user: user, exercise: :squat, weight_lifted: 150, bodyweight_kg: 80)
-      create(:lift, user: user, exercise: :bench, weight_lifted: 200, bodyweight_kg: 80)
+    it "picks the highest-scoring lift for that exercise" do
+      create(:lift, user: user, exercise: :squat, weight_lifted: 100)
+      stronger = create(:lift, user: user, exercise: :squat, weight_lifted: 150)
+      create(:lift, user: user, exercise: :bench, weight_lifted: 200)
 
       expect(user.best_lift(:squat)).to eq(stronger)
-      expect(user.rank_for(:squat)).to eq(stronger.benchmark)
+      expect(user.rank_for(:squat)).to eq(stronger.tier)
+    end
+
+    it "ignores lifts that are pending review or rejected" do
+      approved = create(:lift, user: user, exercise: :squat, weight_lifted: 150)
+      create(:lift, user: user, exercise: :squat, weight_lifted: 300) # pending
+      create(:lift, user: user, exercise: :squat, weight_lifted: 290).rejected!
+
+      expect(user.best_lift(:squat)).to eq(approved)
     end
   end
 

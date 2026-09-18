@@ -18,6 +18,14 @@ RSpec.describe BodyweightEntry do
     expect(subject).not_to be_valid
   end
 
+  it "rejects a bodyweight that can't be real" do
+    subject.kilograms = 8
+    expect(subject).not_to be_valid
+
+    subject.kilograms = 800
+    expect(subject).not_to be_valid
+  end
+
   it "defaults recorded_at to now when not given" do
     entry = build(:bodyweight_entry, recorded_at: nil)
     expect { entry.valid? }.to change(entry, :recorded_at).from(nil)

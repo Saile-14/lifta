@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_16_181752) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_120100) do
   create_table "bodyweight_entries", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.decimal "kilograms", null: false
@@ -27,9 +27,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_181752) do
     t.string "exercise"
     t.date "lifted_at"
     t.integer "reps"
+    t.decimal "score", precision: 10, scale: 2
+    t.string "status", default: "approved", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.decimal "weight_lifted"
+    t.index ["status"], name: "index_lifts_on_status"
+    t.index ["user_id", "exercise", "score"], name: "index_lifts_on_user_id_and_exercise_and_score"
     t.index ["user_id"], name: "index_lifts_on_user_id"
   end
 
@@ -43,13 +47,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_181752) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.string "email_address", null: false
     t.string "password_digest", null: false
+    t.boolean "public_profile", default: false, null: false
     t.integer "sex", null: false
+    t.string "time_zone", default: "Etc/UTC", null: false
     t.datetime "updated_at", null: false
+    t.string "username", null: false
     t.integer "weight_unit", default: 0, null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "bodyweight_entries", "users"

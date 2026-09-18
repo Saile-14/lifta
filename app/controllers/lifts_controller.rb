@@ -11,7 +11,7 @@ class LiftsController < ApplicationController
     @lift = Current.user.lifts.new(lift_params)
 
     if @lift.save
-      redirect_to lifts_path, notice: "Lift logged: #{@lift.benchmark.name}."
+      redirect_to lifts_path, notice: "Lift logged: #{@lift.tier.label}."
     else
       render :new, status: :unprocessable_content
     end
