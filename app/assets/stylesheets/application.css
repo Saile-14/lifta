@@ -18,6 +18,9 @@
 
   --pending: #8a6d1a;
   --danger: #8a2a22;
+
+  /* Wide enough for the longest lift or discipline name */
+  --rank-label-width: 7.5em;
 }
 
 * {
@@ -40,6 +43,15 @@ html:lang(ja) body {
   font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
   line-height: 1.75;
   word-break: auto-phrase;
+}
+
+/* Katakana names run long (ウエイトリフティング) and shouldn't break mid-word */
+html:lang(ja) {
+  --rank-label-width: 10.5em;
+}
+
+html:lang(ja) .rank-row__label {
+  word-break: keep-all;
 }
 
 a {
@@ -536,7 +548,7 @@ input[type="submit"].btn-small:hover {
 /* Rank meter: one row per lift, fill color keyed to tier (see rank-fill--*) */
 .rank-row {
   display: grid;
-  grid-template-columns: 7.5em 1fr 10em;
+  grid-template-columns: var(--rank-label-width) 1fr 10em;
   align-items: center;
   column-gap: 12px;
   padding: 10px 0;

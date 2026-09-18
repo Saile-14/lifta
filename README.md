@@ -17,6 +17,9 @@ every lift in it is logged. The dashboard shows what the next tier takes
 profile and a place on the leaderboard. Diamond-and-above lifts wait for an
 admin to approve them before they count.
 
+The whole app is in **English and Japanese (日本語)**, with a language button
+in the header.
+
 ## Requirements
 
 * Ruby (see `.ruby-version`)
@@ -128,6 +131,35 @@ Everything lives in `app/models/discipline` plus `Tier` and `Scale`:
 The Sinclair constants are the 2021-2024 Olympic-cycle ones. The IWF hasn't
 published 2025-2028 values yet, pending the new weight classes. DOTS clamps
 bodyweight to its published bounds (40-210 kg men, 40-150 kg women).
+
+## Languages (English / 日本語)
+
+Every user-facing string lives in `config/locales/en.yml` and
+`config/locales/ja.yml`. That covers views, flash messages, validation
+errors, rank-up messages and dates. Rails' own messages come from the
+`rails-i18n` gem.
+
+* **Which language a visitor sees** (the `Localization` concern) is decided
+  in this order:
+  1. a `?locale=` link, either the header button or a shared link
+  2. the language they picked before, remembered in a cookie
+  3. their browser's `Accept-Language`
+  4. English
+* **The language button** names the other language in that language
+  ("日本語" / "English") and keeps the current page and filters.
+* **Search engines and link previews:** each page links its other-language
+  version with `hreflang`. Profile share links carry the sharer's language,
+  so link previews (LINE, X, Slack) come out in it.
+* **Japanese typography:** a kana/kanji font stack, a little more line
+  height, and `word-break: auto-phrase` so lines break between phrases
+  rather than mid-word.
+
+**Adding or changing text:** add the key to *both* files. Missing
+translations raise in development and test. `spec/i18n_spec.rb` fails if
+the two files' keys or `%{placeholders}` drift apart.
+`spec/requests/localization_spec.rb` renders every page in Japanese. In
+views, use lazy lookups: `t(".title")` in `lifts/index` reads
+`lifts.index.title`.
 
 ## Architecture notes
 
