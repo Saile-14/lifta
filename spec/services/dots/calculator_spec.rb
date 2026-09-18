@@ -29,4 +29,24 @@ RSpec.describe Dots::Calculator do
       described_class.new(weight_lifted: 200, bodyweight: 80, sex: :other).call
     }.to raise_error(ArgumentError, /unsupported sex/)
   end
+
+  describe ".coefficient" do
+    it "is the multiplier from kilograms to DOTS points" do
+      expect(200 * described_class.coefficient(bodyweight: 80, sex: :male)).to be_within(0.005).of(137.91)
+    end
+
+    it "clamps bodyweight to the published 40-210kg range for men" do
+      expect(described_class.coefficient(bodyweight: 250, sex: :male))
+        .to eq(described_class.coefficient(bodyweight: 210, sex: :male))
+      expect(described_class.coefficient(bodyweight: 30, sex: :male))
+        .to eq(described_class.coefficient(bodyweight: 40, sex: :male))
+    end
+
+    it "clamps bodyweight to the published 40-150kg range for women" do
+      expect(described_class.coefficient(bodyweight: 180, sex: :female))
+        .to eq(described_class.coefficient(bodyweight: 150, sex: :female))
+      expect(described_class.coefficient(bodyweight: 30, sex: :female))
+        .to eq(described_class.coefficient(bodyweight: 40, sex: :female))
+    end
+  end
 end
