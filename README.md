@@ -1,12 +1,21 @@
 # Lifta
 
-Log your sex, bodyweight, and lifts (squat/bench/deadlift). Your rank
-(bronze -> grandmaster, top-tier name still WIP) per lift is computed from
-your [DOTS score](https://en.wikipedia.org/wiki/DOTS_(formula)) -- a
-published, competition-standard formula that normalizes a lift for
-bodyweight and sex, so lifters of any size can be compared on the same
-ladder. Ranking is fully formula-based; there's no external
-strength-standards table to keep up to date.
+Log your lifts and see how each one ranks against a world-class standard for
+your bodyweight and sex, on a bronze -> silver -> gold -> platinum -> diamond
+-> grandmaster ladder. Three disciplines, each with its own tab and ranks:
+
+* **Powerlifting** (squat, bench, deadlift), scored with
+  [DOTS](https://en.wikipedia.org/wiki/DOTS_(formula)).
+* **Weightlifting** (snatch, clean & jerk), scored with the
+  [Sinclair coefficient](https://en.wikipedia.org/wiki/Sinclair_coefficient).
+* **Calisthenics** (pull-ups, dips, push-ups), scored on strict reps, with
+  added weight credited as extra reps.
+
+Every lift gets its own rank, and each discipline gets an overall rank once
+every lift in it is logged. The dashboard shows what the next tier takes
+("Next: Gold at 187.5 kg, or 162.5 kg x 5"). Lifters who opt in get a public
+profile and a place on the leaderboard. Diamond-and-above lifts wait for an
+admin to approve them before they count.
 
 ## Requirements
 
@@ -34,9 +43,38 @@ RAILS_ENV=test bin/rails db:prepare
 bin/rails server
 ```
 
-Then visit http://localhost:3000, sign up, log a bodyweight entry, and log
-a lift to see your rank. `bin/rails db:seed` (development only) creates a
-demo account: `demo@example.com` / `password123`.
+Then visit http://localhost:3000. `bin/rails db:seed` (development only)
+creates demo accounts, all with password `password123`:
+
+* `demo@example.com`: a lifter with lifts in all three disciplines
+* `admin@example.com`: an admin, with a lift waiting in the review queue
+* a handful of listed lifters, so the leaderboard has people on it
+
+## Admins
+
+Make an existing account an admin (or take it away):
+
+```
+bin/rails "admin:grant[you@example.com]"
+bin/rails "admin:revoke[you@example.com]"
+```
+
+In production, run it inside the app container:
+
+```
+bin/kamal app exec --reuse 'bin/rails "admin:grant[you@example.com]"'
+```
+
+Admins get an **Admin** link in the nav, with the number of lifts waiting for
+review:
+
+* **Review queue**: lifts that rank diamond or above. Approve them (they then
+  count toward ranks and the leaderboard), reject them (they stay in the
+  lifter's history, marked rejected), or delete them.
+* **Users**: search accounts, see anyone's lifts, delete a lift, or delete a
+  user along with their lifts, bodyweight log and sessions.
+
+Admin pages 404 for everyone else.
 
 ## Testing (TDD via RSpec)
 
@@ -44,9 +82,10 @@ demo account: `demo@example.com` / `password123`.
 bin/rspec
 ```
 
-The suite covers models (`spec/models`), the DOTS scoring services
-(`spec/services`), and full request flows through the controllers
-(`spec/requests`). Write the spec first, watch it fail, then implement.
+The suite covers models (`spec/models`), the scoring formulas
+(`spec/services`), full request flows through the controllers
+(`spec/requests`) and the rake tasks (`spec/tasks`). Write the spec first,
+watch it fail, then implement.
 
 ## Linting / security
 
@@ -59,28 +98,68 @@ bin/bundler-audit
 All three are clean as of the last commit; keep them that way before
 merging.
 
+## How scoring works
+
+Everything lives in `app/models/discipline` plus `Tier` and `Scale`:
+
+* **A lift's score is formula-based and stored** (`lifts.score`): DOTS points,
+  Sinclair points, or bodyweight-equivalent reps. Sets of more than one rep
+  count via an Epley-estimated one-rep max. That estimate stops being reliable
+  on long sets, so powerlifting takes up to 10 reps and weightlifting up to 3.
+* **A per-sex Scale turns a score into a percentage** of the world-class
+  standard for that lift, and the percentage into a `Tier` (bronze from 0%,
+  silver 40%, gold 60%, platinum 75%, diamond 90%, grandmaster 100%).
+  * Powerlifting and weightlifting use one "ceiling" per lift and sex
+    (`CEILINGS`). The powerlifting ceilings add up to a 600-point DOTS total,
+    so being X% of the way on every lift puts you X% of the way overall.
+  * Calisthenics has no published formula, so it uses explicit rep
+    thresholds per tier (`THRESHOLDS`).
+
+  These numbers are rough calibrations, so tune them freely. Tiers aren't
+  stored, so changing a ceiling needs no migration.
+* **Overall rank**: for powerlifting and weightlifting, the total of your best
+  lifts against the total of the ceilings, like a meet total. For
+  calisthenics, the average of the per-exercise percentages.
+* **Plausibility**: diamond-and-above lifts are held for review. Lifts past
+  200% of world class (typos, kg/lb mix-ups) are rejected outright.
+* **If you change a formula** (not just a ceiling), recompute the stored
+  scores with `bin/rails lifts:rescore`.
+
+The Sinclair constants are the 2021-2024 Olympic-cycle ones. The IWF hasn't
+published 2025-2028 values yet, pending the new weight classes. DOTS clamps
+bodyweight to its published bounds (40-210 kg men, 40-150 kg women).
+
 ## Architecture notes
 
 * **Auth** uses Rails 8's built-in cookie-session generator (`User`,
-  `Session`, `Current`, `Authentication` concern) -- no Devise.
-* **Bodyweight is a log, not a profile field** (`BodyweightEntry`), because
-  it changes over time and each lift needs the bodyweight *at the time of
-  that lift* (like a powerlifting meet weigh-in) for an accurate DOTS
-  score, not your current bodyweight.
-* **Units**: users pick a display preference (kg or lb) but everything is
-  stored canonically in kilograms; conversion happens once, at the
-  controller boundary, via `WeightConversion`.
-* **`Dots::Calculator`** implements the published DOTS polynomial.
-  **`Dots::Tier`** maps a DOTS score, as a percentage of the male/female
-  world record (600), onto the bronze -> grandmaster ladder.
+  `Session`, `Current`, `Authentication` concern). There's no Devise.
+* **Bodyweight is a log, not a profile field** (`BodyweightEntry`), because it
+  changes over time. Each lift snapshots the bodyweight *as of the lift's
+  date* (like a meet weigh-in), so backdated lifts are scored at the
+  bodyweight you had back then. The lift form also takes a bodyweight
+  directly, which is added to the log too.
+* **Units**: users pick a display preference (kg or lb), but everything is
+  stored canonically in kilograms. Conversion happens once, at the controller
+  boundary, via `WeightConversion`.
+* **Time zones**: each user has one, detected from the browser at sign-up and
+  editable in settings. Requests run in it, so "today" on a new lift is the
+  lifter's today.
+* **Leaderboard and profiles** only include lifters who opted in (ticked by
+  default at sign-up, changeable in settings), and only approved lifts. Men
+  and women share one board, ordered by progress toward their own sex's
+  standard. Public pages never show email or bodyweight.
+* **Password resets** are switched off (and the link hidden) until production
+  has outgoing mail. Configure SMTP in `config/environments/production.rb`,
+  then set `config.x.password_resets_enabled = true` in
+  `config/application.rb`.
 
 ## Deployment
 
 This app is set up for [Kamal](https://kamal-deploy.org) (see
-`config/deploy.yml` and `.kamal/`) -- deploy anywhere as a single Docker
+`config/deploy.yml` and `.kamal/`). Deploy anywhere as a single Docker
 container with SQLite on a persistent volume, which comfortably handles the
-expected scale (~500 users, ~20 concurrent). No separate database server to
-provision.
+expected scale (~500 users, ~20 concurrent). There's no separate database
+server to provision.
 
 ```
 bin/kamal setup   # first deploy
@@ -94,12 +173,11 @@ you run `kamal deploy` from, and a container registry configured in
 ## Windows-specific notes
 
 * Gems are pinned in `Gemfile` beyond Rails' defaults where needed for this
-  environment -- e.g. `json` is pinned to `~> 2.9` because `json` 3.0.2
+  environment. For example, `json` is pinned to `~> 2.9` because `json` 3.0.2
   breaks reading signed cookies (including the session cookie) under
-  ActiveSupport 8.1.3.1. If `bundle install` ever drifts `json` back to
-  3.x, re-pin it.
+  ActiveSupport 8.1.3.1. If `bundle install` ever drifts `json` back to 3.x,
+  re-pin it.
 * You may see `VIPS-WARNING` lines about missing `.dll` plugins on any
-  `bin/rails` command. That's `libvips` (via the `image_processing` gem,
-  used for Active Storage image variants) probing for optional codec
-  plugins this install doesn't have. It's harmless noise, not an error --
-  ignore it.
+  `bin/rails` command. That's `libvips` (via the `image_processing` gem, used
+  for Active Storage image variants) probing for optional codec plugins this
+  install doesn't have. It's harmless noise, not an error, so ignore it.
