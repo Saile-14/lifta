@@ -35,6 +35,8 @@ body {
 
 a {
   color: var(--link);
+  /* Clear of descenders and underscores (@big_tom) */
+  text-underline-offset: 3px;
 }
 
 a:visited {
@@ -296,6 +298,11 @@ td {
   font-variant-numeric: tabular-nums;
 }
 
+/* Data tables scroll sideways rather than wrap "Sep 16, 2026" or "120 kg × 3" */
+.table-scroll td {
+  white-space: nowrap;
+}
+
 .table-scroll {
   overflow-x: auto;
 }
@@ -443,7 +450,9 @@ form.button_to {
   color: var(--accent);
 }
 
-.btn-small {
+/* input[type=submit] would otherwise out-rank the class and make it primary */
+.btn-small,
+input[type="submit"].btn-small {
   padding: 4px 12px;
   border: 1px solid var(--ink-secondary);
   background: transparent;
@@ -454,8 +463,10 @@ form.button_to {
   cursor: pointer;
 }
 
-.btn-small:hover {
+.btn-small:hover,
+input[type="submit"].btn-small:hover {
   border-color: var(--accent);
+  background: transparent;
   color: var(--accent);
 }
 
@@ -617,6 +628,32 @@ form.button_to {
 
 .badge--admin {
   color: var(--accent);
+}
+
+/* In a narrow column (landing page grid) the meter drops under its label
+   and value, as it does on phones below */
+.grid .rank-row {
+  grid-template-columns: 1fr auto;
+  row-gap: 6px;
+}
+
+.grid .rank-row__label {
+  grid-row: 1;
+}
+
+.grid .rank-row__value {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.grid .rank-row__track {
+  grid-row: 2;
+  grid-column: 1 / -1;
+}
+
+.grid .rank-row__detail {
+  grid-row: 3;
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 600px) {
