@@ -21,10 +21,10 @@ class Admin::UsersController < Admin::BaseController
   # Deleting a user deletes their lifts, bodyweight log and sessions with them.
   def destroy
     if @user == Current.user
-      redirect_to admin_user_path(@user), alert: "You can't delete your own account."
+      redirect_to admin_user_path(@user), alert: t(".self")
     else
       @user.destroy
-      redirect_to admin_users_path, notice: "Deleted @#{@user.username} and all their lifts.", status: :see_other
+      redirect_to admin_users_path, notice: t(".deleted", username: @user.username), status: :see_other
     end
   end
 

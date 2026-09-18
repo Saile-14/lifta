@@ -1,0 +1,415 @@
+# 日本語。キーはすべて en.yml と対応しています
+# （spec/i18n_spec.rb で差分がないことを確認しています）。
+ja:
+  locale_name: "日本語"
+  page_title: "%{title} | Lifta"
+
+  date:
+    formats:
+      medium: "%Y年%-m月%-d日"
+      month_year: "%Y年%-m月"
+  time:
+    formats:
+      medium: "%Y年%-m月%-d日 %H:%M"
+
+  disciplines:
+    powerlifting: "パワーリフティング"
+    weightlifting: "ウエイトリフティング"
+    calisthenics: "キャリステニクス"
+  discipline_tabs:
+    label: "競技"
+  exercises:
+    squat: "スクワット"
+    bench: "ベンチプレス"
+    deadlift: "デッドリフト"
+    snatch: "スナッチ"
+    clean_and_jerk: "クリーン&ジャーク"
+    pull_up: "懸垂"
+    dip: "ディップス"
+    push_up: "腕立て伏せ"
+  tiers:
+    bronze: "ブロンズ"
+    silver: "シルバー"
+    gold: "ゴールド"
+    platinum: "プラチナ"
+    diamond: "ダイヤモンド"
+    grandmaster: "グランドマスター"
+    unranked: "未ランク"
+    with_percent: "%{tier}（%{percent}%）"
+    badge: "%{tier}・%{percent}%"
+  sexes:
+    male: "男性"
+    female: "女性"
+  statuses:
+    pending: "承認待ち"
+    rejected: "却下"
+
+  scores:
+    powerlifting: "%{score} DOTS"
+    weightlifting: "%{score} シンクレア"
+    calisthenics:
+      other: "%{score}回"
+  totals:
+    powerlifting: "BIG3合計 %{points} DOTS"
+    weightlifting: "トータル %{points} シンクレア"
+  explanations:
+    powerlifting: "各種目をDOTSでスコア化し、性別ごとの世界トップレベルの基準と比べて、ブロンズからグランドマスターまでの6段階でランクを付けます。"
+    weightlifting: "各種目をシンクレア係数でスコア化し、性別ごとの世界トップレベルの基準と比べて、ブロンズからグランドマスターまでの6段階でランクを付けます。"
+    calisthenics: "各種目を自重換算の回数でスコア化し、性別ごとの世界トップレベルの基準と比べて、ブロンズからグランドマスターまでの6段階でランクを付けます。"
+  lift_results:
+    set: "%{weight} × %{reps}回"
+    reps:
+      other: "%{count}回"
+    added_weight: "%{reps}（+%{weight}）"
+  targets:
+    reps: "%{reps}で%{tier}"
+    weight: "%{weight}で%{tier}"
+    weight_or_set: "%{weight}で%{tier}（%{set_reps}回なら%{set_weight}）"
+  ranks:
+    overall: "総合"
+    overall_average: "%{count}種目の平均です。"
+    overall_missing: "%{lifts}を記録すると総合ランクが付きます。"
+    unranked_row: "%{exercise}を記録するとランクが付きます。"
+    best: "ベスト: %{result}（%{date}）"
+    next: "次: %{target}"
+    top_tier: "最高ランクです。"
+    summary: "%{discipline}: %{rank}"
+    unranked_summary: "未ランク"
+  rank_change:
+    verbs:
+      logged: "記録しました"
+      saved: "保存しました"
+    verb_only: "%{verb}。"
+    pending: "%{tier}レベルの%{exercise}を記録しました。管理者が承認するとランクに反映されます。"
+    first_rank: "%{exercise}のランク: %{tier}"
+    rank_up: "ランクアップ！ %{exercise}: %{from} → %{to}"
+    new_best: "%{exercise}の自己ベストを更新！ %{tier}（前回 %{percent}%）"
+    unchanged: "%{verb}。%{exercise}: %{tier}"
+    overall_first: "%{discipline}総合: %{tier}"
+    overall_up: "%{discipline}総合: %{from} → %{to}！"
+  columns:
+    date: "日付"
+    lift: "種目"
+    result: "記録"
+    bodyweight: "体重"
+    score: "スコア"
+    rank: "ランク"
+    recorded: "記録日時"
+    lifter: "ユーザー"
+    user: "ユーザー"
+    email: "メールアドレス"
+    joined: "登録日"
+    lifts: "記録数"
+    pending: "承認待ち"
+    best_lift: "ベスト記録"
+  actions:
+    edit: "編集"
+    delete: "削除"
+    approve: "承認"
+    reject: "却下"
+    manage: "管理"
+
+  activerecord:
+    attributes:
+      lift:
+        exercise: "種目"
+        weight_lifted: "重量"
+        reps: "回数"
+        bodyweight_kg: "体重"
+        lifted_at: "日付"
+      bodyweight_entry:
+        kilograms: "体重"
+        recorded_at: "日時"
+      user:
+        email_address: "メールアドレス"
+        username: "ユーザー名"
+        password: "パスワード"
+        sex: "性別"
+        weight_unit: "単位"
+        time_zone: "タイムゾーン"
+        public_profile: "ランキングへの参加"
+    errors:
+      messages:
+        implausible_weight: "の値が正しくないようです。数値と単位（kg / lb）を確認してください"
+      models:
+        lift:
+          attributes:
+            base:
+              implausible: "体重に対して世界記録をはるかに上回っています。数値と単位（kg / lb）を確認してください。"
+            bodyweight_kg:
+              needed_to_score: "を入力してください（スコアの計算に必要です）"
+            reps:
+              too_many: "は%{discipline}では%{count}回までです"
+              too_many_to_estimate: "は%{discipline}では%{count}回までです（それ以上の回数では1RMを正確に推定できません）"
+            lifted_at:
+              in_future: "に未来の日付は指定できません"
+        user:
+          attributes:
+            username:
+              invalid_username: "は3〜20文字の半角英数字とアンダースコア（_）で入力してください"
+              reserved: "は使用できません"
+            time_zone:
+              unknown_time_zone: "が正しくありません"
+
+  shared:
+    nav:
+      dashboard: "ダッシュボード"
+      log_lift: "記録する"
+      leaderboard: "ランキング"
+      admin: "管理"
+      settings: "設定"
+      sign_out: "ログアウト"
+      sign_in: "ログイン"
+      sign_up: "新規登録"
+      language: "言語"
+
+  pages:
+    home:
+      title: "筋トレの記録をランク判定"
+      heading: "Liftaへようこそ"
+      intro_html: "記録した挙上を、体重と性別に合わせた世界トップレベルの基準と比べて、ブロンズからグランドマスターまでの6段階でランク付けします。パワーリフティングは%{dots}、ウエイトリフティングは%{sinclair}、キャリステニクスは回数で評価します。"
+      dots: "DOTS"
+      sinclair: "シンクレア係数"
+      sign_up: "新規登録"
+      sign_in: "ログイン"
+      see_leaderboard: "ランキングを見る"
+      example_heading: "ランクカードの例"
+      example_total: "BIG3合計 381.2 DOTS"
+      example_next: "次: 135 kgでゴールド"
+      how_heading: "使い方"
+      step_1: "ユーザー名・性別・単位（kg / lb）を設定して登録します。"
+      step_2: "パワーリフティング、ウエイトリフティング、キャリステニクスの記録を入力します。"
+      step_3: "種目別と総合のランクに加えて、次のランクに必要な重量や回数がわかります。"
+      step_4: "ダイヤモンド以上の記録は、管理者の確認後にランクへ反映されます。"
+
+  dashboard:
+    show:
+      title: "ダッシュボード"
+      heading: "%{discipline}のランク"
+      pending:
+        other: "%{count}件の記録が承認待ちです。ダイヤモンド以上の記録は、管理者の承認後にランクへ反映されます。"
+      log_lift: "記録する"
+      history: "記録履歴"
+      bodyweight: "体重"
+      no_bodyweight: "まだ体重が記録されていません。バーベル種目のスコア計算に必要です。"
+      log_bodyweight: "体重を記録"
+      bodyweight_history: "履歴"
+      how_ranks_work: "ランクの仕組み"
+      recent_lifts: "最近の記録"
+      nothing_logged: "まだ記録がありません。"
+
+  lifts:
+    index:
+      title: "記録履歴"
+      filter: "競技で絞り込み"
+      all: "すべて"
+      confirm_delete: "この%{exercise}の記録を削除しますか？"
+      empty: "まだ記録がありません。"
+      log_lift: "記録する"
+      back: "ダッシュボードに戻る"
+    new:
+      title: "記録を追加"
+    edit:
+      title: "記録を編集"
+      heading: "%{exercise}の記録を編集"
+      review_note: "ダイヤモンド以上の記録の数値を変更すると、もう一度承認待ちになります。"
+      back: "履歴に戻る"
+    form:
+      exercise: "種目"
+      weight: "重量"
+      units: "単位"
+      reps: "回数"
+      reps_hint: "%{count}回まで。2回以上のセットは推定1RMでランク付けします。"
+      strict_reps_hint: "反動を使わずに1セットでできた回数。"
+      added_weight: "追加重量（任意）"
+      added_weight_hint: "ディッピングベルトや加重ベストの重さ。回数に換算して加算します。"
+      date: "日付"
+      bodyweight: "体重（上と同じ単位）"
+      bodyweight_hint_saved: "この記録のスコア計算に使う体重です。空欄にすると、その日に記録された体重を使います。"
+      bodyweight_hint_blank: "空欄の場合は、その日に記録された体重を使います。"
+      bodyweight_hint_needed: "スコアの計算に必要です。体重の記録にも保存されます。"
+      bodyweight_hint_optional: "追加重量がある場合のみ必要です。体重の記録にも保存されます。"
+      submit_new: "記録する"
+      submit_edit: "変更を保存"
+    destroy:
+      deleted: "記録を削除しました。"
+
+  bodyweight_entries:
+    index:
+      title: "体重の履歴"
+      confirm_delete: "この記録を削除しますか？"
+      empty: "まだ体重が記録されていません。"
+      log: "体重を記録"
+      back: "ダッシュボードに戻る"
+    new:
+      title: "体重を記録"
+      back: "戻る"
+    edit:
+      title: "体重を編集"
+      note: "記録済みのリフトは、スコア計算に使った体重のままです。変更するにはリフトの記録を編集してください。"
+      back: "履歴に戻る"
+    form:
+      bodyweight: "体重"
+      units: "単位"
+      recorded_at_new: "日時（空欄の場合は現在）"
+      recorded_at: "日時"
+      submit_new: "保存"
+      submit_edit: "変更を保存"
+    create:
+      logged: "体重を記録しました。"
+    update:
+      updated: "体重を更新しました。"
+    destroy:
+      deleted: "体重の記録を削除しました。"
+
+  sessions:
+    new:
+      title: "ログイン"
+      email_address: "メールアドレス"
+      email_placeholder: "メールアドレスを入力"
+      password: "パスワード"
+      password_placeholder: "パスワードを入力"
+      submit: "ログイン"
+      forgot_password: "パスワードをお忘れですか？"
+      sign_up: "新規登録"
+    create:
+      invalid: "メールアドレスまたはパスワードが正しくありません。"
+      rate_limited: "しばらく時間をおいてから、もう一度お試しください。"
+
+  registrations:
+    new:
+      title: "新規登録"
+      email_address: "メールアドレス"
+      username: "ユーザー名"
+      username_hint: "3〜20文字の半角英数字とアンダースコア（_）。ほかのユーザーに表示される名前です。"
+      password: "パスワード"
+      sex: "性別"
+      sex_hint: "スコアの計算式（DOTS・シンクレア係数）は男女で異なります。"
+      weight_unit: "単位"
+      public_profile: "ランキングに参加して、公開プロフィールを作成する"
+      public_profile_hint: "ユーザー名・ランク・ベスト記録が公開されます。メールアドレスと体重は公開されません。あとから変更できます。"
+      submit: "登録する"
+      have_account: "アカウントをお持ちの方はこちらからログイン"
+    create:
+      welcome: "Liftaへようこそ、@%{username}さん！"
+
+  passwords:
+    unavailable: "パスワードの再設定は現在ご利用いただけません。"
+    invalid_token: "再設定用のリンクが無効か、有効期限が切れています。"
+    new:
+      title: "パスワードをお忘れですか？"
+      email_placeholder: "メールアドレスを入力"
+      submit: "再設定メールを送信"
+    edit:
+      title: "パスワードの再設定"
+      password_placeholder: "新しいパスワード"
+      confirmation_placeholder: "新しいパスワード（確認）"
+      submit: "保存"
+    create:
+      sent: "再設定の手順をメールで送信しました（登録済みのメールアドレスの場合）。"
+      rate_limited: "しばらく時間をおいてから、もう一度お試しください。"
+    update:
+      reset: "パスワードを再設定しました。"
+      mismatch: "パスワードが一致しません。"
+  passwords_mailer:
+    reset:
+      subject: "パスワードの再設定"
+      intro: "次のページからパスワードを再設定できます:"
+      link: "パスワード再設定ページ"
+      expires: "このリンクの有効期限は%{time}です。"
+
+  settings:
+    show:
+      title: "設定"
+      username: "ユーザー名"
+      username_hint: "3〜20文字の半角英数字とアンダースコア（_）。プロフィールのURL: %{url}"
+      public_profile: "ランキングに参加して、公開プロフィールを作成する"
+      public_profile_hint: "ユーザー名・ランク・ベスト記録が公開されます。メールアドレスと体重は公開されません。"
+      units: "単位"
+      time_zone: "タイムゾーン"
+      time_zone_hint: "記録するときの「今日」の日付に使われます。"
+      submit: "設定を保存"
+      account: "アカウント"
+      signed_in_as: "%{email} でログイン中・%{sex}"
+    update:
+      saved: "設定を保存しました。"
+
+  lifters:
+    show:
+      og_title: "@%{username} | Lifta"
+      private_self: "このプロフィールは非公開のため、あなただけが閲覧できます。"
+      make_public: "設定で公開する"
+      private_admin: "このプロフィールは非公開です。閲覧できるのは本人と管理者だけです。"
+      since: "%{date}からLiftaで記録中"
+      share: "シェア"
+      link_copied: "リンクをコピーしました"
+      overall_pending: "全種目を記録すると総合ランクが付きます"
+      best: "ベスト: %{result}（%{date}）"
+      no_ranks: "まだランク付きの記録がありません。"
+      see_leaderboard: "ランキングを見る"
+
+  leaderboards:
+    show:
+      title: "ランキング"
+      heading: "%{discipline}ランキング"
+      boards: "部門"
+      overall: "総合"
+      sex_filter: "性別"
+      everyone: "全員"
+      men: "男性"
+      women: "女性"
+      empty: "まだ誰もランクインしていません。"
+      explanation: "性別ごとの世界トップレベルの基準にどれだけ近いかで順位を決めるため、男女が同じランキングに並びます。対象は、ランキングへの参加を選んだユーザーの承認済みの記録のみです。"
+      explanation_overall: "総合ランキングには全種目の記録が必要です。"
+      position: "あなたの順位: %{total}人中 %{position}位"
+      not_listed_html: "ランキングに参加していません。%{link}と参加できます。"
+      not_listed_link: "公開プロフィールをオンにする"
+
+  admin:
+    badge: "管理者"
+    tabs:
+      label: "管理"
+      review_queue: "承認待ち"
+      users: "ユーザー"
+    lifts:
+      index:
+        title: "承認待ち"
+        heading: "ダイヤモンド以上の記録"
+        intro: "承認されるまで、ランクとランキングには反映されません。却下した記録は「却下」としてユーザーの履歴に残ります。"
+        status: "ステータス"
+        pending: "承認待ち（%{count}）"
+        rejected: "却下（%{count}）"
+        empty_pending: "承認待ちの記録はありません。"
+        empty_rejected: "却下された記録はありません。"
+      actions:
+        confirm_delete: "@%{username}さんの%{exercise}の記録を完全に削除しますか？"
+      approve:
+        done: "@%{username}さんの%{exercise}を承認しました。"
+      reject:
+        done: "@%{username}さんの%{exercise}を却下しました。"
+      destroy:
+        done: "@%{username}さんの%{exercise}を削除しました。"
+    users:
+      index:
+        title: "ユーザー"
+        search_label: "ユーザーを検索"
+        search_placeholder: "メールアドレスまたはユーザー名"
+        search: "検索"
+        clear: "クリア"
+        empty: "該当するユーザーはいません。"
+      show:
+        email: "メールアドレス"
+        sex: "性別"
+        joined: "登録日"
+        current_bodyweight: "現在の体重"
+        leaderboard: "ランキング"
+        listed: "参加中"
+        not_listed: "不参加"
+        profile: "プロフィール"
+        delete_user: "ユーザーとすべての記録を削除"
+        confirm_delete_user: "@%{username}さんと、すべての記録（%{count}件）・体重の履歴を削除しますか？この操作は取り消せません。"
+        lifts: "記録"
+        no_lifts: "記録はありません。"
+      destroy:
+        deleted: "@%{username}さんとすべての記録を削除しました。"
+        self: "自分のアカウントは削除できません。"

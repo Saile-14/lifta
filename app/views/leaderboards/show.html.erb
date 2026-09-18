@@ -1,21 +1,21 @@
-<% content_for :title, "Leaderboard · Lifta" %>
+<% page_title t(".title") %>
 
 <%= discipline_tabs(@discipline) { |discipline| leaderboard_path(discipline: discipline, sex: @sex) } %>
 
 <div class="box">
-  <div class="box__header"><%= @discipline.name %> leaderboard</div>
+  <div class="box__header"><%= t(".heading", discipline: @discipline.name) %></div>
   <div class="box__body">
     <div class="filters">
-      <nav class="tabs tabs--small" aria-label="Board">
-        <%= link_to "Overall", leaderboard_path(discipline: @discipline, sex: @sex), aria: { current: ("page" unless @exercise) } %>
+      <nav class="tabs tabs--small" aria-label="<%= t(".boards") %>">
+        <%= link_to t(".overall"), leaderboard_path(discipline: @discipline, sex: @sex), aria: { current: ("page" unless @exercise) } %>
         <% @discipline.exercises.each do |exercise| %>
           <%= link_to exercise.name, leaderboard_path(discipline: @discipline, board: exercise.key, sex: @sex),
                 aria: { current: ("page" if exercise == @exercise) } %>
         <% end %>
       </nav>
 
-      <nav class="segmented" aria-label="Sex">
-        <% { nil => "Everyone", "male" => "Men", "female" => "Women" }.each do |sex, label| %>
+      <nav class="segmented" aria-label="<%= t(".sex_filter") %>">
+        <% { nil => t(".everyone"), "male" => t(".men"), "female" => t(".women") }.each do |sex, label| %>
           <%= link_to label, leaderboard_path(discipline: @discipline, board: @exercise&.key, sex: sex),
                 aria: { current: ("page" if sex == @sex) } %>
         <% end %>
@@ -27,9 +27,9 @@
         <table>
           <thead>
             <tr>
-              <th>#</th><th>Lifter</th><th>Rank</th>
-              <% if @discipline.weighted? || @exercise %><th>Score</th><% end %>
-              <% if @exercise %><th>Best lift</th><% end %>
+              <th>#</th><th><%= t("columns.lifter") %></th><th><%= t("columns.rank") %></th>
+              <% if @discipline.weighted? || @exercise %><th><%= t("columns.score") %></th><% end %>
+              <% if @exercise %><th><%= t("columns.best_lift") %></th><% end %>
             </tr>
           </thead>
           <tbody>
@@ -46,20 +46,20 @@
         </table>
       </div>
     <% else %>
-      <p class="muted">Nobody's on this board yet.</p>
+      <p class="muted"><%= t(".empty") %></p>
     <% end %>
 
     <p class="muted">
-      Lifters are ranked by how close they are to the world-class standard for their sex, so everyone shares one board.
-      Only approved lifts from lifters who opted in count<%= ", and the overall board needs every lift logged" unless @exercise %>.
+      <%= t(".explanation") %>
+      <%= t(".explanation_overall") unless @exercise %>
     </p>
 
     <% if Current.user %>
       <p>
         <% if (position = @leaderboard.position_of(Current.user)) %>
-          You're #<%= position %> of <%= @leaderboard.size %>.
+          <%= t(".position", position: position, total: @leaderboard.size) %>
         <% elsif !Current.user.public_profile? %>
-          You're not listed. <%= link_to "Turn on your public profile", settings_path %> to join.
+          <%= t(".not_listed_html", link: link_to(t(".not_listed_link"), settings_path)) %>
         <% end %>
       </p>
     <% end %>

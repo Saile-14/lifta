@@ -16,8 +16,8 @@ class User < ApplicationRecord
   validates :email_address, presence: true, uniqueness: true
   validates :sex, presence: true
   validates :username, presence: true, uniqueness: true,
-    format: { with: /\A[a-z0-9_]{3,20}\z/, message: "must be 3-20 letters, numbers or underscores" },
-    exclusion: { in: RESERVED_USERNAMES, message: "is reserved" }
+    format: { with: /\A[a-z0-9_]{3,20}\z/, message: :invalid_username },
+    exclusion: { in: RESERVED_USERNAMES, message: :reserved }
   validate :time_zone_exists
 
   # Users who opted in to the leaderboard and a public profile page.
@@ -59,6 +59,6 @@ class User < ApplicationRecord
 
   private
     def time_zone_exists
-      errors.add(:time_zone, "isn't a known time zone") unless ActiveSupport::TimeZone[time_zone.to_s]
+      errors.add(:time_zone, :unknown_time_zone) unless ActiveSupport::TimeZone[time_zone.to_s]
     end
 end

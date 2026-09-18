@@ -24,6 +24,12 @@ module Lifta
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # English and Japanese. Visitors get their browser's language (English if
+    # it's neither) and can switch with the button in the header; see the
+    # Localization concern.
+    config.i18n.available_locales = %i[ en ja ]
+    config.i18n.default_locale = :en
+
     # Password resets email a link, so they stay switched off (and the "Forgot
     # password?" link hidden) until production has outgoing mail configured.
     config.x.password_resets_enabled = false

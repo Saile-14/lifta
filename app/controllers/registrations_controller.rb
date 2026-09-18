@@ -10,7 +10,7 @@ class RegistrationsController < ApplicationController
 
     if @user.save
       start_new_session_for @user
-      redirect_to dashboard_path, notice: "Welcome to Lifta, @#{@user.username}."
+      redirect_to dashboard_path, notice: t(".welcome", username: @user.username)
     else
       render :new, status: :unprocessable_content
     end

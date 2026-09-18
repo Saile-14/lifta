@@ -18,7 +18,7 @@ RSpec.describe "Leaderboards", type: :request do
 
     get leaderboard_path(discipline: "powerlifting", board: "squat")
 
-    expect(response.body).to include("You're #1 of 1.")
+    expect(response.parsed_body.text).to include("You're #1 of 1.")
   end
 
   it "tells unlisted lifters how to join" do
@@ -26,7 +26,7 @@ RSpec.describe "Leaderboards", type: :request do
 
     get leaderboard_path
 
-    expect(response.body).to include("You're not listed.")
+    expect(response.parsed_body.text).to include("You're not listed.")
   end
 
   it "handles every discipline and filter, and ignores junk params" do

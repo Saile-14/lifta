@@ -1,40 +1,418 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
+# English. Every key here has a Japanese counterpart in ja.yml
+# (spec/i18n_spec.rb checks they stay in sync).
 en:
-  hello: "Hello world"
+  locale_name: "English"
+  page_title: "%{title} · Lifta"
+
+  date:
+    formats:
+      medium: "%b %-d, %Y"
+      month_year: "%B %Y"
+  time:
+    formats:
+      medium: "%b %-d, %Y · %H:%M"
+
+  disciplines:
+    powerlifting: "Powerlifting"
+    weightlifting: "Weightlifting"
+    calisthenics: "Calisthenics"
+  discipline_tabs:
+    label: "Discipline"
+  exercises:
+    squat: "Squat"
+    bench: "Bench"
+    deadlift: "Deadlift"
+    snatch: "Snatch"
+    clean_and_jerk: "Clean & jerk"
+    pull_up: "Pull-up"
+    dip: "Dip"
+    push_up: "Push-up"
+  tiers:
+    bronze: "Bronze"
+    silver: "Silver"
+    gold: "Gold"
+    platinum: "Platinum"
+    diamond: "Diamond"
+    grandmaster: "Grandmaster"
+    unranked: "Unranked"
+    with_percent: "%{tier} (%{percent}%)"
+    badge: "%{tier} · %{percent}%"
+  sexes:
+    male: "Male"
+    female: "Female"
+  statuses:
+    pending: "Pending review"
+    rejected: "Rejected"
+
+  scores:
+    powerlifting: "%{score} DOTS"
+    weightlifting: "%{score} Sinclair"
+    calisthenics:
+      one: "%{score} rep"
+      other: "%{score} reps"
+  totals:
+    powerlifting: "%{points} DOTS total"
+    weightlifting: "%{points} Sinclair total"
+  explanations:
+    powerlifting: "Each lift is scored with DOTS and ranked against a world-class standard for your sex: bronze, silver, gold, platinum, diamond, grandmaster."
+    weightlifting: "Each lift is scored with the Sinclair coefficient and ranked against a world-class standard for your sex: bronze, silver, gold, platinum, diamond, grandmaster."
+    calisthenics: "Each exercise is scored in bodyweight-equivalent reps and ranked against a world-class standard for your sex: bronze, silver, gold, platinum, diamond, grandmaster."
+  lift_results:
+    set: "%{weight} × %{reps}"
+    reps:
+      one: "%{count} rep"
+      other: "%{count} reps"
+    added_weight: "%{reps} +%{weight}"
+  targets:
+    reps: "%{tier} at %{reps}"
+    weight: "%{tier} at %{weight}"
+    weight_or_set: "%{tier} at %{weight}, or %{set_weight} × %{set_reps}"
+  ranks:
+    overall: "Overall"
+    overall_average: "Average of your %{count} lifts."
+    overall_missing: "Log %{lifts} for an overall rank."
+    unranked_row: "Log a %{exercise} to get ranked."
+    best: "Best: %{result} (%{date})"
+    next: "Next: %{target}"
+    top_tier: "Top tier."
+    summary: "%{discipline}: %{rank}"
+    unranked_summary: "unranked"
+  rank_change:
+    verbs:
+      logged: "Lift logged"
+      saved: "Lift saved"
+    verb_only: "%{verb}."
+    pending: "%{tier}-level %{exercise} logged. It'll count toward your rank once an admin approves it."
+    first_rank: "%{exercise} ranked: %{tier}."
+    rank_up: "Rank up! %{exercise}: %{from} → %{to}."
+    new_best: "New %{exercise} best: %{tier}, up from %{percent}%."
+    unchanged: "%{verb}. %{exercise}: %{tier}."
+    overall_first: "%{discipline} overall: %{tier}."
+    overall_up: "%{discipline} overall: %{from} → %{to}!"
+  columns:
+    date: "Date"
+    lift: "Lift"
+    result: "Result"
+    bodyweight: "Bodyweight"
+    score: "Score"
+    rank: "Rank"
+    recorded: "Recorded"
+    lifter: "Lifter"
+    user: "User"
+    email: "Email"
+    joined: "Joined"
+    lifts: "Lifts"
+    pending: "Pending"
+    best_lift: "Best lift"
+  actions:
+    edit: "Edit"
+    delete: "Delete"
+    approve: "Approve"
+    reject: "Reject"
+    manage: "Manage"
+
   activerecord:
     attributes:
       lift:
+        exercise: "Exercise"
         weight_lifted: "Weight"
+        reps: "Reps"
         bodyweight_kg: "Bodyweight"
         lifted_at: "Date"
       bodyweight_entry:
         kilograms: "Bodyweight"
         recorded_at: "Date"
+      user:
+        email_address: "Email address"
+        username: "Username"
+        password: "Password"
+        sex: "Sex"
+        weight_unit: "Units"
+        time_zone: "Time zone"
+        public_profile: "Leaderboard listing"
+    errors:
+      messages:
+        implausible_weight: "doesn't look right -- check the number and the kg/lb unit"
+      models:
+        lift:
+          attributes:
+            base:
+              implausible: "That's far beyond the world record for your bodyweight. Check the numbers and the kg/lb unit."
+            bodyweight_kg:
+              needed_to_score: "is needed to score this lift"
+            reps:
+              too_many: "can't be more than %{count} for %{discipline}"
+              too_many_to_estimate: "can't be more than %{count} for %{discipline} (a max estimated from longer sets isn't reliable)"
+            lifted_at:
+              in_future: "can't be in the future"
+        user:
+          attributes:
+            username:
+              invalid_username: "must be 3-20 letters, numbers or underscores"
+              reserved: "is reserved"
+            time_zone:
+              unknown_time_zone: "isn't a known time zone"
+
+  shared:
+    nav:
+      dashboard: "Dashboard"
+      log_lift: "Log a lift"
+      leaderboard: "Leaderboard"
+      admin: "Admin"
+      settings: "Settings"
+      sign_out: "Sign out"
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+      language: "Language"
+
+  pages:
+    home:
+      title: "Rank your lifts"
+      heading: "Welcome to Lifta"
+      intro_html: "Log your lifts and see how each one ranks against a world-class standard for your bodyweight and sex: bronze, silver, gold, platinum, diamond, grandmaster. Powerlifting is scored with %{dots}, weightlifting with the %{sinclair}, and calisthenics on reps."
+      dots: "DOTS"
+      sinclair: "Sinclair coefficient"
+      sign_up: "Sign up"
+      sign_in: "Sign in"
+      see_leaderboard: "See the leaderboard"
+      example_heading: "Example rank card"
+      example_total: "381.2 DOTS total"
+      example_next: "Next: Gold at 135 kg"
+      how_heading: "How it works"
+      step_1: "Sign up with a username, your sex and your units (kg or lb)."
+      step_2: "Log a lift: powerlifting, weightlifting or calisthenics."
+      step_3: "See your rank per lift and overall, and exactly what the next tier takes."
+      step_4: "Diamond-level lifts are checked by an admin before they count."
+
+  dashboard:
+    show:
+      title: "Dashboard"
+      heading: "Your %{discipline} ranks"
+      pending:
+        one: "1 lift waiting for review. Diamond-level lifts count once an admin approves them."
+        other: "%{count} lifts waiting for review. Diamond-level lifts count once an admin approves them."
+      log_lift: "Log a lift"
+      history: "Lift history"
+      bodyweight: "Bodyweight"
+      no_bodyweight: "No bodyweight logged yet. It's needed to score barbell lifts."
+      log_bodyweight: "Log bodyweight"
+      bodyweight_history: "History"
+      how_ranks_work: "How ranks work"
+      recent_lifts: "Recent lifts"
+      nothing_logged: "Nothing logged yet."
+
+  lifts:
+    index:
+      title: "Lift history"
+      filter: "Filter by discipline"
+      all: "All"
+      confirm_delete: "Delete this %{exercise}?"
+      empty: "No lifts logged yet."
+      log_lift: "Log a lift"
+      back: "Back to dashboard"
+    new:
+      title: "Log a lift"
+    edit:
+      title: "Edit lift"
+      heading: "Edit %{exercise}"
+      review_note: "Changing the numbers on a Diamond-level (or better) lift sends it back for review."
+      back: "Back to history"
+    form:
+      exercise: "Exercise"
+      weight: "Weight"
+      units: "Units"
+      reps: "Reps"
+      reps_hint: "Up to %{count}. A set of more than one is ranked by its estimated one-rep max."
+      strict_reps_hint: "Strict reps in one set."
+      added_weight: "Added weight (optional)"
+      added_weight_hint: "Belt or vest weight, credited as extra reps."
+      date: "Date"
+      bodyweight: "Bodyweight (in the units above)"
+      bodyweight_hint_saved: "The bodyweight this lift is scored at. Clear it to use your logged bodyweight for that date."
+      bodyweight_hint_blank: "Leave blank to use your logged bodyweight for that date."
+      bodyweight_hint_needed: "Needed to score the lift. It's saved to your bodyweight log too."
+      bodyweight_hint_optional: "Only needed with added weight. It's saved to your bodyweight log too."
+      submit_new: "Log lift"
+      submit_edit: "Save changes"
+    destroy:
+      deleted: "Lift deleted."
+
+  bodyweight_entries:
+    index:
+      title: "Bodyweight history"
+      confirm_delete: "Delete this entry?"
+      empty: "No bodyweight logged yet."
+      log: "Log bodyweight"
+      back: "Back to dashboard"
+    new:
+      title: "Log bodyweight"
+      back: "Back"
+    edit:
+      title: "Edit bodyweight"
+      note: "Lifts you've already logged keep the bodyweight they were scored at. Edit a lift to change its bodyweight."
+      back: "Back to history"
+    form:
+      bodyweight: "Bodyweight"
+      units: "Units"
+      recorded_at_new: "When (leave blank for now)"
+      recorded_at: "When"
+      submit_new: "Save"
+      submit_edit: "Save changes"
+    create:
+      logged: "Bodyweight logged."
+    update:
+      updated: "Bodyweight updated."
+    destroy:
+      deleted: "Bodyweight entry deleted."
+
+  sessions:
+    new:
+      title: "Sign in"
+      email_address: "Email address"
+      email_placeholder: "Enter your email address"
+      password: "Password"
+      password_placeholder: "Enter your password"
+      submit: "Sign in"
+      forgot_password: "Forgot password?"
+      sign_up: "Sign up"
+    create:
+      invalid: "Try another email address or password."
+      rate_limited: "Try again later."
+
+  registrations:
+    new:
+      title: "Sign up"
+      email_address: "Email address"
+      username: "Username"
+      username_hint: "3-20 letters, numbers or underscores. This is the name other lifters see."
+      password: "Password"
+      sex: "Sex"
+      sex_hint: "The scoring formulas (DOTS, Sinclair) have separate male and female versions."
+      weight_unit: "Preferred units"
+      public_profile: "List me on the leaderboard, with a public profile page"
+      public_profile_hint: "Shows your username, ranks and best lifts. Never your email or bodyweight. You can change this later."
+      submit: "Sign up"
+      have_account: "Already have an account? Sign in"
+    create:
+      welcome: "Welcome to Lifta, @%{username}."
+
+  passwords:
+    unavailable: "Password resets aren't available yet."
+    invalid_token: "Password reset link is invalid or has expired."
+    new:
+      title: "Forgot your password?"
+      email_placeholder: "Enter your email address"
+      submit: "Email reset instructions"
+    edit:
+      title: "Update your password"
+      password_placeholder: "Enter new password"
+      confirmation_placeholder: "Repeat new password"
+      submit: "Save"
+    create:
+      sent: "Password reset instructions sent (if user with that email address exists)."
+      rate_limited: "Try again later."
+    update:
+      reset: "Password has been reset."
+      mismatch: "Passwords did not match."
+  passwords_mailer:
+    reset:
+      subject: "Reset your password"
+      intro: "You can reset your password on"
+      link: "this password reset page"
+      expires: "This link will expire in %{time}."
+
+  settings:
+    show:
+      title: "Settings"
+      username: "Username"
+      username_hint: "3-20 letters, numbers or underscores. Your profile lives at %{url}."
+      public_profile: "List me on the leaderboard, with a public profile page"
+      public_profile_hint: "Shows your username, ranks and best lifts. Never your email or bodyweight."
+      units: "Units"
+      time_zone: "Time zone"
+      time_zone_hint: "Decides which day \"today\" is when you log a lift."
+      submit: "Save settings"
+      account: "Account"
+      signed_in_as: "Signed in as %{email} · %{sex} lifter."
+    update:
+      saved: "Settings saved."
+
+  lifters:
+    show:
+      og_title: "@%{username} on Lifta"
+      private_self: "This profile is private, so only you can see it."
+      make_public: "Make it public in settings"
+      private_admin: "This profile is private, so only you (as admin) and its owner can see it."
+      since: "Lifting on Lifta since %{date}"
+      share: "Share"
+      link_copied: "Link copied"
+      overall_pending: "Overall rank once every lift is logged"
+      best: "Best: %{result} · %{date}"
+      no_ranks: "No ranked lifts yet."
+      see_leaderboard: "See the leaderboard"
+
+  leaderboards:
+    show:
+      title: "Leaderboard"
+      heading: "%{discipline} leaderboard"
+      boards: "Board"
+      overall: "Overall"
+      sex_filter: "Sex"
+      everyone: "Everyone"
+      men: "Men"
+      women: "Women"
+      empty: "Nobody's on this board yet."
+      explanation: "Lifters are ranked by how close they are to the world-class standard for their sex, so everyone shares one board. Only approved lifts from lifters who opted in count."
+      explanation_overall: "The overall board needs every lift logged."
+      position: "You're #%{position} of %{total}."
+      not_listed_html: "You're not listed. %{link} to join."
+      not_listed_link: "Turn on your public profile"
+
+  admin:
+    badge: "Admin"
+    tabs:
+      label: "Admin"
+      review_queue: "Review queue"
+      users: "Users"
+    lifts:
+      index:
+        title: "Review queue"
+        heading: "Lifts at Diamond or above"
+        intro: "They only count toward ranks and the leaderboard once approved. Rejected lifts stay in the lifter's history, marked rejected."
+        status: "Status"
+        pending: "Pending (%{count})"
+        rejected: "Rejected (%{count})"
+        empty_pending: "Nothing pending."
+        empty_rejected: "Nothing rejected."
+      actions:
+        confirm_delete: "Delete @%{username}'s %{exercise} for good?"
+      approve:
+        done: "Approved @%{username}'s %{exercise}."
+      reject:
+        done: "Rejected @%{username}'s %{exercise}."
+      destroy:
+        done: "Deleted @%{username}'s %{exercise}."
+    users:
+      index:
+        title: "Users"
+        search_label: "Search users"
+        search_placeholder: "Email or username"
+        search: "Search"
+        clear: "Clear"
+        empty: "No users match."
+      show:
+        email: "Email"
+        sex: "Sex"
+        joined: "Joined"
+        current_bodyweight: "Current bodyweight"
+        leaderboard: "Leaderboard"
+        listed: "Listed"
+        not_listed: "Not listed"
+        profile: "Profile"
+        delete_user: "Delete user and all their lifts"
+        confirm_delete_user: "Delete @%{username} with all their lifts (%{count}) and their bodyweight log? This can't be undone."
+        lifts: "Lifts"
+        no_lifts: "No lifts logged."
+      destroy:
+        deleted: "Deleted @%{username} and all their lifts."
+        self: "You can't delete your own account."

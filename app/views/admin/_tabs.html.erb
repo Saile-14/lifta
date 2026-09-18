@@ -1,7 +1,7 @@
 <% pending_count = Lift.pending.count %>
-<nav class="tabs" aria-label="Admin">
+<nav class="tabs" aria-label="<%= t(".label") %>">
   <%= link_to admin_lifts_path, aria: { current: ("page" if controller_name == "lifts") } do %>
-    Review queue<% if pending_count.positive? %><span class="site-nav__count"><%= pending_count %></span><% end %>
+    <%= t(".review_queue") %><% if pending_count.positive? %><span class="site-nav__count"><%= pending_count %></span><% end %>
   <% end %>
-  <%= link_to "Users", admin_users_path, aria: { current: ("page" if controller_name == "users") } %>
+  <%= link_to t(".users"), admin_users_path, aria: { current: ("page" if controller_name == "users") } %>
 </nav>

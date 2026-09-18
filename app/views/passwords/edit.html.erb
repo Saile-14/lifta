@@ -1,9 +1,18 @@
-<h1>Update your password</h1>
+<% page_title t(".title") %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-
-<%= form_with url: password_path(params[:token]), method: :put do |form| %>
-  <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72 %><br>
-  <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72 %><br>
-  <%= form.submit "Save" %>
-<% end %>
+<div class="box">
+  <div class="box__header"><%= t(".title") %></div>
+  <div class="box__body">
+    <%= form_with url: password_path(params[:token]), method: :put, class: "form" do |form| %>
+      <div class="field">
+        <%= form.password_field :password, required: true, autocomplete: "new-password",
+              placeholder: t(".password_placeholder"), maxlength: 72 %>
+      </div>
+      <div class="field">
+        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password",
+              placeholder: t(".confirmation_placeholder"), maxlength: 72 %>
+      </div>
+      <%= form.submit t(".submit") %>
+    <% end %>
+  </div>
+</div>

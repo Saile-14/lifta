@@ -33,6 +33,15 @@ body {
   line-height: 1.6;
 }
 
+/* Japanese: fonts with proper kana and kanji, a touch more leading, and line
+   breaks between phrases rather than mid-word (browsers without auto-phrase
+   fall back to normal breaking) */
+html:lang(ja) body {
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
+  line-height: 1.75;
+  word-break: auto-phrase;
+}
+
 a {
   color: var(--link);
   /* Clear of descenders and underscores (@big_tom) */
@@ -80,6 +89,17 @@ h1, h2, h3 {
 
 .site-nav__spacer {
   flex: 1;
+}
+
+/* The language button: a small hairline-boxed word at the end of the nav */
+.site-nav .locale-switch {
+  padding: 1px 10px;
+  border: 1px solid var(--hairline-strong);
+  font-size: 0.85em;
+}
+
+.site-nav .locale-switch:hover {
+  border-color: var(--accent);
 }
 
 .site-nav__count {

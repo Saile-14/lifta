@@ -20,8 +20,8 @@ class Lift < ApplicationRecord
   validates :weight_lifted, numericality: { greater_than: 0 }, allow_nil: true, if: :weighted?
   validates :weight_lifted, numericality: { greater_than_or_equal_to: 0 }, unless: :weighted?
   validates :reps, numericality: { only_integer: true, greater_than: 0 }
-  validates :bodyweight_kg, presence: { message: "is needed to score this lift" }, if: :requires_bodyweight?
-  validates :bodyweight_kg, numericality: { greater_than: 20, less_than: 400, message: "doesn't look right -- check the number and the kg/lb unit" }, allow_nil: true
+  validates :bodyweight_kg, presence: { message: :needed_to_score }, if: :requires_bodyweight?
+  validates :bodyweight_kg, numericality: { greater_than: 20, less_than: 400, message: :implausible_weight }, allow_nil: true
   validate :reps_within_discipline_limit
   validate :lifted_at_not_in_future
   validate :score_is_plausible
@@ -95,18 +95,17 @@ class Lift < ApplicationRecord
     def reps_within_discipline_limit
       return unless discipline && reps.to_i > discipline.max_reps
 
-      message = "can't be more than #{discipline.max_reps} for #{discipline.name.downcase}"
-      message += " (a max estimated from longer sets isn't reliable)" if discipline.weighted?
-      errors.add(:reps, message)
+      errors.add(:reps, discipline.weighted? ? :too_many_to_estimate : :too_many,
+        count: discipline.max_reps, discipline: discipline.name.downcase)
     end
 
     def lifted_at_not_in_future
-      errors.add(:lifted_at, "can't be in the future") if lifted_at && user && lifted_at > user.today
+      errors.add(:lifted_at, :in_future) if lifted_at && user && lifted_at > user.today
     end
 
     def score_is_plausible
       return unless score && tier.implausible?
 
-      errors.add(:base, "That's far beyond the world record for your bodyweight. Check the numbers and the kg/lb unit.")
+      errors.add(:base, :implausible)
     end
 end

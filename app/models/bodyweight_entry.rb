@@ -2,7 +2,7 @@ class BodyweightEntry < ApplicationRecord
   belongs_to :user
 
   validates :kilograms, presence: true
-  validates :kilograms, numericality: { greater_than: 20, less_than: 400, message: "doesn't look right -- check the number and the kg/lb unit" }, allow_nil: true
+  validates :kilograms, numericality: { greater_than: 20, less_than: 400, message: :implausible_weight }, allow_nil: true
   validates :recorded_at, presence: true
 
   before_validation :default_recorded_at, on: :create

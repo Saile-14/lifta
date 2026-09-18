@@ -18,7 +18,7 @@ class Admin::LiftsController < Admin::BaseController
 
   def destroy
     @lift.destroy
-    redirect_back_or_to admin_lifts_path, notice: "Deleted #{description}.", status: :see_other
+    redirect_back_or_to admin_lifts_path, notice: t(".done", **description), status: :see_other
   end
 
   private
@@ -30,10 +30,10 @@ class Admin::LiftsController < Admin::BaseController
     # one that predates the current checks.
     def review(status)
       @lift.update_attribute(:status, status)
-      redirect_back_or_to admin_lifts_path, notice: "#{status.capitalize} #{description}."
+      redirect_back_or_to admin_lifts_path, notice: t(".done", **description)
     end
 
     def description
-      "@#{@lift.user.username}'s #{@lift.exercise_name.downcase}"
+      { username: @lift.user.username, exercise: @lift.exercise_name.downcase }
     end
 end

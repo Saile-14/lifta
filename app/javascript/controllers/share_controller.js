@@ -4,7 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 // otherwise copies it to the clipboard.
 export default class extends Controller {
   static targets = [ "label" ]
-  static values = { url: String, title: String, text: String }
+  static values = { url: String, title: String, text: String, copied: String }
 
   async share() {
     if (navigator.share) {
@@ -15,8 +15,9 @@ export default class extends Controller {
       }
     } else {
       await navigator.clipboard.writeText(this.urlValue)
-      this.labelTarget.textContent = "Link copied"
-      setTimeout(() => { this.labelTarget.textContent = "Share" }, 2000)
+      const label = this.labelTarget.textContent
+      this.labelTarget.textContent = this.copiedValue
+      setTimeout(() => { this.labelTarget.textContent = label }, 2000)
     }
   }
 }

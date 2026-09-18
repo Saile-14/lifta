@@ -16,17 +16,17 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :weight, "Bodyweight" %>
+    <%= form.label :weight, t(".bodyweight") %>
     <div class="field__inline">
       <%= form.number_field :weight, value: values["weight"], step: "any", min: 0, inputmode: "decimal", required: true %>
-      <%= form.select :unit, %w[ kg lb ], { selected: values["unit"] }, aria: { label: "Units" } %>
+      <%= form.select :unit, %w[ kg lb ], { selected: values["unit"] }, aria: { label: t(".units") } %>
     </div>
   </div>
 
   <div class="field">
-    <%= form.label :recorded_at, entry.persisted? ? "When" : "When (leave blank for now)" %>
+    <%= form.label :recorded_at, entry.persisted? ? t(".recorded_at") : t(".recorded_at_new") %>
     <%= form.datetime_field :recorded_at, value: values["recorded_at"], required: entry.persisted? %>
   </div>
 
-  <%= form.submit entry.persisted? ? "Save changes" : "Save" %>
+  <%= form.submit entry.persisted? ? t(".submit_edit") : t(".submit_new") %>
 <% end %>

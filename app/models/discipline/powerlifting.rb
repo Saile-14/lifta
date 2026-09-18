@@ -14,21 +14,13 @@ class Discipline::Powerlifting < Discipline
     "powerlifting"
   end
 
-  def name
-    "Powerlifting"
-  end
-
   def exercises
-    [ Exercise.new("squat", "Squat"), Exercise.new("bench", "Bench"), Exercise.new("deadlift", "Deadlift") ]
+    [ Exercise.new("squat"), Exercise.new("bench"), Exercise.new("deadlift") ]
   end
 
   # Past ~10 reps a 1RM estimate stops meaning much.
   def max_reps
     10
-  end
-
-  def score_label
-    "DOTS"
   end
 
   def score(weight_kg:, reps:, bodyweight_kg:, sex:, **)

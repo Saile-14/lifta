@@ -13,7 +13,7 @@ class BodyweightEntriesController < ApplicationController
     @bodyweight_entry = Current.user.bodyweight_entries.new(bodyweight_entry_params)
 
     if @bodyweight_entry.save
-      redirect_to bodyweight_entries_path, notice: "Bodyweight logged."
+      redirect_to bodyweight_entries_path, notice: t(".logged")
     else
       @values = form_params.to_h
       render :new, status: :unprocessable_content
@@ -25,7 +25,7 @@ class BodyweightEntriesController < ApplicationController
 
   def update
     if @bodyweight_entry.update(bodyweight_entry_params)
-      redirect_to bodyweight_entries_path, notice: "Bodyweight updated."
+      redirect_to bodyweight_entries_path, notice: t(".updated")
     else
       @values = form_params.to_h
       render :edit, status: :unprocessable_content
@@ -34,7 +34,7 @@ class BodyweightEntriesController < ApplicationController
 
   def destroy
     @bodyweight_entry.destroy
-    redirect_to bodyweight_entries_path, notice: "Bodyweight entry deleted.", status: :see_other
+    redirect_to bodyweight_entries_path, notice: t(".deleted"), status: :see_other
   end
 
   private

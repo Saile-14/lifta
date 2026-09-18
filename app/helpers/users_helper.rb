@@ -7,11 +7,14 @@ module UsersHelper
     options_for_select(options, current)
   end
 
+  def sex_options
+    User.sexes.keys.map { |sex| [ t("sexes.#{sex}"), sex ] }
+  end
+
   # One-line summary of a lifter's overall ranks, for link previews.
   def ranks_summary(rank_cards)
     rank_cards.map do |card|
-      overall = card.overall
-      "#{card.discipline.name}: #{overall ? overall.to_s : "unranked"}"
+      t("ranks.summary", discipline: card.discipline.name, rank: card.overall&.to_s || t("ranks.unranked_summary"))
     end.join(" · ")
   end
 end

@@ -5,7 +5,7 @@
     <div class="rank-row__fill rank-fill--<%= tier&.name || "unranked" %>" style="width: <%= tier&.fill_percent || 0 %>%"></div>
   </div>
   <div class="rank-row__value">
-    <%= tier ? "#{tier.label} · #{tier.display_percent}%" : "Unranked" %>
+    <%= tier ? t("tiers.badge", tier: tier.label, percent: tier.display_percent) : t("tiers.unranked") %>
   </div>
   <% if detail.present? %>
     <div class="rank-row__detail"><%= detail %></div>

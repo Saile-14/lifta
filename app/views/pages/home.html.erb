@@ -1,35 +1,36 @@
+<% page_title t(".title") %>
+
 <div class="hero">
-  <h1>Welcome to Lifta</h1>
-  <p>Log your lifts and see how each one ranks against a world-class standard for your bodyweight and sex:
-  bronze, silver, gold, platinum, diamond, grandmaster. Powerlifting is scored with
-  <a href="https://en.wikipedia.org/wiki/DOTS_(formula)">DOTS</a>, weightlifting with the
-  <a href="https://en.wikipedia.org/wiki/Sinclair_coefficient">Sinclair coefficient</a>, and calisthenics on reps.</p>
+  <h1><%= t(".heading") %></h1>
+  <p><%= t(".intro_html",
+           dots: link_to(t(".dots"), "https://en.wikipedia.org/wiki/DOTS_(formula)"),
+           sinclair: link_to(t(".sinclair"), "https://en.wikipedia.org/wiki/Sinclair_coefficient")) %></p>
   <div class="hero__actions">
-    <%= link_to "Sign up", new_registration_path, class: "btn-primary" %>
-    <%= link_to "Sign in", new_session_path, class: "btn-secondary" %>
-    <%= link_to "See the leaderboard", leaderboard_path, class: "btn-secondary" %>
+    <%= link_to t(".sign_up"), new_registration_path, class: "btn-primary" %>
+    <%= link_to t(".sign_in"), new_session_path, class: "btn-secondary" %>
+    <%= link_to t(".see_leaderboard"), leaderboard_path, class: "btn-secondary" %>
   </div>
 </div>
 
 <div class="grid">
   <div class="box">
-    <div class="box__header">Example rank card</div>
+    <div class="box__header"><%= t(".example_heading") %></div>
     <div class="box__body">
-      <%= render "shared/rank_row", label: "Overall", tier: Tier.new(63.5), detail: "381.2 DOTS total", overall: true %>
-      <%= render "shared/rank_row", label: "Squat", tier: Tier.new(64.1) %>
-      <%= render "shared/rank_row", label: "Bench", tier: Tier.new(57.9), detail: "Next: Gold at 135 kg" %>
-      <%= render "shared/rank_row", label: "Deadlift", tier: Tier.new(66.8) %>
+      <%= render "shared/rank_row", label: t("ranks.overall"), tier: Tier.new(63.5), detail: t(".example_total"), overall: true %>
+      <%= render "shared/rank_row", label: t("exercises.squat"), tier: Tier.new(64.1) %>
+      <%= render "shared/rank_row", label: t("exercises.bench"), tier: Tier.new(57.9), detail: t(".example_next") %>
+      <%= render "shared/rank_row", label: t("exercises.deadlift"), tier: Tier.new(66.8) %>
     </div>
   </div>
 
   <div class="box">
-    <div class="box__header">How it works</div>
+    <div class="box__header"><%= t(".how_heading") %></div>
     <div class="box__body">
       <ol>
-        <li>Sign up with a username, your sex and your units (kg or lb).</li>
-        <li>Log a lift: powerlifting, weightlifting or calisthenics.</li>
-        <li>See your rank per lift and overall, and exactly what the next tier takes.</li>
-        <li>Diamond-level lifts are checked by an admin before they count.</li>
+        <li><%= t(".step_1") %></li>
+        <li><%= t(".step_2") %></li>
+        <li><%= t(".step_3") %></li>
+        <li><%= t(".step_4") %></li>
       </ol>
     </div>
   </div>

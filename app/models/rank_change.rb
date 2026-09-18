@@ -2,7 +2,8 @@
 # message shown afterwards. Build it before saving the lift (to capture the
 # ranks it started from) and ask for the message after.
 class RankChange
-  def initialize(user, lift, verb: "Lift logged")
+  # verb: :logged or :saved, for the plain "Lift logged." message.
+  def initialize(user, lift, verb: :logged)
     @user = user
     @lift = lift
     @verb = verb
@@ -40,23 +41,26 @@ class RankChange
       @lift.exercise_name
     end
 
+    def verb
+      I18n.t("rank_change.verbs.#{@verb}")
+    end
+
     def pending_message
-      "#{@lift.tier.label}-level #{exercise_name.downcase} logged. " \
-        "It'll count toward your rank once an admin approves it."
+      I18n.t("rank_change.pending", tier: @lift.tier.label, exercise: exercise_name.downcase)
     end
 
     def exercise_message
       was, now = @before[:exercise], after[:exercise]
-      return "#{@verb}." unless now
+      return I18n.t("rank_change.verb_only", verb: verb) unless now
 
       if was.nil?
-        "#{exercise_name} ranked: #{now}."
+        I18n.t("rank_change.first_rank", exercise: exercise_name, tier: now.to_s)
       elsif now.level > was.level
-        "Rank up! #{exercise_name}: #{was.label} → #{now}."
+        I18n.t("rank_change.rank_up", exercise: exercise_name, from: was.label, to: now.to_s)
       elsif now > was
-        "New #{exercise_name.downcase} best: #{now}, up from #{was.display_percent}%."
+        I18n.t("rank_change.new_best", exercise: exercise_name.downcase, tier: now.to_s, percent: was.display_percent)
       else
-        "#{@verb}. #{exercise_name}: #{now}."
+        I18n.t("rank_change.unchanged", verb: verb, exercise: exercise_name, tier: now.to_s)
       end
     end
 
@@ -65,9 +69,9 @@ class RankChange
       return unless now
 
       if was.nil?
-        "#{@lift.discipline.name} overall: #{now}."
+        I18n.t("rank_change.overall_first", discipline: @lift.discipline.name, tier: now.to_s)
       elsif now.level > was.level
-        "#{@lift.discipline.name} overall: #{was.label} → #{now}!"
+        I18n.t("rank_change.overall_up", discipline: @lift.discipline.name, from: was.label, to: now.to_s)
       end
     end
 end

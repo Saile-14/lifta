@@ -25,7 +25,7 @@ class Tier
   end
 
   def label
-    name.to_s.capitalize
+    I18n.t("tiers.#{name}")
   end
 
   def level
@@ -60,6 +60,6 @@ class Tier
   end
 
   def to_s
-    "#{label} (#{display_percent}%)"
+    I18n.t("tiers.with_percent", tier: label, percent: display_percent)
   end
 end

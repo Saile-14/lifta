@@ -2,7 +2,11 @@
 # (DOTS), weightlifting (Sinclair) and calisthenics (reps). Every lift gets a
 # formula-based score, and a per-sex Scale turns that score into a Tier.
 class Discipline
-  Exercise = Data.define(:key, :name)
+  Exercise = Data.define(:key) do
+    def name
+      I18n.t("exercises.#{key}")
+    end
+  end
 
   # What it takes to reach the next tier on one exercise. Barbell disciplines
   # fill in weights (kg, rounded up to something loadable), calisthenics fills
@@ -33,6 +37,10 @@ class Discipline
     def exercise_keys
       all.flat_map(&:exercise_keys)
     end
+  end
+
+  def name
+    I18n.t("disciplines.#{key}")
   end
 
   def exercise_keys

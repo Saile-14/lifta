@@ -1,16 +1,16 @@
-<% content_for :title, "Review queue · Admin · Lifta" %>
+<% page_title t(".title") %>
 <% content_for :page_class, "page--wide" %>
 
 <%= render "admin/tabs" %>
 
 <div class="box">
-  <div class="box__header">Lifts at Diamond or above</div>
+  <div class="box__header"><%= t(".heading") %></div>
   <div class="box__body">
-    <p class="muted">They only count toward ranks and the leaderboard once approved. Rejected lifts stay in the lifter's history, marked rejected.</p>
+    <p class="muted"><%= t(".intro") %></p>
 
-    <nav class="tabs tabs--small" aria-label="Status">
+    <nav class="tabs tabs--small" aria-label="<%= t(".status") %>">
       <% %w[ pending rejected ].each do |status| %>
-        <%= link_to "#{status.capitalize} (#{@counts.fetch(status, 0)})", admin_lifts_path(status: status),
+        <%= link_to t(".#{status}", count: @counts.fetch(status, 0)), admin_lifts_path(status: status),
               aria: { current: ("page" if status == @status) } %>
       <% end %>
     </nav>
@@ -19,7 +19,11 @@
       <div class="table-scroll">
         <table class="table--wide">
           <thead>
-            <tr><th>Lifter</th><th>Lift</th><th>Result</th><th>Bodyweight</th><th>Date</th><th>Score</th><th>Rank</th><th></th></tr>
+            <tr>
+              <th><%= t("columns.lifter") %></th><th><%= t("columns.lift") %></th><th><%= t("columns.result") %></th>
+              <th><%= t("columns.bodyweight") %></th><th><%= t("columns.date") %></th><th><%= t("columns.score") %></th>
+              <th><%= t("columns.rank") %></th><th></th>
+            </tr>
           </thead>
           <tbody>
             <% @lifts.each do |lift| %>
@@ -38,7 +42,7 @@
         </table>
       </div>
     <% else %>
-      <p class="muted">Nothing <%= @status %>.</p>
+      <p class="muted"><%= t(".empty_#{@status}") %></p>
     <% end %>
   </div>
 </div>

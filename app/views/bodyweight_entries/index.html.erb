@@ -1,13 +1,13 @@
-<% content_for :title, "Bodyweight history · Lifta" %>
+<% page_title t(".title") %>
 
 <div class="box">
-  <div class="box__header">Bodyweight history</div>
+  <div class="box__header"><%= t(".title") %></div>
   <div class="box__body">
     <% if @bodyweight_entries.any? %>
       <div class="table-scroll">
         <table>
           <thead>
-            <tr><th>Recorded</th><th>Bodyweight</th><th></th></tr>
+            <tr><th><%= t("columns.recorded") %></th><th><%= t("columns.bodyweight") %></th><th></th></tr>
           </thead>
           <tbody>
             <% @bodyweight_entries.each do |entry| %>
@@ -15,9 +15,9 @@
                 <td><%= format_time(entry.recorded_at) %></td>
                 <td><%= format_weight(entry.kilograms) %></td>
                 <td class="row-actions">
-                  <%= link_to "Edit", edit_bodyweight_entry_path(entry) %>
-                  <%= button_to "Delete", bodyweight_entry_path(entry), method: :delete, class: "link-button",
-                        form: { data: { turbo_confirm: "Delete this entry?" } } %>
+                  <%= link_to t("actions.edit"), edit_bodyweight_entry_path(entry) %>
+                  <%= button_to t("actions.delete"), bodyweight_entry_path(entry), method: :delete, class: "link-button",
+                        form: { data: { turbo_confirm: t(".confirm_delete") } } %>
                 </td>
               </tr>
             <% end %>
@@ -25,12 +25,12 @@
         </table>
       </div>
     <% else %>
-      <p class="muted">No bodyweight logged yet.</p>
+      <p class="muted"><%= t(".empty") %></p>
     <% end %>
 
     <p class="actions">
-      <%= link_to "Log bodyweight", new_bodyweight_entry_path, class: "btn-secondary" %>
-      <%= link_to "Back to dashboard", dashboard_path, class: "btn-secondary" %>
+      <%= link_to t(".log"), new_bodyweight_entry_path, class: "btn-secondary" %>
+      <%= link_to t(".back"), dashboard_path, class: "btn-secondary" %>
     </p>
   </div>
 </div>

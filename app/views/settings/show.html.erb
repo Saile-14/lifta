@@ -1,7 +1,7 @@
-<% content_for :title, "Settings · Lifta" %>
+<% page_title t(".title") %>
 
 <div class="box">
-  <div class="box__header">Settings</div>
+  <div class="box__header"><%= t(".title") %></div>
   <div class="box__body">
     <%= form_with model: @user, url: settings_path, method: :patch, class: "form" do |form| %>
       <% if @user.errors.any? %>
@@ -13,36 +13,36 @@
       <% end %>
 
       <div class="field">
-        <%= form.label :username %>
+        <%= form.label :username, t(".username") %>
         <%= form.text_field :username, required: true, maxlength: 20, autocomplete: "off", autocapitalize: "none" %>
-        <p class="hint">3-20 letters, numbers or underscores. Your profile lives at <%= lifter_url(@user.username_was || @user.username) %>.</p>
+        <p class="hint"><%= t(".username_hint", url: lifter_url(@user.username_was || @user.username)) %></p>
       </div>
 
       <div class="field field--checkbox">
         <%= form.check_box :public_profile %>
-        <%= form.label :public_profile, "List me on the leaderboard, with a public profile page" %>
-        <p class="hint">Shows your username, ranks and best lifts. Never your email or bodyweight.</p>
+        <%= form.label :public_profile, t(".public_profile") %>
+        <p class="hint"><%= t(".public_profile_hint") %></p>
       </div>
 
       <div class="field">
-        <%= form.label :weight_unit, "Units" %>
+        <%= form.label :weight_unit, t(".units") %>
         <%= form.select :weight_unit, User.weight_units.keys %>
       </div>
 
       <div class="field">
-        <%= form.label :time_zone %>
+        <%= form.label :time_zone, t(".time_zone") %>
         <%= form.select :time_zone, time_zone_options(@user.time_zone) %>
-        <p class="hint">Decides which day "today" is when you log a lift.</p>
+        <p class="hint"><%= t(".time_zone_hint") %></p>
       </div>
 
-      <%= form.submit "Save settings" %>
+      <%= form.submit t(".submit") %>
     <% end %>
   </div>
 </div>
 
 <div class="box">
-  <div class="box__header">Account</div>
+  <div class="box__header"><%= t(".account") %></div>
   <div class="box__body">
-    <p class="muted">Signed in as <%= @user.email_address %> · <%= @user.sex %> lifter.</p>
+    <p class="muted"><%= t(".signed_in_as", email: @user.email_address, sex: t("sexes.#{@user.sex}").downcase) %></p>
   </div>
 </div>

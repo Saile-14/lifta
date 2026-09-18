@@ -14,22 +14,14 @@ class Discipline::Weightlifting < Discipline
     "weightlifting"
   end
 
-  def name
-    "Weightlifting"
-  end
-
   def exercises
-    [ Exercise.new("snatch", "Snatch"), Exercise.new("clean_and_jerk", "Clean & jerk") ]
+    [ Exercise.new("snatch"), Exercise.new("clean_and_jerk") ]
   end
 
   # The Olympic lifts are technique-limited; only near-max sets say much
   # about a max.
   def max_reps
     3
-  end
-
-  def score_label
-    "Sinclair"
   end
 
   def score(weight_kg:, reps:, bodyweight_kg:, sex:, **)

@@ -16,20 +16,12 @@ class Discipline::Calisthenics < Discipline
     "calisthenics"
   end
 
-  def name
-    "Calisthenics"
-  end
-
   def exercises
-    [ Exercise.new("pull_up", "Pull-up"), Exercise.new("dip", "Dip"), Exercise.new("push_up", "Push-up") ]
+    [ Exercise.new("pull_up"), Exercise.new("dip"), Exercise.new("push_up") ]
   end
 
   def max_reps
     300
-  end
-
-  def score_label
-    "reps"
   end
 
   def weighted?

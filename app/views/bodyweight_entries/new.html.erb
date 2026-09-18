@@ -1,9 +1,9 @@
-<% content_for :title, "Log bodyweight · Lifta" %>
+<% page_title t(".title") %>
 
 <div class="box">
-  <div class="box__header">Log bodyweight</div>
+  <div class="box__header"><%= t(".title") %></div>
   <div class="box__body">
     <%= render "form", entry: @bodyweight_entry, values: @values %>
-    <p><%= link_to "Back", dashboard_path, class: "btn-secondary" %></p>
+    <p><%= link_to t(".back"), dashboard_path, class: "btn-secondary" %></p>
   </div>
 </div>

@@ -30,7 +30,7 @@ class LiftsController < ApplicationController
 
   def update
     @lift.assign_attributes(lift_attributes)
-    change = RankChange.new(Current.user, @lift, verb: "Lift saved")
+    change = RankChange.new(Current.user, @lift, verb: :saved)
 
     if @lift.save
       redirect_to lifts_path(discipline: @lift.discipline), notice: change.message, flash: { tier: change.new_tier }
@@ -41,7 +41,7 @@ class LiftsController < ApplicationController
 
   def destroy
     @lift.destroy
-    redirect_to lifts_path(discipline: @lift.discipline), notice: "Lift deleted.", status: :see_other
+    redirect_to lifts_path(discipline: @lift.discipline), notice: t(".deleted"), status: :see_other
   end
 
   private

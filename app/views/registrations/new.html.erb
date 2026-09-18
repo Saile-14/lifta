@@ -1,7 +1,7 @@
-<% content_for :title, "Sign up · Lifta" %>
+<% page_title t(".title") %>
 
 <div class="box">
-  <div class="box__header">Sign up</div>
+  <div class="box__header"><%= t(".title") %></div>
   <div class="box__body">
     <%= form_with model: @user, url: registrations_path, class: "form" do |form| %>
       <% if @user.errors.any? %>
@@ -13,44 +13,45 @@
       <% end %>
 
       <div class="field">
-        <%= form.label :email_address %>
+        <%= form.label :email_address, t(".email_address") %>
         <%= form.email_field :email_address, required: true, autocomplete: "email" %>
       </div>
 
       <div class="field">
-        <%= form.label :username %>
+        <%= form.label :username, t(".username") %>
         <%= form.text_field :username, required: true, maxlength: 20, autocomplete: "off", autocapitalize: "none" %>
-        <p class="hint">3-20 letters, numbers or underscores. This is the name other lifters see.</p>
+        <p class="hint"><%= t(".username_hint") %></p>
       </div>
 
       <div class="field">
-        <%= form.label :password %>
+        <%= form.label :password, t(".password") %>
         <%= form.password_field :password, required: true, maxlength: 72, autocomplete: "new-password" %>
       </div>
 
       <div class="field">
-        <%= form.label :sex %>
-        <%= form.select :sex, User.sexes.keys %>
-        <p class="hint">The scoring formulas (DOTS, Sinclair) have separate male and female versions.</p>
+        <%= form.label :sex, t(".sex") %>
+        <%= form.select :sex, sex_options %>
+        <p class="hint"><%= t(".sex_hint") %></p>
       </div>
 
       <div class="field">
-        <%= form.label :weight_unit, "Preferred units" %>
+        <%= form.label :weight_unit, t(".weight_unit") %>
         <%= form.select :weight_unit, User.weight_units.keys %>
       </div>
 
       <div class="field field--checkbox">
         <%= form.check_box :public_profile %>
-        <%= form.label :public_profile, "List me on the leaderboard, with a public profile page" %>
-        <p class="hint">Shows your username, ranks and best lifts. Never your email or bodyweight. You can change this later.</p>
+        <%= form.label :public_profile, t(".public_profile") %>
+        <p class="hint"><%= t(".public_profile_hint") %></p>
       </div>
 
       <%= form.hidden_field :time_zone, data: { controller: "timezone" } %>
 
-      <%= form.submit "Sign up" %>
+      <%= form.submit t(".submit") %>
     <% end %>
-    <br>
 
-    <%= link_to "Already have an account? Sign in", new_session_path %>
+    <p class="actions">
+      <%= link_to t(".have_account"), new_session_path, class: "btn-secondary" %>
+    </p>
   </div>
 </div>

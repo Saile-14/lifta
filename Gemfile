@@ -9,6 +9,8 @@ gem "json", "~> 2.9"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.3"
+# Rails' built-in messages (validation errors, dates) in Japanese [https://github.com/svenfuchs/rails-i18n]
+gem "rails-i18n", "~> 8.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
