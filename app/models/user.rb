@@ -37,6 +37,14 @@ class User < ApplicationRecord
       bodyweight_entries.order(:recorded_at).pick(:kilograms)
   end
 
+  # Logs a weigh-in for the day of a lift, unless that day already has one.
+  def record_weigh_in(kilograms, on:)
+    day = on.in_time_zone(time_zone).all_day
+    return if bodyweight_entries.exists?(recorded_at: day)
+
+    bodyweight_entries.create(kilograms: kilograms, recorded_at: on == today ? Time.current : day.first.change(hour: 12))
+  end
+
   def today
     Time.current.in_time_zone(time_zone).to_date
   end

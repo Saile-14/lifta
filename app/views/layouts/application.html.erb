@@ -26,7 +26,10 @@
   <body>
     <%= render "shared/nav" %>
     <div class="page">
-      <% if flash[:notice] %><div class="flash flash--notice"><%= flash[:notice] %></div><% end %>
+      <% if flash[:notice] %>
+        <% tier = flash[:tier].to_s.presence_in(Tier::NAMES.map(&:to_s)) %>
+        <div class="flash flash--notice<%= " flash--tier tier-accent--#{tier}" if tier %>" role="status"><%= flash[:notice] %></div>
+      <% end %>
       <% if flash[:alert] %><div class="flash flash--alert"><%= flash[:alert] %></div><% end %>
       <%= yield %>
     </div>

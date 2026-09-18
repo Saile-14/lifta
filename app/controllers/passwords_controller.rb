@@ -1,5 +1,6 @@
 class PasswordsController < ApplicationController
   allow_unauthenticated_access
+  before_action :require_password_resets
   before_action :set_user_by_token, only: %i[ edit update ]
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_password_path, alert: "Try again later." }
 
@@ -27,6 +28,11 @@ class PasswordsController < ApplicationController
   end
 
   private
+    # Hidden until outgoing mail is set up (see config.x.password_resets_enabled).
+    def require_password_resets
+      redirect_to new_session_path, alert: "Password resets aren't available yet." unless Rails.configuration.x.password_resets_enabled
+    end
+
     def set_user_by_token
       @user = User.find_by_password_reset_token!(params[:token])
     rescue ActiveSupport::MessageVerifier::InvalidSignature

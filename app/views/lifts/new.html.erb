@@ -1,32 +1,9 @@
+<% content_for :title, "Log a lift · Lifta" %>
+
 <div class="box">
   <div class="box__header">Log a lift</div>
   <div class="box__body">
-    <% if @lift.errors.any? %>
-      <div class="errors">
-        <% @lift.errors.full_messages.each do |message| %>
-          <div><%= message %></div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <%= form_with scope: :lift, url: lifts_path do |form| %>
-      <%= form.label :exercise %><br>
-      <%= form.select :exercise, Lift.exercises.keys, selected: "squat" %><br><br>
-
-      <%= form.label :weight, "Weight" %><br>
-      <%= form.text_field :weight, required: true %>
-      <%= form.select :unit, %w[kg lb], selected: Current.user.weight_unit %><br><br>
-
-      <%= form.label :reps %><br>
-      <%= form.number_field :reps, value: 1, min: 1 %><br><br>
-
-      <%= form.label :lifted_at, "Date (leave blank for today)" %><br>
-      <%= form.date_field :lifted_at %><br><br>
-
-      <%= form.submit "Save" %>
-    <% end %>
-    <br>
-
-    <%= link_to "Back", dashboard_path %>
+    <%= discipline_tabs(@discipline) { |discipline| new_lift_path(discipline: discipline) } %>
+    <%= render "form", lift: @lift, discipline: @discipline, values: @values %>
   </div>
 </div>

@@ -1,0 +1,10 @@
+<% content_for :title, "Edit lift · Lifta" %>
+
+<div class="box">
+  <div class="box__header">Edit <%= @lift.exercise_name.downcase %></div>
+  <div class="box__body">
+    <%= render "form", lift: @lift, discipline: @discipline, values: @values %>
+    <p class="muted">Changing the numbers on a Diamond-level (or better) lift sends it back for review.</p>
+    <p><%= link_to "Back to history", lifts_path(discipline: @discipline), class: "btn-secondary" %></p>
+  </div>
+</div>

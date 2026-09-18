@@ -1,0 +1,32 @@
+<%# locals: (entry:, values: nil) -%>
+<% values ||= {
+     "unit" => weight_unit,
+     "weight" => weight_value(entry.kilograms),
+     "recorded_at" => entry.recorded_at&.strftime("%Y-%m-%dT%H:%M")
+   } %>
+
+<%= form_with scope: :bodyweight_entry, url: entry.persisted? ? bodyweight_entry_path(entry) : bodyweight_entries_path,
+      method: entry.persisted? ? :patch : :post, class: "form" do |form| %>
+  <% if entry.errors.any? %>
+    <div class="errors">
+      <% entry.errors.full_messages.each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :weight, "Bodyweight" %>
+    <div class="field__inline">
+      <%= form.number_field :weight, value: values["weight"], step: "any", min: 0, inputmode: "decimal", required: true %>
+      <%= form.select :unit, %w[ kg lb ], { selected: values["unit"] }, aria: { label: "Units" } %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :recorded_at, entry.persisted? ? "When" : "When (leave blank for now)" %>
+    <%= form.datetime_field :recorded_at, value: values["recorded_at"], required: entry.persisted? %>
+  </div>
+
+  <%= form.submit entry.persisted? ? "Save changes" : "Save" %>
+<% end %>

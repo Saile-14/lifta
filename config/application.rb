@@ -24,6 +24,10 @@ module Lifta
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # Password resets email a link, so they stay switched off (and the "Forgot
+    # password?" link hidden) until production has outgoing mail configured.
+    config.x.password_resets_enabled = false
+
     config.generators do |g|
       g.test_framework :rspec, fixtures: false
       g.fixture_replacement :factory_bot, dir: "spec/factories"

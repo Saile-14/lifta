@@ -12,8 +12,10 @@
     <% end %>
     <br>
 
-    <%= link_to "Forgot password?", new_password_path %>
-    <br>
+    <% if Rails.configuration.x.password_resets_enabled %>
+      <%= link_to "Forgot password?", new_password_path %>
+      <br>
+    <% end %>
     <%= link_to "Sign up", new_registration_path %>
   </div>
 </div>

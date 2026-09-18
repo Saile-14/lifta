@@ -15,6 +15,9 @@
   --tier-diamond: #2a78d6;
   --tier-grandmaster: #c6362c;
   --tier-track: #eae6da;
+
+  --pending: #8a6d1a;
+  --danger: #8a2a22;
 }
 
 * {
@@ -52,7 +55,8 @@ h1, h2, h3 {
   padding: 20px 32px;
   border-bottom: 1px solid var(--hairline);
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 8px 24px;
   align-items: center;
 }
 
@@ -76,10 +80,28 @@ h1, h2, h3 {
   flex: 1;
 }
 
+.site-nav__count {
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 0 5px;
+  margin-left: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 0.75em;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.5;
+}
+
 .page {
   max-width: 760px;
   margin: 0 auto;
   padding: 40px 32px 64px;
+}
+
+.page--wide {
+  max-width: 960px;
 }
 
 /* Hero: the one place type gets big, per the landing page's job */
@@ -136,6 +158,62 @@ h1, h2, h3 {
   align-items: start;
 }
 
+.muted {
+  color: var(--ink-muted);
+}
+
+.note {
+  color: var(--pending);
+  font-size: 0.9em;
+}
+
+.stat {
+  font-size: 1.6em;
+  font-weight: 600;
+  margin: 0 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin: 20px 0 0;
+}
+
+/* Tabs: plain text, the current one underlined in ink */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.tabs a {
+  padding: 4px 0 10px;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-muted);
+  text-decoration: none;
+}
+
+.tabs a:hover {
+  color: var(--ink);
+}
+
+.tabs a[aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--ink);
+}
+
+.tabs--small {
+  font-size: 0.9em;
+  margin-bottom: 20px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -152,6 +230,31 @@ th {
   font-weight: 600;
   color: var(--ink-secondary);
   font-size: 0.9em;
+}
+
+td {
+  font-variant-numeric: tabular-nums;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.table-scroll table {
+  min-width: 560px;
+}
+
+.row-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.row-actions > * + * {
+  margin-left: 12px;
+}
+
+tr.is-self td {
+  background: rgba(198, 54, 44, 0.06);
 }
 
 label {
@@ -177,6 +280,47 @@ input:focus, select:focus {
   border-bottom-color: var(--accent);
 }
 
+.field {
+  margin-bottom: 20px;
+}
+
+.field > label {
+  display: block;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"],
+.field input[type="number"],
+.field input[type="date"],
+.field input[type="datetime-local"] {
+  width: 100%;
+  max-width: 16em;
+}
+
+.field__inline {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.field__inline input {
+  max-width: 10em !important;
+}
+
+.field--checkbox label {
+  display: inline;
+  font-weight: normal;
+  color: var(--ink);
+  font-size: 1em;
+}
+
+.hint {
+  margin: 4px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.85em;
+}
+
 /* The single red accent, spent on the one primary action per view */
 input[type="submit"], .btn-primary {
   display: inline-block;
@@ -196,6 +340,10 @@ input[type="submit"]:hover, .btn-primary:hover {
   color: #ffffff;
 }
 
+.btn-primary:visited {
+  color: #ffffff;
+}
+
 .btn-secondary {
   display: inline-block;
   color: var(--ink-secondary);
@@ -205,6 +353,47 @@ input[type="submit"]:hover, .btn-primary:hover {
 
 .btn-secondary:hover {
   color: var(--accent);
+}
+
+/* button_to wraps each button in a form; keep them inline, like links */
+form.button_to {
+  display: inline;
+}
+
+.link-button {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--ink-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  color: var(--accent);
+}
+
+.btn-small {
+  padding: 4px 12px;
+  border: 1px solid var(--ink-secondary);
+  background: transparent;
+  font: inherit;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-small--approve {
+  border-color: var(--tier-platinum);
+  color: var(--tier-platinum);
 }
 
 .flash {
@@ -221,32 +410,44 @@ input[type="submit"]:hover, .btn-primary:hover {
 
 .flash--alert {
   border-left-color: var(--accent);
-  color: #8a2a22;
+  color: var(--danger);
+}
+
+/* A rank-up message wears the tier's color */
+.flash--tier {
+  border-left-width: 5px;
+  border-left-color: var(--tier-color);
+  color: var(--ink);
 }
 
 .errors {
   border-left: 3px solid var(--accent);
   padding: 8px 0 8px 16px;
-  color: #8a2a22;
+  color: var(--danger);
   margin-bottom: 20px;
 }
 
+.tier-accent--bronze      { --tier-color: var(--tier-bronze); }
+.tier-accent--silver      { --tier-color: var(--tier-silver); }
+.tier-accent--gold        { --tier-color: var(--tier-gold); }
+.tier-accent--platinum    { --tier-color: var(--tier-platinum); }
+.tier-accent--diamond     { --tier-color: var(--tier-diamond); }
+.tier-accent--grandmaster { --tier-color: var(--tier-grandmaster); }
+
 /* Rank meter: one row per lift, fill color keyed to tier (see rank-fill--*) */
 .rank-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 7.5em 1fr 10em;
   align-items: center;
-  gap: 12px;
+  column-gap: 12px;
   padding: 10px 0;
 }
 
 .rank-row__label {
-  width: 72px;
-  flex-shrink: 0;
   font-weight: 600;
 }
 
 .rank-row__track {
-  flex: 1;
   height: 10px;
   background: var(--tier-track);
   border-radius: 5px;
@@ -268,10 +469,128 @@ input[type="submit"]:hover, .btn-primary:hover {
 .rank-fill--unranked    { background: transparent; }
 
 .rank-row__value {
-  width: 130px;
-  flex-shrink: 0;
   text-align: right;
   color: var(--ink-secondary);
   font-size: 0.9em;
   font-variant-numeric: tabular-nums;
+}
+
+.rank-row__detail {
+  grid-column: 2 / -1;
+  margin-top: 2px;
+  color: var(--ink-muted);
+  font-size: 0.85em;
+}
+
+/* The overall rank leads the card: heavier meter, hairline beneath */
+.rank-row--overall {
+  padding-bottom: 16px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.rank-row--overall .rank-row__label {
+  font-weight: 700;
+}
+
+.rank-row--overall .rank-row__track {
+  height: 14px;
+  border-radius: 7px;
+}
+
+.rank-row--overall .rank-row__value {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Small inline tier marker: a colored dot and the tier name */
+.tier-badge {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 0.9em;
+  color: var(--ink-secondary);
+}
+
+.tier-badge::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--tier-color, var(--hairline-strong));
+  vertical-align: 1px;
+}
+
+.tier-badge--bronze      { --tier-color: var(--tier-bronze); }
+.tier-badge--silver      { --tier-color: var(--tier-silver); }
+.tier-badge--gold        { --tier-color: var(--tier-gold); }
+.tier-badge--platinum    { --tier-color: var(--tier-platinum); }
+.tier-badge--diamond     { --tier-color: var(--tier-diamond); }
+.tier-badge--grandmaster { --tier-color: var(--tier-grandmaster); }
+
+.badge {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 0.75em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge--pending {
+  color: var(--pending);
+}
+
+.badge--rejected {
+  color: var(--danger);
+}
+
+.badge--admin {
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .site-nav {
+    padding: 14px 16px;
+    gap: 6px 16px;
+  }
+
+  .site-nav__spacer {
+    display: none;
+  }
+
+  .page {
+    padding: 24px 16px 48px;
+  }
+
+  .hero h1 {
+    font-size: 1.8em;
+  }
+
+  /* Meter drops under its label and value */
+  .rank-row {
+    grid-template-columns: 1fr auto;
+    row-gap: 6px;
+  }
+
+  .rank-row__label {
+    grid-row: 1;
+  }
+
+  .rank-row__value {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .rank-row__track {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  .rank-row__detail {
+    grid-row: 3;
+    grid-column: 1 / -1;
+  }
 }

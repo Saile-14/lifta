@@ -23,10 +23,11 @@ class Lift < ApplicationRecord
   validates :bodyweight_kg, presence: { message: "is needed to score this lift" }, if: :requires_bodyweight?
   validates :bodyweight_kg, numericality: { greater_than: 20, less_than: 400, message: "doesn't look right -- check the number and the kg/lb unit" }, allow_nil: true
   validate :reps_within_discipline_limit
+  validate :lifted_at_not_in_future
   validate :score_is_plausible
 
   # Order matters: the bodyweight snapshot is looked up for the lift's date.
-  before_validation :default_lifted_at, :default_bodyweight_kg, on: :create
+  before_validation :default_lifted_at, :default_bodyweight_kg
   before_validation :default_added_weight, :compute_score
   before_save :review, if: -> { score && (new_record? || will_save_change_to_score?) }
 
@@ -97,6 +98,10 @@ class Lift < ApplicationRecord
       message = "can't be more than #{discipline.max_reps} for #{discipline.name.downcase}"
       message += " (a max estimated from longer sets isn't reliable)" if discipline.weighted?
       errors.add(:reps, message)
+    end
+
+    def lifted_at_not_in_future
+      errors.add(:lifted_at, "can't be in the future") if lifted_at && user && lifted_at > user.today
     end
 
     def score_is_plausible

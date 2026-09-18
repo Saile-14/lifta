@@ -1,0 +1,10 @@
+<% content_for :title, "Edit bodyweight · Lifta" %>
+
+<div class="box">
+  <div class="box__header">Edit bodyweight</div>
+  <div class="box__body">
+    <%= render "form", entry: @bodyweight_entry, values: @values %>
+    <p class="muted">Lifts you've already logged keep the bodyweight they were scored at. Edit a lift to change its bodyweight.</p>
+    <p><%= link_to "Back to history", bodyweight_entries_path, class: "btn-secondary" %></p>
+  </div>
+</div>

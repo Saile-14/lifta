@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :registrations, only: %i[ new create ]
-  resources :bodyweight_entries, only: %i[ index new create ]
-  resources :lifts, only: %i[ index new create ]
+  resources :bodyweight_entries, except: :show
+  resources :lifts, except: :show
 
   get "dashboard", to: "dashboard#show", as: :dashboard
 

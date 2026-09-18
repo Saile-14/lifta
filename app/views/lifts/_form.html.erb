@@ -1,0 +1,79 @@
+<%# locals: (lift:, discipline:, values: nil) -%>
+<% values ||= {
+     "unit" => weight_unit,
+     "weight" => (weight_value(lift.weight_lifted) if lift.weight_lifted.to_f.positive?),
+     "reps" => lift.reps,
+     "lifted_at" => lift.lifted_at,
+     "bodyweight" => (weight_value(lift.bodyweight_kg) if lift.persisted?)
+   } %>
+<% latest_bodyweight = Current.user.current_bodyweight_kg %>
+
+<%= form_with scope: :lift, url: lift.persisted? ? lift_path(lift) : lifts_path, method: lift.persisted? ? :patch : :post, class: "form" do |form| %>
+  <% if lift.errors.any? %>
+    <div class="errors">
+      <% lift.errors.full_messages.each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :exercise %>
+    <%= form.select :exercise, discipline.exercises.map { |exercise| [ exercise.name, exercise.key ] }, selected: lift.exercise %>
+  </div>
+
+  <% if discipline.weighted? %>
+    <div class="field">
+      <%= form.label :weight %>
+      <div class="field__inline">
+        <%= form.number_field :weight, value: values["weight"], step: "any", min: 0, inputmode: "decimal", required: true %>
+        <%= form.select :unit, %w[ kg lb ], { selected: values["unit"] }, aria: { label: "Units" } %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :reps %>
+      <%= form.number_field :reps, value: values["reps"] || 1, min: 1, max: discipline.max_reps, inputmode: "numeric" %>
+      <p class="hint">Up to <%= discipline.max_reps %>. A set of more than one is ranked by its estimated one-rep max.</p>
+    </div>
+  <% else %>
+    <div class="field">
+      <%= form.label :reps %>
+      <%= form.number_field :reps, value: values["reps"], min: 1, max: discipline.max_reps, inputmode: "numeric", required: true %>
+      <p class="hint">Strict reps in one set.</p>
+    </div>
+
+    <div class="field">
+      <%= form.label :weight, "Added weight (optional)" %>
+      <div class="field__inline">
+        <%= form.number_field :weight, value: values["weight"], step: "any", min: 0, inputmode: "decimal" %>
+        <%= form.select :unit, %w[ kg lb ], { selected: values["unit"] }, aria: { label: "Units" } %>
+      </div>
+      <p class="hint">Belt or vest weight, credited as extra reps.</p>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :lifted_at, "Date" %>
+    <%= form.date_field :lifted_at, value: values["lifted_at"] || Current.user.today, max: Current.user.today %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bodyweight, "Bodyweight (in the units above)" %>
+    <%= form.number_field :bodyweight, value: values["bodyweight"], step: "any", min: 0, inputmode: "decimal",
+          placeholder: (weight_value(latest_bodyweight, unit: values["unit"]) if latest_bodyweight) %>
+    <p class="hint">
+      <% if lift.persisted? %>
+        The bodyweight this lift is scored at. Clear it to use your logged bodyweight for that date.
+      <% elsif latest_bodyweight %>
+        Leave blank to use your logged bodyweight for that date.
+      <% elsif discipline.weighted? %>
+        Needed to score the lift. It's saved to your bodyweight log too.
+      <% else %>
+        Only needed with added weight. It's saved to your bodyweight log too.
+      <% end %>
+    </p>
+  </div>
+
+  <%= form.submit lift.persisted? ? "Save changes" : "Log lift" %>
+<% end %>
