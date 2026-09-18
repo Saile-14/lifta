@@ -1,0 +1,67 @@
+<% content_for :title, "Leaderboard · Lifta" %>
+
+<%= discipline_tabs(@discipline) { |discipline| leaderboard_path(discipline: discipline, sex: @sex) } %>
+
+<div class="box">
+  <div class="box__header"><%= @discipline.name %> leaderboard</div>
+  <div class="box__body">
+    <div class="filters">
+      <nav class="tabs tabs--small" aria-label="Board">
+        <%= link_to "Overall", leaderboard_path(discipline: @discipline, sex: @sex), aria: { current: ("page" unless @exercise) } %>
+        <% @discipline.exercises.each do |exercise| %>
+          <%= link_to exercise.name, leaderboard_path(discipline: @discipline, board: exercise.key, sex: @sex),
+                aria: { current: ("page" if exercise == @exercise) } %>
+        <% end %>
+      </nav>
+
+      <nav class="segmented" aria-label="Sex">
+        <% { nil => "Everyone", "male" => "Men", "female" => "Women" }.each do |sex, label| %>
+          <%= link_to label, leaderboard_path(discipline: @discipline, board: @exercise&.key, sex: sex),
+                aria: { current: ("page" if sex == @sex) } %>
+        <% end %>
+      </nav>
+    </div>
+
+    <% if @leaderboard.entries.any? %>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Lifter</th><th>Rank</th>
+              <% if @discipline.weighted? || @exercise %><th>Score</th><% end %>
+              <% if @exercise %><th>Best lift</th><% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @leaderboard.entries.each do |entry| %>
+              <tr class="<%= "is-self" if entry.user == Current.user %>">
+                <td><%= entry.position %></td>
+                <td><%= link_to "@#{entry.user.username}", lifter_path(entry.user.username) %></td>
+                <td><%= tier_badge(entry.tier) %></td>
+                <% if @discipline.weighted? || @exercise %><td><%= format_score(entry.score, @discipline) %></td><% end %>
+                <% if @exercise %><td><%= lift_result(entry.lift) if entry.lift %></td><% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="muted">Nobody's on this board yet.</p>
+    <% end %>
+
+    <p class="muted">
+      Lifters are ranked by how close they are to the world-class standard for their sex, so everyone shares one board.
+      Only approved lifts from lifters who opted in count<%= ", and the overall board needs every lift logged" unless @exercise %>.
+    </p>
+
+    <% if Current.user %>
+      <p>
+        <% if (position = @leaderboard.position_of(Current.user)) %>
+          You're #<%= position %> of <%= @leaderboard.size %>.
+        <% elsif !Current.user.public_profile? %>
+          You're not listed. <%= link_to "Turn on your public profile", settings_path %> to join.
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+</div>

@@ -1,13 +1,13 @@
 <div class="hero">
   <h1>Welcome to Lifta</h1>
-  <p>Log your sex, bodyweight, and lifts. Every squat, bench, and deadlift is
-  scored with <a href="https://en.wikipedia.org/wiki/DOTS_(formula)">DOTS</a>,
-  a published formula that adjusts for bodyweight and sex, so lifters of any
-  size land on the same ladder: bronze, silver, gold, platinum, diamond,
-  grandmaster.</p>
+  <p>Log your lifts and see how each one ranks against a world-class standard for your bodyweight and sex:
+  bronze, silver, gold, platinum, diamond, grandmaster. Powerlifting is scored with
+  <a href="https://en.wikipedia.org/wiki/DOTS_(formula)">DOTS</a>, weightlifting with the
+  <a href="https://en.wikipedia.org/wiki/Sinclair_coefficient">Sinclair coefficient</a>, and calisthenics on reps.</p>
   <div class="hero__actions">
     <%= link_to "Sign up", new_registration_path, class: "btn-primary" %>
     <%= link_to "Sign in", new_session_path, class: "btn-secondary" %>
+    <%= link_to "See the leaderboard", leaderboard_path, class: "btn-secondary" %>
   </div>
 </div>
 
@@ -15,9 +15,10 @@
   <div class="box">
     <div class="box__header">Example rank card</div>
     <div class="box__body">
-      <%= render "shared/rank_row", label: "Squat", tier: Tier.new(68.2) %>
-      <%= render "shared/rank_row", label: "Bench", tier: Tier.new(52.0) %>
-      <%= render "shared/rank_row", label: "Deadlift", tier: Tier.new(79.5) %>
+      <%= render "shared/rank_row", label: "Overall", tier: Tier.new(63.5), detail: "381.2 DOTS total", overall: true %>
+      <%= render "shared/rank_row", label: "Squat", tier: Tier.new(64.1) %>
+      <%= render "shared/rank_row", label: "Bench", tier: Tier.new(57.9), detail: "Next: Gold at 135 kg" %>
+      <%= render "shared/rank_row", label: "Deadlift", tier: Tier.new(66.8) %>
     </div>
   </div>
 
@@ -25,10 +26,10 @@
     <div class="box__header">How it works</div>
     <div class="box__body">
       <ol>
-        <li>Sign up with your sex and unit preference (kg or lb).</li>
-        <li>Log a bodyweight entry.</li>
-        <li>Log a lift -- weight, reps, and exercise.</li>
-        <li>See your rank per lift update instantly on your dashboard.</li>
+        <li>Sign up with a username, your sex and your units (kg or lb).</li>
+        <li>Log a lift: powerlifting, weightlifting or calisthenics.</li>
+        <li>See your rank per lift and overall, and exactly what the next tier takes.</li>
+        <li>Diamond-level lifts are checked by an admin before they count.</li>
       </ol>
     </div>
   </div>

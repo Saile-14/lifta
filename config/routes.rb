@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   resources :lifts, except: :show
 
   get "dashboard", to: "dashboard#show", as: :dashboard
+  get "leaderboard", to: "leaderboards#show", as: :leaderboard
+  resources :lifters, only: :show, param: :username
+  resource :settings, only: %i[ show update ]
 
   namespace :admin do
     root "lifts#index"

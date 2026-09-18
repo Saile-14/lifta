@@ -214,6 +214,66 @@ h1, h2, h3 {
   margin-bottom: 20px;
 }
 
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0 24px;
+}
+
+.filters .tabs {
+  flex: 1;
+}
+
+/* Small either/or switch: hairline-boxed words, the current one inked */
+.segmented {
+  display: inline-flex;
+  margin-bottom: 20px;
+  border: 1px solid var(--hairline-strong);
+  font-size: 0.85em;
+}
+
+.segmented a {
+  padding: 3px 12px;
+  color: var(--ink-secondary);
+  text-decoration: none;
+}
+
+.segmented a + a {
+  border-left: 1px solid var(--hairline-strong);
+}
+
+.segmented a[aria-current="page"] {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Profile card: the screenshot-able summary at the top of a profile */
+.profile-card {
+  padding: 24px;
+  margin-bottom: 36px;
+  border: 1px solid var(--hairline-strong);
+  background: #fbf9f4;
+}
+
+.profile-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.profile-card__name {
+  font-size: 1.6em;
+  margin: 0;
+}
+
+.profile-card__head .muted {
+  margin: 0;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

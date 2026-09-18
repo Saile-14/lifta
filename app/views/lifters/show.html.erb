@@ -1,0 +1,58 @@
+<% content_for :title, "@#{@lifter.username} · Lifta" %>
+<% summary = ranks_summary(@rank_cards) %>
+<% content_for :head do %>
+  <meta name="description" content="<%= summary %>">
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Lifta">
+  <meta property="og:title" content="@<%= @lifter.username %> on Lifta">
+  <meta property="og:description" content="<%= summary %>">
+  <meta property="og:url" content="<%= lifter_url(@lifter.username) %>">
+  <meta name="twitter:card" content="summary">
+<% end %>
+
+<% unless @lifter.public_profile? %>
+  <p class="note">
+    This profile is private, so only <%= @lifter == Current.user ? "you" : "you (as admin) and its owner" %> can see it.
+    <% if @lifter == Current.user %><%= link_to "Make it public in settings", settings_path %>.<% end %>
+  </p>
+<% end %>
+
+<section class="profile-card">
+  <div class="profile-card__head">
+    <div>
+      <h1 class="profile-card__name">@<%= @lifter.username %></h1>
+      <p class="muted">Lifting on Lifta since <%= @lifter.created_at.strftime("%B %Y") %></p>
+    </div>
+    <% if @lifter.public_profile? %>
+      <button type="button" class="btn-small" data-controller="share" data-action="share#share"
+              data-share-url-value="<%= lifter_url(@lifter.username) %>"
+              data-share-title-value="@<%= @lifter.username %> on Lifta"
+              data-share-text-value="<%= summary %>">
+        <span data-share-target="label">Share</span>
+      </button>
+    <% end %>
+  </div>
+
+  <% @rank_cards.each do |card| %>
+    <%= render "shared/rank_row", label: card.discipline.name, tier: card.overall,
+          detail: ("Overall rank once every lift is logged" if card.ranked? && !card.complete?) %>
+  <% end %>
+</section>
+
+<% @rank_cards.select(&:ranked?).each do |card| %>
+  <div class="box">
+    <div class="box__header"><%= card.discipline.name %></div>
+    <div class="box__body">
+      <% card.rows.each do |row| %>
+        <%= render "shared/rank_row", label: row.exercise.name, tier: row.tier,
+              detail: ("Best: #{lift_result(row.lift)} · #{format_date(row.lift.lifted_at)}" if row.lift) %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if @rank_cards.none?(&:ranked?) %>
+  <p class="muted">No ranked lifts yet.</p>
+<% end %>
+
+<p><%= link_to "See the leaderboard", leaderboard_path, class: "btn-secondary" %></p>

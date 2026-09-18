@@ -1,0 +1,48 @@
+<% content_for :title, "Settings · Lifta" %>
+
+<div class="box">
+  <div class="box__header">Settings</div>
+  <div class="box__body">
+    <%= form_with model: @user, url: settings_path, method: :patch, class: "form" do |form| %>
+      <% if @user.errors.any? %>
+        <div class="errors">
+          <% @user.errors.full_messages.each do |message| %>
+            <div><%= message %></div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <%= form.label :username %>
+        <%= form.text_field :username, required: true, maxlength: 20, autocomplete: "off", autocapitalize: "none" %>
+        <p class="hint">3-20 letters, numbers or underscores. Your profile lives at <%= lifter_url(@user.username_was || @user.username) %>.</p>
+      </div>
+
+      <div class="field field--checkbox">
+        <%= form.check_box :public_profile %>
+        <%= form.label :public_profile, "List me on the leaderboard, with a public profile page" %>
+        <p class="hint">Shows your username, ranks and best lifts. Never your email or bodyweight.</p>
+      </div>
+
+      <div class="field">
+        <%= form.label :weight_unit, "Units" %>
+        <%= form.select :weight_unit, User.weight_units.keys %>
+      </div>
+
+      <div class="field">
+        <%= form.label :time_zone %>
+        <%= form.select :time_zone, time_zone_options(@user.time_zone) %>
+        <p class="hint">Decides which day "today" is when you log a lift.</p>
+      </div>
+
+      <%= form.submit "Save settings" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="box">
+  <div class="box__header">Account</div>
+  <div class="box__body">
+    <p class="muted">Signed in as <%= @user.email_address %> · <%= @user.sex %> lifter. Ask the admin to change your email or sex.</p>
+  </div>
+</div>

@@ -13,7 +13,7 @@
       <tr><th>Sex</th><td><%= @user.sex.capitalize %></td></tr>
       <tr><th>Joined</th><td><%= format_date(@user.created_at) %></td></tr>
       <tr><th>Current bodyweight</th><td><%= format_weight(@user.current_bodyweight_kg) %></td></tr>
-      <tr><th>Leaderboard</th><td><%= @user.public_profile? ? "Listed" : "Not listed" %></td></tr>
+      <tr><th>Leaderboard</th><td><%= @user.public_profile? ? "Listed" : "Not listed" %> · <%= link_to "Profile", lifter_path(@user.username) %></td></tr>
     </table>
 
     <% unless @user == Current.user %>
