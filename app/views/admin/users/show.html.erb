@@ -1,0 +1,55 @@
+<% content_for :title, "@#{@user.username} · Admin · Lifta" %>
+
+<%= render "admin/tabs" %>
+
+<div class="box">
+  <div class="box__header">
+    @<%= @user.username %>
+    <% if @user.admin? %><span class="badge badge--admin">Admin</span><% end %>
+  </div>
+  <div class="box__body">
+    <table class="details">
+      <tr><th>Email</th><td><%= @user.email_address %></td></tr>
+      <tr><th>Sex</th><td><%= @user.sex.capitalize %></td></tr>
+      <tr><th>Joined</th><td><%= format_date(@user.created_at) %></td></tr>
+      <tr><th>Current bodyweight</th><td><%= format_weight(@user.current_bodyweight_kg) %></td></tr>
+      <tr><th>Leaderboard</th><td><%= @user.public_profile? ? "Listed" : "Not listed" %></td></tr>
+    </table>
+
+    <% unless @user == Current.user %>
+      <p class="actions">
+        <%= button_to "Delete user and all their lifts", admin_user_path(@user), method: :delete, class: "btn-small",
+              form: { data: { turbo_confirm: "Delete @#{@user.username}, their #{pluralize(@lifts.size, "lift")} and their bodyweight log? This can't be undone." } } %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<div class="box">
+  <div class="box__header">Lifts</div>
+  <div class="box__body">
+    <% if @lifts.any? %>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Lift</th><th>Result</th><th>Bodyweight</th><th>Rank</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% @lifts.each do |lift| %>
+              <tr id="<%= dom_id(lift) %>">
+                <td><%= format_date(lift.lifted_at) %></td>
+                <td><%= lift.exercise_name %></td>
+                <td><%= lift_result(lift) %></td>
+                <td><%= format_weight(lift.bodyweight_kg) %></td>
+                <td><%= tier_badge(lift.tier) %> <%= status_badge(lift) %></td>
+                <td class="row-actions"><%= render "admin/lifts/actions", lift: lift %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="muted">No lifts logged.</p>
+    <% end %>
+  </div>
+</div>

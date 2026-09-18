@@ -3,7 +3,10 @@
   <% if authenticated? %>
     <%= link_to "Dashboard", dashboard_path %>
     <%= link_to "Log a lift", new_lift_path %>
-    <%= link_to "Log bodyweight", new_bodyweight_entry_path %>
+    <% if Current.user.admin? %>
+      <% pending_count = Lift.pending.count %>
+      <%= link_to admin_root_path do %>Admin<% if pending_count.positive? %><span class="site-nav__count"><%= pending_count %></span><% end %><% end %>
+    <% end %>
     <span class="site-nav__spacer"></span>
     <span><%= Current.user.email_address %></span>
     <%= link_to "Sign out", session_path, data: { turbo_method: :delete } %>

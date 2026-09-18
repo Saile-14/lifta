@@ -1,0 +1,9 @@
+<%# locals: (lift:) -%>
+<% unless lift.approved? %>
+  <%= button_to "Approve", approve_admin_lift_path(lift), method: :patch, class: "btn-small btn-small--approve" %>
+<% end %>
+<% unless lift.rejected? %>
+  <%= button_to "Reject", reject_admin_lift_path(lift), method: :patch, class: "btn-small" %>
+<% end %>
+<%= button_to "Delete", admin_lift_path(lift), method: :delete, class: "link-button",
+      form: { data: { turbo_confirm: "Delete @#{lift.user.username}'s #{lift.exercise_name.downcase} for good?" } } %>

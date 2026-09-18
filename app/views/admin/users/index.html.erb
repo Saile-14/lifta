@@ -1,0 +1,41 @@
+<% content_for :title, "Users · Admin · Lifta" %>
+
+<%= render "admin/tabs" %>
+
+<div class="box">
+  <div class="box__header">Users</div>
+  <div class="box__body">
+    <%= form_with url: admin_users_path, method: :get, class: "field field__inline" do |form| %>
+      <%= form.search_field :q, value: @query, placeholder: "Email or username", aria: { label: "Search users" } %>
+      <%= form.submit "Search", name: nil, class: "btn-small" %>
+      <% if @query.present? %><%= link_to "Clear", admin_users_path, class: "btn-secondary" %><% end %>
+    <% end %>
+
+    <% if @users.any? %>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>User</th><th>Email</th><th>Joined</th><th>Lifts</th><th>Pending</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr id="<%= dom_id(user) %>">
+                <td>
+                  <%= link_to "@#{user.username}", admin_user_path(user) %>
+                  <% if user.admin? %><span class="badge badge--admin">Admin</span><% end %>
+                </td>
+                <td><%= user.email_address %></td>
+                <td><%= format_date(user.created_at) %></td>
+                <td><%= @lift_counts.fetch(user.id, 0) %></td>
+                <td><%= @pending_counts.fetch(user.id, 0).nonzero? %></td>
+                <td class="row-actions"><%= link_to "Manage", admin_user_path(user) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="muted">No users match.</p>
+    <% end %>
+  </div>
+</div>

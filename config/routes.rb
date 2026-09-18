@@ -7,6 +7,17 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#show", as: :dashboard
 
+  namespace :admin do
+    root "lifts#index"
+    resources :lifts, only: %i[ index destroy ] do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
+    resources :users, only: %i[ index show destroy ]
+  end
+
   root "pages#home"
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

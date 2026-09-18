@@ -1,0 +1,43 @@
+<% content_for :title, "Review queue · Admin · Lifta" %>
+
+<%= render "admin/tabs" %>
+
+<div class="box">
+  <div class="box__header">Lifts at Diamond or above</div>
+  <div class="box__body">
+    <p class="muted">They only count toward ranks and the leaderboard once approved. Rejected lifts stay in the lifter's history, marked rejected.</p>
+
+    <nav class="tabs tabs--small" aria-label="Status">
+      <% %w[ pending rejected ].each do |status| %>
+        <%= link_to "#{status.capitalize} (#{@counts.fetch(status, 0)})", admin_lifts_path(status: status),
+              aria: { current: ("page" if status == @status) } %>
+      <% end %>
+    </nav>
+
+    <% if @lifts.any? %>
+      <div class="table-scroll">
+        <table class="table--wide">
+          <thead>
+            <tr><th>Lifter</th><th>Lift</th><th>Result</th><th>Bodyweight</th><th>Date</th><th>Score</th><th>Rank</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% @lifts.each do |lift| %>
+              <tr id="<%= dom_id(lift) %>">
+                <td><%= link_to "@#{lift.user.username}", admin_user_path(lift.user) %></td>
+                <td><%= lift.exercise_name %></td>
+                <td><%= lift_result(lift) %></td>
+                <td><%= format_weight(lift.bodyweight_kg) %></td>
+                <td><%= format_date(lift.lifted_at) %></td>
+                <td><%= format_score(lift.score, lift.discipline) %></td>
+                <td><%= tier_badge(lift.tier) %></td>
+                <td class="row-actions"><%= render "admin/lifts/actions", lift: lift %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="muted">Nothing <%= @status %>.</p>
+    <% end %>
+  </div>
+</div>
