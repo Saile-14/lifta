@@ -37,6 +37,16 @@ en:
     unranked: "Unranked"
     with_percent: "%{tier} (%{percent}%)"
     badge: "%{tier} · %{percent}%"
+  combo_tiers:
+    dormant: "Dormant"
+    awakened: "Awakened"
+    evolved: "Evolved"
+    apex: "Apex"
+    transcendent: "Transcendent"
+    ultimate_lifeform: "Ultimate Lifeform"
+    unranked: "Unranked"
+    with_percent: "%{tier} (%{percent}%)"
+    badge: "%{tier} · %{percent}%"
   sexes:
     male: "Male"
     female: "Female"

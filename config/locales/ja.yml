@@ -37,6 +37,16 @@ ja:
     unranked: "未ランク"
     with_percent: "%{tier}（%{percent}%）"
     badge: "%{tier}・%{percent}%"
+  combo_tiers:
+    dormant: "休眠"
+    awakened: "覚醒"
+    evolved: "進化"
+    apex: "頂点"
+    transcendent: "超越"
+    ultimate_lifeform: "究極生命体"
+    unranked: "未ランク"
+    with_percent: "%{tier}（%{percent}%）"
+    badge: "%{tier}・%{percent}%"
   sexes:
     male: "男性"
     female: "女性"

@@ -68,12 +68,20 @@ class Discipline
     scale(exercise, sex).tier_for(score)
   end
 
-  # The discipline-wide rank, once every exercise has a score. Like a meet
-  # total, it's the sum of the scores against the sum of their ceilings, so
-  # being X% of the way on every lift puts you X% of the way overall.
+  # The discipline-wide rank, once every exercise has a score. Held back
+  # until then so a lifter isn't shown an overall rank dragged down by lifts
+  # they simply haven't logged yet.
   def overall_percent(scores, sex)
-    return unless complete?(scores)
+    progress_percent(scores, sex) if complete?(scores)
+  end
 
+  # Like overall_percent, but an exercise with no score counts as zero
+  # instead of leaving the discipline unranked. Like a meet total, it's the
+  # sum of the scores against the sum of their ceilings, so being X% of the
+  # way on every lift puts you X% of the way overall. The combined rank uses
+  # this, since it needs a number for every discipline including untouched
+  # ones.
+  def progress_percent(scores, sex)
     100.0 * exercise_keys.sum { |key| scores[key].to_f } / exercise_keys.sum { |key| scale(key, sex).ceiling }
   end
 

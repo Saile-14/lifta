@@ -54,10 +54,8 @@ class Discipline::Calisthenics < Discipline
   # Reps aren't comparable across movements (50 push-ups vs 50 pull-ups), so
   # the overall rank is the average of the per-exercise percentages instead of
   # a total.
-  def overall_percent(scores, sex)
-    return unless complete?(scores)
-
-    exercise_keys.sum { |key| scale(key, sex).percent_for(scores[key]) } / exercise_keys.size
+  def progress_percent(scores, sex)
+    exercise_keys.sum { |key| scale(key, sex).percent_for(scores[key].to_f) } / exercise_keys.size
   end
 
   def target(tier, exercise:, sex:, **)
