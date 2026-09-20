@@ -7,3 +7,11 @@ db/schema.rb linguist-generated
 vendor/* linguist-vendored
 config/credentials/*.yml.enc diff=rails_credentials
 config/credentials.yml.enc diff=rails_credentials
+
+# Scripts run on Linux (CI runners, the Docker image, Kamal), where a CR
+# would break the shebang or confuse the shell. Windows checkouts get LF
+# for these regardless of core.autocrlf; the .cmd shims are the exception,
+# since those are read by cmd.exe.
+bin/* text eol=lf
+bin/*.cmd text eol=crlf
+*.sh text eol=lf
