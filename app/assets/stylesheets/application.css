@@ -2,7 +2,7 @@
   --bg: #f7f4ee;
   --ink: #1a1a1a;
   --ink-secondary: #5a564c;
-  --ink-muted: #8c887c;
+  --ink-muted: #726f65;
   --accent: #c6362c;
   --hairline: #ddd8cc;
   --hairline-strong: #c2bcac;
@@ -10,7 +10,7 @@
 
   --tier-bronze: #a6631e;
   --tier-silver: #5c5fb0;
-  --tier-gold: #c9971e;
+  --tier-gold: #b2861a;
   --tier-platinum: #1e9e8c;
   --tier-diamond: #2a78d6;
   --tier-grandmaster: #c6362c;
@@ -25,7 +25,7 @@
   --combo-transcendent: #6b4fa8;
   --combo-ultimate_lifeform: #a8236e;
 
-  --pending: #8a6d1a;
+  --pending: #886b19;
   --danger: #8a2a22;
 
   /* Wide enough for the longest lift or discipline name */
@@ -392,8 +392,38 @@ input, select {
 }
 
 input:focus, select:focus {
-  outline: none;
   border-bottom-color: var(--accent);
+}
+
+/* WCAG 2.4.7 Focus Visible: one clearly visible indicator for everything
+   keyboard-reachable. :focus-visible keeps it off mouse clicks. The offset
+   keeps it clear of the element's own underline or border. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* WCAG 2.4.1 Bypass Blocks: off-screen until focused, then pinned top-left */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 0;
+  color: var(--bg);
+}
+
+/* The main landmark takes focus from the skip link but is not a tab stop */
+main:focus {
+  outline: none;
 }
 
 .field {
@@ -823,5 +853,16 @@ input[type="submit"].btn-small:hover {
   .rank-row__detail {
     grid-row: 3;
     grid-column: 1 / -1;
+  }
+}
+
+/* Some people get motion sick or distracted by movement; the meter fill is
+   the only animation here, and its width carries no meaning on its own. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -165,6 +165,7 @@ ja:
               unknown_time_zone: "が正しくありません"
 
   shared:
+    skip_to_content: "本文へスキップ"
     nav:
       dashboard: "ダッシュボード"
       log_lift: "記録する"

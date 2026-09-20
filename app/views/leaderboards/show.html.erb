@@ -37,12 +37,12 @@
         <table>
           <thead>
             <tr>
-              <th>#</th><th><%= t("columns.lifter") %></th><th><%= t("columns.rank") %></th>
+              <th scope="col">#</th><th scope="col"><%= t("columns.lifter") %></th><th scope="col"><%= t("columns.rank") %></th>
               <% if @combined %>
-                <% Discipline.all.each do |discipline| %><th><%= discipline.name %></th><% end %>
+                <% Discipline.all.each do |discipline| %><th scope="col"><%= discipline.name %></th><% end %>
               <% else %>
-                <% if @discipline.weighted? || @exercise %><th><%= t("columns.score") %></th><% end %>
-                <% if @exercise %><th><%= t("columns.best_lift") %></th><% end %>
+                <% if @discipline.weighted? || @exercise %><th scope="col"><%= t("columns.score") %></th><% end %>
+                <% if @exercise %><th scope="col"><%= t("columns.best_lift") %></th><% end %>
               <% end %>
             </tr>
           </thead>

@@ -31,14 +31,16 @@
   </head>
 
   <body>
+    <%# WCAG 2.4.1: a way past the nav, which repeats on every page %>
+    <a class="skip-link" href="#main"><%= t("shared.skip_to_content") %></a>
     <%= render "shared/nav" %>
-    <div class="page <%= content_for(:page_class) %>">
+    <main id="main" class="page <%= content_for(:page_class) %>" tabindex="-1">
       <% if flash[:notice] %>
         <% tier = flash[:tier].to_s.presence_in(Tier::NAMES.map(&:to_s)) %>
         <div class="flash flash--notice<%= " flash--tier tier-accent--#{tier}" if tier %>" role="status"><%= flash[:notice] %></div>
       <% end %>
-      <% if flash[:alert] %><div class="flash flash--alert"><%= flash[:alert] %></div><% end %>
+      <% if flash[:alert] %><div class="flash flash--alert" role="alert"><%= flash[:alert] %></div><% end %>
       <%= yield %>
-    </div>
+    </main>
   </body>
 </html>

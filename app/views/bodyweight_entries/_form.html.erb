@@ -8,7 +8,7 @@
 <%= form_with scope: :bodyweight_entry, url: entry.persisted? ? bodyweight_entry_path(entry) : bodyweight_entries_path,
       method: entry.persisted? ? :patch : :post, class: "form" do |form| %>
   <% if entry.errors.any? %>
-    <div class="errors">
+    <div class="errors" role="alert">
       <% entry.errors.full_messages.each do |message| %>
         <div><%= message %></div>
       <% end %>

@@ -10,7 +10,7 @@
 
 <%= form_with scope: :lift, url: lift.persisted? ? lift_path(lift) : lifts_path, method: lift.persisted? ? :patch : :post, class: "form" do |form| %>
   <% if lift.errors.any? %>
-    <div class="errors">
+    <div class="errors" role="alert">
       <% lift.errors.full_messages.each do |message| %>
         <div><%= message %></div>
       <% end %>

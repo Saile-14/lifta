@@ -10,10 +10,10 @@
   </div>
   <div class="box__body">
     <table class="details">
-      <tr><th><%= t(".email") %></th><td><%= @user.email_address %></td></tr>
-      <tr><th><%= t(".sex") %></th><td><%= t("sexes.#{@user.sex}") %></td></tr>
-      <tr><th><%= t(".joined") %></th><td><%= format_date(@user.created_at) %></td></tr>
-      <tr><th><%= t(".current_bodyweight") %></th><td><%= format_weight(@user.current_bodyweight_kg) %></td></tr>
+      <tr><th scope="row"><%= t(".email") %></th><td><%= @user.email_address %></td></tr>
+      <tr><th scope="row"><%= t(".sex") %></th><td><%= t("sexes.#{@user.sex}") %></td></tr>
+      <tr><th scope="row"><%= t(".joined") %></th><td><%= format_date(@user.created_at) %></td></tr>
+      <tr><th scope="row"><%= t(".current_bodyweight") %></th><td><%= format_weight(@user.current_bodyweight_kg) %></td></tr>
       <tr>
         <th><%= t(".leaderboard") %></th>
         <td><%= @user.public_profile? ? t(".listed") : t(".not_listed") %> · <%= link_to t(".profile"), lifter_path(@user.username) %></td>
@@ -37,8 +37,8 @@
         <table>
           <thead>
             <tr>
-              <th><%= t("columns.date") %></th><th><%= t("columns.lift") %></th><th><%= t("columns.result") %></th>
-              <th><%= t("columns.bodyweight") %></th><th><%= t("columns.rank") %></th><th></th>
+              <th scope="col"><%= t("columns.date") %></th><th scope="col"><%= t("columns.lift") %></th><th scope="col"><%= t("columns.result") %></th>
+              <th scope="col"><%= t("columns.bodyweight") %></th><th scope="col"><%= t("columns.rank") %></th><th scope="col"></th>
             </tr>
           </thead>
           <tbody>

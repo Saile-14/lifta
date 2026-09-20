@@ -5,7 +5,7 @@
   <div class="box__body">
     <%= form_with model: @user, url: registrations_path, class: "form" do |form| %>
       <% if @user.errors.any? %>
-        <div class="errors">
+        <div class="errors" role="alert">
           <% @user.errors.full_messages.each do |message| %>
             <div><%= message %></div>
           <% end %>

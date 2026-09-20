@@ -167,6 +167,7 @@ en:
               unknown_time_zone: "isn't a known time zone"
 
   shared:
+    skip_to_content: "Skip to main content"
     nav:
       dashboard: "Dashboard"
       log_lift: "Log a lift"
