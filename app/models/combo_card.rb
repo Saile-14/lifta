@@ -7,6 +7,10 @@
 # top rung should mean world-class in powerlifting, weightlifting and
 # calisthenics at once.
 class ComboCard
+  # Names the combined rank where a discipline key would otherwise go: the
+  # leaderboard tab, and the badge a lifter can feature.
+  KEY = "combo"
+
   # One discipline's contribution: progress through it either way, plus the
   # discipline's own tier once every exercise in it has an approved lift.
   Row = Data.define(:discipline, :percent, :tier) do

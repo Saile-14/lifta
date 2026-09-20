@@ -8,6 +8,7 @@ class LiftersController < ApplicationController
     raise ActiveRecord::RecordNotFound unless visible?(@lifter)
 
     @rank_cards = Discipline.all.map { |discipline| RankCard.new(@lifter, discipline) }
+    @combo_card = ComboCard.new(@lifter)
   end
 
   private

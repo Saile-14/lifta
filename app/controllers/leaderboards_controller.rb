@@ -3,9 +3,15 @@ class LeaderboardsController < ApplicationController
   before_action :resume_session, only: :show
 
   def show
-    @discipline = Discipline.find(params[:discipline]) || Discipline.default
-    @exercise = @discipline.exercise(params[:board])
     @sex = params[:sex].presence_in(User.sexes.keys)
-    @leaderboard = Leaderboard.new(discipline: @discipline, exercise: @exercise, sex: @sex)
+    @combined = params[:discipline] == ComboCard::KEY
+
+    if @combined
+      @leaderboard = ComboLeaderboard.new(sex: @sex)
+    else
+      @discipline = Discipline.find(params[:discipline]) || Discipline.default
+      @exercise = @discipline.exercise(params[:board])
+      @leaderboard = Leaderboard.new(discipline: @discipline, exercise: @exercise, sex: @sex)
+    end
   end
 end

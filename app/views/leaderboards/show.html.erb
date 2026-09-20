@@ -1,22 +1,32 @@
 <% page_title t(".title") %>
 
-<%= discipline_tabs(@discipline) { |discipline| leaderboard_path(discipline: discipline, sex: @sex) } %>
+<%# Four boards: the combined rank, then one per discipline %>
+<nav class="tabs" aria-label="<%= t("discipline_tabs.label") %>">
+  <%= link_to t("ranks.combo"), leaderboard_path(discipline: ComboCard::KEY, sex: @sex),
+        aria: { current: ("page" if @combined) } %>
+  <% Discipline.all.each do |discipline| %>
+    <%= link_to discipline.name, leaderboard_path(discipline: discipline, sex: @sex),
+          aria: { current: ("page" if discipline == @discipline) } %>
+  <% end %>
+</nav>
 
 <div class="box">
-  <div class="box__header"><%= t(".heading", discipline: @discipline.name) %></div>
+  <div class="box__header"><%= @combined ? t(".heading_combined") : t(".heading", discipline: @discipline.name) %></div>
   <div class="box__body">
     <div class="filters">
-      <nav class="tabs tabs--small" aria-label="<%= t(".boards") %>">
-        <%= link_to t(".overall"), leaderboard_path(discipline: @discipline, sex: @sex), aria: { current: ("page" unless @exercise) } %>
-        <% @discipline.exercises.each do |exercise| %>
-          <%= link_to exercise.name, leaderboard_path(discipline: @discipline, board: exercise.key, sex: @sex),
-                aria: { current: ("page" if exercise == @exercise) } %>
-        <% end %>
-      </nav>
+      <% unless @combined %>
+        <nav class="tabs tabs--small" aria-label="<%= t(".boards") %>">
+          <%= link_to t(".overall"), leaderboard_path(discipline: @discipline, sex: @sex), aria: { current: ("page" unless @exercise) } %>
+          <% @discipline.exercises.each do |exercise| %>
+            <%= link_to exercise.name, leaderboard_path(discipline: @discipline, board: exercise.key, sex: @sex),
+                  aria: { current: ("page" if exercise == @exercise) } %>
+          <% end %>
+        </nav>
+      <% end %>
 
       <nav class="segmented" aria-label="<%= t(".sex_filter") %>">
         <% { nil => t(".everyone"), "male" => t(".men"), "female" => t(".women") }.each do |sex, label| %>
-          <%= link_to label, leaderboard_path(discipline: @discipline, board: @exercise&.key, sex: sex),
+          <%= link_to label, leaderboard_path(discipline: @combined ? ComboCard::KEY : @discipline, board: @exercise&.key, sex: sex),
                 aria: { current: ("page" if sex == @sex) } %>
         <% end %>
       </nav>
@@ -28,8 +38,12 @@
           <thead>
             <tr>
               <th>#</th><th><%= t("columns.lifter") %></th><th><%= t("columns.rank") %></th>
-              <% if @discipline.weighted? || @exercise %><th><%= t("columns.score") %></th><% end %>
-              <% if @exercise %><th><%= t("columns.best_lift") %></th><% end %>
+              <% if @combined %>
+                <% Discipline.all.each do |discipline| %><th><%= discipline.name %></th><% end %>
+              <% else %>
+                <% if @discipline.weighted? || @exercise %><th><%= t("columns.score") %></th><% end %>
+                <% if @exercise %><th><%= t("columns.best_lift") %></th><% end %>
+              <% end %>
             </tr>
           </thead>
           <tbody>
@@ -38,8 +52,12 @@
                 <td><%= entry.position %></td>
                 <td><%= link_to "@#{entry.user.username}", lifter_path(entry.user.username) %></td>
                 <td><%= tier_badge(entry.tier) %></td>
-                <% if @discipline.weighted? || @exercise %><td><%= format_score(entry.score, @discipline) %></td><% end %>
-                <% if @exercise %><td><%= lift_result(entry.lift) if entry.lift %></td><% end %>
+                <% if @combined %>
+                  <% entry.card.rows.each do |row| %><td><%= number_to_percentage(row.percent, precision: 0) %></td><% end %>
+                <% else %>
+                  <% if @discipline.weighted? || @exercise %><td><%= format_score(entry.score, @discipline) %></td><% end %>
+                  <% if @exercise %><td><%= lift_result(entry.lift) if entry.lift %></td><% end %>
+                <% end %>
               </tr>
             <% end %>
           </tbody>
@@ -50,8 +68,12 @@
     <% end %>
 
     <p class="muted">
-      <%= t(".explanation") %>
-      <%= t(".explanation_overall") unless @exercise %>
+      <% if @combined %>
+        <%= t(".explanation_combined") %>
+      <% else %>
+        <%= t(".explanation") %>
+        <%= t(".explanation_overall") unless @exercise %>
+      <% end %>
     </p>
 
     <% if Current.user %>

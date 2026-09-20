@@ -16,6 +16,15 @@
   --tier-grandmaster: #c6362c;
   --tier-track: #eae6da;
 
+  /* Combined rank: a separate ramp from dormant grey through greens and
+     blues to violet, so a combo rank never reads as a lift tier */
+  --combo-dormant: #7d7a6e;
+  --combo-awakened: #6d8a5b;
+  --combo-evolved: #2f8f78;
+  --combo-apex: #2f6fa8;
+  --combo-transcendent: #6b4fa8;
+  --combo-ultimate_lifeform: #a8236e;
+
   --pending: #8a6d1a;
   --danger: #8a2a22;
 
@@ -579,6 +588,9 @@ input[type="submit"].btn-small:hover {
 .rank-fill--grandmaster { background: var(--tier-grandmaster); }
 .rank-fill--unranked    { background: transparent; }
 
+/* Progress toward a rank that isn't named yet: real width, neutral color */
+.rank-fill--progress    { background: var(--hairline-strong); }
+
 .rank-row__value {
   text-align: right;
   color: var(--ink-secondary);
@@ -639,6 +651,74 @@ input[type="submit"].btn-small:hover {
 .tier-badge--platinum    { --tier-color: var(--tier-platinum); }
 .tier-badge--diamond     { --tier-color: var(--tier-diamond); }
 .tier-badge--grandmaster { --tier-color: var(--tier-grandmaster); }
+
+.tier-badge--dormant           { --tier-color: var(--combo-dormant); }
+.tier-badge--awakened          { --tier-color: var(--combo-awakened); }
+.tier-badge--evolved           { --tier-color: var(--combo-evolved); }
+.tier-badge--apex              { --tier-color: var(--combo-apex); }
+.tier-badge--transcendent      { --tier-color: var(--combo-transcendent); }
+.tier-badge--ultimate_lifeform { --tier-color: var(--combo-ultimate_lifeform); }
+
+/* The combined rank's meter and accent, keyed to the same ramp */
+.rank-fill--dormant           { background: var(--combo-dormant); }
+.rank-fill--awakened          { background: var(--combo-awakened); }
+.rank-fill--evolved           { background: var(--combo-evolved); }
+.rank-fill--apex              { background: var(--combo-apex); }
+.rank-fill--transcendent      { background: var(--combo-transcendent); }
+.rank-fill--ultimate_lifeform { background: var(--combo-ultimate_lifeform); }
+
+.tier-accent--dormant           { --tier-color: var(--combo-dormant); }
+.tier-accent--awakened          { --tier-color: var(--combo-awakened); }
+.tier-accent--evolved           { --tier-color: var(--combo-evolved); }
+.tier-accent--apex              { --tier-color: var(--combo-apex); }
+.tier-accent--transcendent      { --tier-color: var(--combo-transcendent); }
+.tier-accent--ultimate_lifeform { --tier-color: var(--combo-ultimate_lifeform); }
+
+/* The ranks a lifter shows off: a label plus its tier badge, wrapping as a
+   group so a name and its rank never split across lines */
+.badge-set {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  vertical-align: middle;
+}
+
+.badge-set__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 0.7em;
+  font-weight: 400;
+}
+
+.badge-set__label {
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Japanese labels aren't uppercased and need no extra tracking */
+:lang(ja) .badge-set__label {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* A group of related checkboxes (which badges to show) */
+.field--group {
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+}
+
+.field--group legend {
+  padding: 0;
+  font-weight: 600;
+}
+
+.field--group .field--checkbox {
+  margin-top: 6px;
+}
 
 .badge {
   display: inline-block;

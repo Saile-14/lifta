@@ -16,6 +16,6 @@ class SettingsController < ApplicationController
 
   private
     def settings_params
-      params.require(:user).permit(:username, :weight_unit, :time_zone, :public_profile)
+      params.require(:user).permit(:username, :weight_unit, :time_zone, :public_profile, featured_badges: [])
     end
 end

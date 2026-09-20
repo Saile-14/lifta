@@ -18,6 +18,26 @@ RSpec.describe "Settings", type: :request do
       expect(response.body).to include("old_name")
     end
 
+    it "updates which rank badges the lifter shows off, in ladder order" do
+      patch settings_path, params: { user: { featured_badges: [ "", "powerlifting", "combo" ] } }
+
+      expect(user.reload.featured_badges).to eq(%w[combo powerlifting])
+    end
+
+    it "ignores a badge that isn't a real rank" do
+      patch settings_path, params: { user: { featured_badges: [ "", "combo", "underwater_basket_weaving" ] } }
+
+      expect(user.reload.featured_badges).to eq(%w[combo])
+    end
+
+    it "clears the badges when every box is unticked" do
+      user.update!(featured_badges: %w[combo])
+
+      patch settings_path, params: { user: { featured_badges: [ "" ] } }
+
+      expect(user.reload.featured_badges).to be_empty
+    end
+
     it "updates username, units, time zone and leaderboard listing" do
       patch settings_path, params: { user: { username: "new_name", weight_unit: "lb", time_zone: "Europe/Berlin", public_profile: "1" } }
 

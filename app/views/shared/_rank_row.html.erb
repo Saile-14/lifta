@@ -1,11 +1,15 @@
-<%# locals: (label:, tier:, detail: nil, overall: false) -%>
+<%# locals: (label:, tier:, detail: nil, overall: false, fill: nil) -%>
+<%# fill: draw the meter at this percentage instead of the tier's, for a row
+    that has real progress but no tier to name yet (an unfinished discipline
+    still counts toward the combined rank). -%>
 <div class="rank-row<%= " rank-row--overall" if overall %>">
   <div class="rank-row__label"><%= label %></div>
   <div class="rank-row__track">
-    <div class="rank-row__fill rank-fill--<%= tier&.name || "unranked" %>" style="width: <%= tier&.fill_percent || 0 %>%"></div>
+    <div class="rank-row__fill rank-fill--<%= tier&.name || (fill ? "progress" : "unranked") %>"
+         style="width: <%= tier&.fill_percent || fill&.clamp(0.0, 100.0) || 0 %>%"></div>
   </div>
   <div class="rank-row__value">
-    <%= tier ? t("tiers.badge", tier: tier.label, percent: tier.display_percent) : t("tiers.unranked") %>
+    <%= tier ? t("#{tier.class::I18N_SCOPE}.badge", tier: tier.label, percent: tier.display_percent) : t("tiers.unranked") %>
   </div>
   <% if detail.present? %>
     <div class="rank-row__detail"><%= detail %></div>

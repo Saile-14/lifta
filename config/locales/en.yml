@@ -87,6 +87,9 @@ en:
     top_tier: "Top tier."
     summary: "%{discipline}: %{rank}"
     unranked_summary: "unranked"
+    combo: "Combined"
+    combo_empty: "Log a lift in any discipline to start climbing."
+    combo_next: "Next: %{tier} at %{percent}% combined."
   rank_change:
     verbs:
       logged: "Lift logged"
@@ -210,6 +213,10 @@ en:
       how_ranks_work: "How ranks work"
       recent_lifts: "Recent lifts"
       nothing_logged: "Nothing logged yet."
+      combined: "Combined rank"
+      contributes: "%{percent}% of the way through this discipline."
+      combined_hint: "Your combined rank averages all three disciplines, so an untrained one counts as zero."
+      choose_badges: "Choose which badges to show"
 
   lifts:
     index:
@@ -338,6 +345,8 @@ en:
       username_hint: "3-20 letters, numbers or underscores. Your profile lives at %{url}."
       public_profile: "List me on the leaderboard, with a public profile page"
       public_profile_hint: "Shows your username, ranks and best lifts. Never your email or bodyweight."
+      badges: "Badges"
+      badges_hint: "Shown on your dashboard and next to your name on your public profile. A rank you haven't earned yet stays hidden."
       units: "Units"
       time_zone: "Time zone"
       time_zone_hint: "Decides which day \"today\" is when you log a lift."
@@ -365,6 +374,7 @@ en:
     show:
       title: "Leaderboard"
       heading: "%{discipline} leaderboard"
+      heading_combined: "Combined leaderboard"
       boards: "Board"
       overall: "Overall"
       sex_filter: "Sex"
@@ -374,6 +384,7 @@ en:
       empty: "Nobody's on this board yet."
       explanation: "Lifters are ranked by how close they are to the world-class standard for their sex, so everyone shares one board. Only approved lifts from lifters who opted in count."
       explanation_overall: "The overall board needs every lift logged."
+      explanation_combined: "Lifters are ranked by their average progress across all three disciplines, so an untrained one counts as zero. Only approved lifts from lifters who opted in count."
       position: "You're #%{position} of %{total}."
       not_listed_html: "You're not listed. %{link} to join."
       not_listed_link: "Turn on your public profile"

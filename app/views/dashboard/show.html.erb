@@ -1,5 +1,21 @@
 <% page_title t(".title") %>
 
+<div class="box">
+  <div class="box__header">
+    <%= t(".combined") %>
+    <%= featured_badges(Current.user, @combo_card) %>
+  </div>
+  <div class="box__body">
+    <%= render "shared/rank_row", label: t("ranks.combo"), tier: @combo_card.tier,
+          detail: combo_detail(@combo_card), overall: true %>
+    <% @combo_card.rows.each do |row| %>
+      <%= render "shared/rank_row", label: row.discipline.name, tier: row.tier, fill: row.percent,
+            detail: t(".contributes", percent: row.percent.floor) %>
+    <% end %>
+    <p class="muted"><%= t(".combined_hint") %> <%= link_to t(".choose_badges"), settings_path %></p>
+  </div>
+</div>
+
 <%= discipline_tabs(@discipline) { |discipline| dashboard_path(discipline: discipline) } %>
 
 <div class="box">

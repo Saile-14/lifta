@@ -35,4 +35,36 @@ RSpec.describe "Leaderboards", type: :request do
       expect(response).to have_http_status(:ok)
     end
   end
+
+  describe "the combined board" do
+    it "is public, and shows each discipline's contribution" do
+      get leaderboard_path(discipline: "combo")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("@big_squatter")
+      expect(response.parsed_body.text).to include("Combined leaderboard")
+    end
+
+    it "has no per-exercise boards, since it spans all of them" do
+      get leaderboard_path(discipline: "combo", board: "squat")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body.text).not_to include("Best lift")
+    end
+
+    it "keeps the sex filter" do
+      get leaderboard_path(discipline: "combo", sex: "female")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).not_to include("@big_squatter")
+    end
+
+    it "shows a signed-in lifter where they stand" do
+      sign_in_as(lifter)
+
+      get leaderboard_path(discipline: "combo")
+
+      expect(response.parsed_body.text).to include("You're #1 of 1.")
+    end
+  end
 end

@@ -21,10 +21,14 @@ module LiftsHelper
     number_with_precision(score, precision: 2, strip_insignificant_zeros: true)
   end
 
+  # Takes either ladder: a Tier or a ComboTier names itself from its own
+  # translation scope, and the rung names don't overlap, so one set of
+  # tier-badge--* colors covers both.
   def tier_badge(tier)
-    return tag.span(t("tiers.unranked"), class: "tier-badge") unless tier
+    return tag.span(t("#{Tier::I18N_SCOPE}.unranked"), class: "tier-badge") unless tier
 
-    tag.span(t("tiers.badge", tier: tier.label, percent: tier.display_percent), class: "tier-badge tier-badge--#{tier.name}")
+    tag.span(t("#{tier.class::I18N_SCOPE}.badge", tier: tier.label, percent: tier.display_percent),
+      class: "tier-badge tier-badge--#{tier.name}")
   end
 
   def status_badge(lift)
@@ -55,6 +59,17 @@ module LiftsHelper
     best = t("ranks.best", result: lift_result(row.lift), date: format_date(row.lift.lifted_at))
     next_up = row.target ? t("ranks.next", target: target_text(row.target)) : t("ranks.top_tier")
     "#{best} · #{next_up}"
+  end
+
+  # The line under the combined rank meter: what the next rung takes, or that
+  # there isn't one.
+  def combo_detail(card)
+    return t("ranks.combo_empty") unless card.ranked?
+
+    next_name = card.tier.next_name
+    return t("ranks.top_tier") unless next_name
+
+    t("ranks.combo_next", tier: t("combo_tiers.#{next_name}"), percent: ComboTier.minimum_for(next_name))
   end
 
   def overall_detail(card)

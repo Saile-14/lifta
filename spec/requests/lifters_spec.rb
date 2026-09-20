@@ -61,4 +61,38 @@ RSpec.describe "Lifter profiles", type: :request do
     get lifter_path("nobody_here")
     expect(response).to have_http_status(:not_found)
   end
+
+  describe "rank badges" do
+    let(:lifter) { create(:user, :listed, username: "taro", featured_badges: %w[combo powerlifting]) }
+
+    it "shows the badges a lifter chose, once they're earned" do
+      create(:lift, user: lifter, exercise: :squat, weight_lifted: 150, bodyweight_kg: 80)
+      create(:lift, user: lifter, exercise: :bench, weight_lifted: 100, bodyweight_kg: 80)
+      create(:lift, user: lifter, exercise: :deadlift, weight_lifted: 180, bodyweight_kg: 80)
+
+      get lifter_path("taro")
+
+      expect(response.body).to include("badge-set")
+      expect(response.parsed_body.text).to include("Combined", "Powerlifting")
+    end
+
+    it "hides a chosen badge that isn't earned yet" do
+      create(:lift, user: lifter, exercise: :squat, weight_lifted: 150, bodyweight_kg: 80)
+
+      get lifter_path("taro")
+
+      # Combined counts partial progress, powerlifting waits for all three.
+      badges = response.parsed_body.css(".badge-set__label").map(&:text)
+      expect(badges).to eq([ "Combined" ])
+    end
+
+    it "shows no badge set at all for a lifter who chose none" do
+      lifter.update!(featured_badges: [])
+      create(:lift, user: lifter, exercise: :squat, weight_lifted: 150, bodyweight_kg: 80)
+
+      get lifter_path("taro")
+
+      expect(response.body).not_to include("badge-set")
+    end
+  end
 end

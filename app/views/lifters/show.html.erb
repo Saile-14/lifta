@@ -26,7 +26,10 @@
 <section class="profile-card">
   <div class="profile-card__head">
     <div>
-      <h1 class="profile-card__name">@<%= @lifter.username %></h1>
+      <h1 class="profile-card__name">
+        @<%= @lifter.username %>
+        <%= featured_badges(@lifter, @combo_card) %>
+      </h1>
       <p class="muted"><%= t(".since", date: l(@lifter.created_at.to_date, format: :month_year)) %></p>
     </div>
     <% if @lifter.public_profile? %>
@@ -40,6 +43,8 @@
     <% end %>
   </div>
 
+  <%= render "shared/rank_row", label: t("ranks.combo"), tier: (@combo_card.tier if @combo_card.ranked?),
+        fill: @combo_card.percent, overall: true %>
   <% @rank_cards.each do |card| %>
     <%= render "shared/rank_row", label: card.discipline.name, tier: card.overall,
           detail: (t(".overall_pending") if card.ranked? && !card.complete?) %>

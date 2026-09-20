@@ -85,6 +85,9 @@ ja:
     top_tier: "最高ランクです。"
     summary: "%{discipline}: %{rank}"
     unranked_summary: "未ランク"
+    combo: "総合力"
+    combo_empty: "どれか1種目を登録すると、ここから上を目指せます。"
+    combo_next: "次: 総合力%{percent}%で%{tier}"
   rank_change:
     verbs:
       logged: "記録しました"
@@ -207,6 +210,10 @@ ja:
       how_ranks_work: "ランクの仕組み"
       recent_lifts: "最近の記録"
       nothing_logged: "まだ記録がありません。"
+      combined: "総合力ランク"
+      contributes: "この競技の達成度は%{percent}%です。"
+      combined_hint: "総合力ランクは3競技の平均です。まだ取り組んでいない競技は0%として計算されます。"
+      choose_badges: "表示するバッジを選ぶ"
 
   lifts:
     index:
@@ -335,6 +342,8 @@ ja:
       username_hint: "3〜20文字の半角英数字とアンダースコア（_）。プロフィールのURL: %{url}"
       public_profile: "ランキングに参加して、公開プロフィールを作成する"
       public_profile_hint: "ユーザー名・ランク・ベスト記録が公開されます。メールアドレスと体重は公開されません。"
+      badges: "バッジ"
+      badges_hint: "ダッシュボードと、公開プロフィールの名前の横に表示されます。まだ獲得していないランクは表示されません。"
       units: "単位"
       time_zone: "タイムゾーン"
       time_zone_hint: "記録するときの「今日」の日付に使われます。"
@@ -362,6 +371,7 @@ ja:
     show:
       title: "ランキング"
       heading: "%{discipline}ランキング"
+      heading_combined: "総合力ランキング"
       boards: "部門"
       overall: "総合"
       sex_filter: "性別"
@@ -371,6 +381,7 @@ ja:
       empty: "まだ誰もランクインしていません。"
       explanation: "性別ごとの世界トップレベルの基準にどれだけ近いかで順位を決めるため、男女が同じランキングに並びます。対象は、ランキングへの参加を選んだユーザーの承認済みの記録のみです。"
       explanation_overall: "総合ランキングには全種目の記録が必要です。"
+      explanation_combined: "3競技の平均達成度で順位が決まります。まだ取り組んでいない競技は0%として計算されます。対象は、ランキングへの参加を選んだユーザーの承認済みの記録のみです。"
       position: "あなたの順位: %{total}人中 %{position}位"
       not_listed_html: "ランキングに参加していません。%{link}と参加できます。"
       not_listed_link: "公開プロフィールをオンにする"

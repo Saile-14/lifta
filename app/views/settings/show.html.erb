@@ -24,6 +24,19 @@
         <p class="hint"><%= t(".public_profile_hint") %></p>
       </div>
 
+      <fieldset class="field field--group">
+        <legend><%= t(".badges") %></legend>
+        <p class="hint"><%= t(".badges_hint") %></p>
+        <%# A blank entry so unticking every box submits an empty list %>
+        <%= hidden_field_tag "user[featured_badges][]", "" %>
+        <% User::BADGES.each do |badge| %>
+          <div class="field--checkbox">
+            <%= check_box_tag "user[featured_badges][]", badge, @user.features_badge?(badge), id: "user_badge_#{badge}" %>
+            <%= label_tag "user_badge_#{badge}", badge == ComboCard::KEY ? t("ranks.combo") : Discipline.find(badge).name %>
+          </div>
+        <% end %>
+      </fieldset>
+
       <div class="field">
         <%= form.label :weight_unit, t(".units") %>
         <%= form.select :weight_unit, User.weight_units.keys %>

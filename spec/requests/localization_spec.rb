@@ -82,7 +82,8 @@ RSpec.describe "Localization", type: :request do
     end
 
     it "renders the public pages" do
-      [ root_path, new_session_path, new_registration_path, leaderboard_path, lifter_path("taro") ].each do |path|
+      [ root_path, new_session_path, new_registration_path, leaderboard_path,
+        leaderboard_path(discipline: "combo"), lifter_path("taro") ].each do |path|
         expect_japanese(path)
       end
     end

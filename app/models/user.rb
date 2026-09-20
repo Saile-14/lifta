@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   RESERVED_USERNAMES = %w[ admin administrator lifta moderator root staff support ].freeze
 
+  # Ranks a lifter can show off next to their name: the combined one, plus
+  # one per discipline.
+  BADGES = [ ComboCard::KEY, *Discipline.all.map(&:key) ].freeze
+
   has_secure_password
 
   has_many :sessions, dependent: :destroy
@@ -55,6 +59,17 @@ class User < ApplicationRecord
 
   def rank_for(exercise)
     best_lift(exercise)&.tier
+  end
+
+  # Kept to BADGES and in its order, so an unknown key can't be stored and
+  # the badges always read combined-first regardless of tick order. The
+  # checkbox form submits a blank entry to mean "none", which drops out here.
+  def featured_badges=(badges)
+    super(BADGES & Array(badges).map(&:to_s))
+  end
+
+  def features_badge?(badge)
+    featured_badges.include?(badge.to_s)
   end
 
   private
