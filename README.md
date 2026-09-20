@@ -1,11 +1,12 @@
+*English / [日本語](README.ja.md)*
+
 # Lifta
 
 Log your lifts and see how each one ranks against a world-class standard for
 your bodyweight and sex, on a bronze -> silver -> gold -> platinum -> diamond
 -> grandmaster ladder. Three disciplines, each with its own tab and ranks:
 
-* **Powerlifting** (squat, bench, deadlift), scored with
-  [DOTS](https://en.wikipedia.org/wiki/DOTS_(formula)).
+* **Powerlifting** (squat, bench, deadlift), scored with DOTS.
 * **Weightlifting** (snatch, clean & jerk), scored with the
   [Sinclair coefficient](https://en.wikipedia.org/wiki/Sinclair_coefficient).
 * **Calisthenics** (pull-ups, dips, push-ups), scored on strict reps, with
