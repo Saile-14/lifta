@@ -69,6 +69,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.include ActiveSupport::Testing::TimeHelpers
+
+  # The cache is a real store in test (see config/environments/test.rb),
+  # so it has to be emptied or a cached leaderboard leaks between examples.
+  config.before { Rails.cache.clear }
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end

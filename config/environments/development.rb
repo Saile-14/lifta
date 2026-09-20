@@ -25,8 +25,15 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
   end
 
-  # Change to :null_store to avoid any caching.
-  config.cache_store = :memory_store
+  # Solid Cache, as in production, so cache behaviour is the same here.
+  # Its store is a database, so entries survive a restart -- run
+  # `bin/rails solid_cache:clear` (or Rails.cache.clear) to empty it.
+  config.cache_store = :solid_cache_store
+
+  # Solid Queue, as in production. SOLID_QUEUE_IN_PUMA runs the worker inside
+  # the web process, so `bin/rails server` is all that's needed.
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local

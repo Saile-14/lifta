@@ -20,7 +20,13 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
-  config.cache_store = :null_store
+  # The :test adapter records enqueued jobs instead of running them, so a
+  # spec can assert that a change enqueues a leaderboard refresh.
+  config.active_job.queue_adapter = :test
+
+  # A real store, not :null_store: the leaderboards are cached, and their
+  # invalidation should be covered by the specs rather than skipped.
+  config.cache_store = :memory_store
 
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable

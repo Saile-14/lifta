@@ -30,6 +30,11 @@ class User < ApplicationRecord
   # Users who opted in to the leaderboard and a public profile page.
   scope :listed, -> { where(public_profile: true) }
 
+  # Opting in or out changes who is on a board; sex changes which standard
+  # they're measured against; username is the tie-break when two lifters sit
+  # at the same percentage.
+  after_commit :refresh_leaderboards, if: :leaderboard_relevant_change?
+
   def current_bodyweight_kg
     bodyweight_entries.order(recorded_at: :desc).pick(:kilograms)
   end
@@ -76,6 +81,15 @@ class User < ApplicationRecord
   end
 
   private
+    def leaderboard_relevant_change?
+      destroyed? || saved_change_to_public_profile? || saved_change_to_sex? || saved_change_to_username?
+    end
+
+    def refresh_leaderboards
+      LeaderboardCache.invalidate!
+      RefreshLeaderboardsJob.perform_later
+    end
+
     def time_zone_exists
       errors.add(:time_zone, :unknown_time_zone) unless ActiveSupport::TimeZone[time_zone.to_s]
     end

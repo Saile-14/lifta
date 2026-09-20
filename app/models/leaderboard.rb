@@ -1,6 +1,9 @@
 # Public rankings for one discipline -- overall, or a single exercise --
 # among lifters who opted in. Lifters are ordered by how far they are toward
 # the world-class standard for their sex, so men and women share one board.
+#
+# The ranking is cached (see LeaderboardCache); the users shown are loaded
+# fresh on every read, so a renamed lifter never appears under an old name.
 class Leaderboard
   Entry = Data.define(:position, :user, :tier, :score, :lift)
 
@@ -17,20 +20,26 @@ class Leaderboard
 
   def entries
     @entries ||= begin
-      top = ranked.first(LIMIT)
-      lifts = best_lifts_for(top.map(&:first))
-      top.each_with_index.map do |(user, tier, score), index|
-        Entry.new(position: index + 1, user: user, tier: tier, score: score, lift: lifts[user.id])
+      top = ranking.first(LIMIT)
+      users = User.where(id: top.map(&:first)).index_by(&:id)
+      lifts = best_lifts_for(users.values)
+
+      top.each_with_index.filter_map do |(user_id, percent, score), index|
+        user = users[user_id]
+        # Deleted since the ranking was cached.
+        next unless user
+
+        Entry.new(position: index + 1, user: user, tier: Tier.new(percent), score: score, lift: lifts[user_id])
       end
     end
   end
 
   def size
-    ranked.size
+    ranking.size
   end
 
   def position_of(user)
-    index = ranked.index { |entry_user, _, _| entry_user == user }
+    index = ranking.index { |user_id, _, _| user_id == user.id }
     index + 1 if index
   end
 
@@ -40,25 +49,35 @@ class Leaderboard
       sex ? scope.where(sex: sex) : scope
     end
 
-    # [user, tier, score] for everyone with a rank on this board, best first.
-    def ranked
-      @ranked ||= begin
-        users = lifters.where(id: best_scores.keys).index_by(&:id)
-        rows = best_scores.filter_map do |user_id, scores|
-          user = users[user_id]
-          user && rank(user, scores)
-        end
-        rows.sort_by { |user, tier, _| [ -tier.percent, user.username ] }
+    # [user_id, percent, score] for everyone on this board, best first.
+    def ranking
+      @ranking ||= LeaderboardCache.fetch([ discipline.key, exercise&.key, sex ]) { compute_ranking }
+    end
+
+    def compute_ranking
+      users = lifters.where(id: best_scores.keys).index_by(&:id)
+      rows = best_scores.filter_map do |user_id, scores|
+        user = users[user_id]
+        user && rank(user, scores)
       end
+
+      # Username breaks ties, then drops out -- it isn't cached, since the
+      # lifter may rename and the name is only needed for the ordering.
+      rows.sort_by { |_, percent, _, username| [ -percent, username ] }.map { |row| row.first(3) }
     end
 
     def rank(user, scores)
       if exercise
         score = scores[exercise.key]
-        [ user, discipline.tier_for(score, exercise: exercise.key, sex: user.sex), score ] if score
+        return unless score
+
+        percent = discipline.tier_for(score, exercise: exercise.key, sex: user.sex).percent
+        [ user.id, percent, score, user.username ]
       else
         percent = discipline.overall_percent(scores, user.sex)
-        [ user, Tier.new(percent), (scores.values.sum if discipline.weighted?) ] if percent
+        return unless percent
+
+        [ user.id, percent, (scores.values.sum if discipline.weighted?), user.username ]
       end
     end
 

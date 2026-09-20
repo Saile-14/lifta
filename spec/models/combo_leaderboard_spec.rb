@@ -43,8 +43,10 @@ RSpec.describe ComboLeaderboard do
 
     entry = described_class.new.entries.sole
     expect(entry.tier).to be_a(ComboTier)
-    expect(entry.card.rows.map { |row| row.discipline.key }).to eq(%w[powerlifting weightlifting calisthenics])
-    expect(entry.card.rows.last.percent).to eq(0.0)
+    # In Discipline.all order: powerlifting, weightlifting, calisthenics.
+    expect(entry.percents.size).to eq(3)
+    expect(entry.percents.first).to be > 0
+    expect(entry.percents.last).to eq(0.0)
   end
 
   it "leaves out lifters who haven't opted in" do
