@@ -177,6 +177,14 @@ the two files' keys or `%{placeholders}` drift apart.
 views, use lazy lookups: `t(".title")` in `lifts/index` reads
 `lifts.index.title`.
 
+## Design decisions
+
+The reasoning behind the bigger choices — SQLite over PostgreSQL, Rails'
+built-in auth over Devise, bodyweight as a log, the accessibility target,
+bilingual from the start, how scoring is stored, what the combined rank
+means — is recorded in [`docs/adr/`](docs/adr/README.md), in English and
+Japanese.
+
 ## Architecture notes
 
 * **Auth** uses Rails 8's built-in cookie-session generator (`User`,
@@ -229,3 +237,7 @@ you run `kamal deploy` from, and a container registry configured in
   `bin/rails` command. That's `libvips` (via the `image_processing` gem, used
   for Active Storage image variants) probing for optional codec plugins this
   install doesn't have. It's harmless noise, not an error, so ignore it.
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
