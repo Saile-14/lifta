@@ -4,7 +4,7 @@ class LiftersController < ApplicationController
   before_action :resume_session, only: :show
 
   def show
-    @lifter = User.find_by!(username: params[:username].to_s.downcase)
+    @lifter = User.find_by!(username: WidthNormalization.normalize(params[:username].to_s).downcase)
     raise ActiveRecord::RecordNotFound unless visible?(@lifter)
 
     @rank_cards = Discipline.all.map { |discipline| RankCard.new(@lifter, discipline) }

@@ -3,8 +3,10 @@ module WeightConversion
 
   module_function
 
+  # Full-width digits from a Japanese IME ("１００") read as 0.0 through
+  # to_f, so fold them to ASCII first (see WidthNormalization).
   def to_kg(amount, unit)
-    amount = amount.to_f
+    amount = WidthNormalization.normalize(amount.to_s).to_f
     unit.to_s == "lb" ? amount * KG_PER_LB : amount
   end
 

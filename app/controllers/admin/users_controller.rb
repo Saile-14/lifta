@@ -2,7 +2,8 @@ class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: %i[ show destroy ]
 
   def index
-    @query = params[:q].to_s.strip.downcase
+    # NFKC so a search typed on a Japanese IME matches the stored ASCII.
+    @query = WidthNormalization.normalize(params[:q].to_s).strip.downcase
     users = User.order(created_at: :desc)
     if @query.present?
       pattern = "%#{User.sanitize_sql_like(@query)}%"

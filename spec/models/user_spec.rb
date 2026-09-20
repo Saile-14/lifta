@@ -149,4 +149,21 @@ RSpec.describe User do
       end
     end
   end
+
+  # Japanese keyboards type through an IME, which emits full-width forms.
+  describe "input typed on a Japanese IME" do
+    it "folds a full-width username to ASCII instead of rejecting it" do
+      user = create(:user, username: "ｄｅｍｏ２")
+
+      expect(user.username).to eq("demo2")
+      expect(user).to be_valid
+    end
+
+    it "folds a full-width email address, and still authenticates either way" do
+      create(:user, email_address: "ｔａｒｏ＠ｅｘａｍｐｌｅ.ｃｏｍ", password: "password123")
+
+      expect(described_class.authenticate_by(email_address: "taro@example.com", password: "password123")).to be_present
+      expect(described_class.authenticate_by(email_address: "ｔａｒｏ＠ｅｘａｍｐｌｅ.ｃｏｍ", password: "password123")).to be_present
+    end
+  end
 end

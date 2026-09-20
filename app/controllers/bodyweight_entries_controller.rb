@@ -52,7 +52,7 @@ class BodyweightEntriesController < ApplicationController
 
       {
         kilograms: (WeightConversion.to_kg(raw[:weight], unit) if raw[:weight].present?),
-        recorded_at: raw[:recorded_at].presence
+        recorded_at: WidthNormalization.normalize(raw[:recorded_at].to_s).presence
       }
     end
 end

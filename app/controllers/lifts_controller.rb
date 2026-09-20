@@ -60,8 +60,9 @@ class LiftsController < ApplicationController
       {
         exercise: values[:exercise].presence_in(Discipline.exercise_keys),
         weight_lifted: (WeightConversion.to_kg(values[:weight], unit) if values[:weight].present?),
-        reps: values[:reps].presence || 1,
-        lifted_at: values[:lifted_at].presence,
+        # NFKC so full-width digits off a Japanese IME still parse.
+        reps: WidthNormalization.normalize(values[:reps].to_s).presence || 1,
+        lifted_at: WidthNormalization.normalize(values[:lifted_at].to_s).presence,
         # Blank means "use the bodyweight logged for that date".
         bodyweight_kg: (WeightConversion.to_kg(values[:bodyweight], unit) if values[:bodyweight].present?)
       }

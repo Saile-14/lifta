@@ -14,8 +14,11 @@ class User < ApplicationRecord
   enum :sex, { male: 0, female: 1 }
   enum :weight_unit, { kg: 0, lb: 1 }, default: :kg
 
-  normalizes :email_address, with: ->(e) { e.strip.downcase }
-  normalizes :username, with: ->(u) { u.strip.downcase.delete_prefix("@") }
+  # NFKC first, so a username or address typed on a Japanese IME ("ｄｅｍｏ",
+  # "ｔａｒｏ＠ｅｘａｍｐｌｅ.ｃｏｍ") folds to ASCII instead of failing the
+  # format check. See WidthNormalization.
+  normalizes :email_address, with: ->(e) { WidthNormalization.normalize(e).strip.downcase }
+  normalizes :username, with: ->(u) { WidthNormalization.normalize(u).strip.downcase.delete_prefix("@") }
 
   validates :email_address, presence: true, uniqueness: true
   validates :sex, presence: true

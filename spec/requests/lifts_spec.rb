@@ -195,5 +195,14 @@ RSpec.describe "Lifts", type: :request do
         expect(other_lift.reload).to be_persisted
       end
     end
+
+    # Japanese keyboards type through an IME, which emits full-width digits.
+    it "logs a lift typed with full-width numbers" do
+      log_lift(weight: "１００", reps: "３")
+
+      lift = user.lifts.sole
+      expect(lift.weight_lifted).to eq(100)
+      expect(lift.reps).to eq(3)
+    end
   end
 end
