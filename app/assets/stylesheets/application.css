@@ -704,6 +704,20 @@ input[type="submit"].btn-small:hover {
   letter-spacing: 0;
 }
 
+/* Dashboard preview of what the chosen badges look like on a profile */
+.badge-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin: 10px 0 0;
+}
+
+.badge-preview__label {
+  color: var(--ink-muted);
+  font-size: 0.85em;
+}
+
 /* A group of related checkboxes (which badges to show) */
 .field--group {
   margin: 0 0 18px;

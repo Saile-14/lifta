@@ -12,6 +12,14 @@ your bodyweight and sex, on a bronze -> silver -> gold -> platinum -> diamond
 * **Calisthenics** (pull-ups, dips, push-ups), scored on strict reps, with
   added weight credited as extra reps.
 
+On top of those, a **combined rank** averages your progress through all
+three disciplines, on its own ladder: dormant, awakened, evolved, apex,
+transcendent, **Ultimate Lifeform**. A discipline you've never trained
+counts as zero, so a pure powerlifter tops out around a third of the way
+up -- the combined ladder rewards breadth, and its top rung means
+world-class in all three at once. Lifters choose which of their four ranks
+to show as badges beside their name.
+
 Every lift gets its own rank, and each discipline gets an overall rank once
 every lift in it is logged. The dashboard shows what the next tier takes
 ("Next: Gold at 187.5 kg, or 162.5 kg x 5"). Lifters who opt in get a public
@@ -124,6 +132,13 @@ Everything lives in `app/models/discipline` plus `Tier` and `Scale`:
 * **Overall rank**: for powerlifting and weightlifting, the total of your best
   lifts against the total of the ceilings, like a meet total. For
   calisthenics, the average of the per-exercise percentages.
+* **Combined rank** (`ComboCard`, `ComboTier`): the average of
+  `Discipline#progress_percent` across all three, which counts an exercise
+  with no lift as zero rather than leaving the discipline unranked. Its
+  rungs sit lower than `Tier`'s (15/30/50/70/90) because averaging makes
+  high numbers much harder to reach; the top still needs diamond-level
+  strength in all three at once. `RankLadder` holds what the two ladders
+  share.
 * **Plausibility**: diamond-and-above lifts are held for review. Lifts past
   200% of world class (typos, kg/lb mix-ups) are rejected outright.
 * **If you change a formula** (not just a ceiling), recompute the stored

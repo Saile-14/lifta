@@ -214,6 +214,7 @@ ja:
       contributes: "この競技の達成度は%{percent}%です。"
       combined_hint: "総合力ランクは3競技の平均です。まだ取り組んでいない競技は0%として計算されます。"
       choose_badges: "表示するバッジを選ぶ"
+      your_badges: "プロフィールでの表示:"
 
   lifts:
     index:

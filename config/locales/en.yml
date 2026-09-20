@@ -217,6 +217,7 @@ en:
       contributes: "%{percent}% of the way through this discipline."
       combined_hint: "Your combined rank averages all three disciplines, so an untrained one counts as zero."
       choose_badges: "Choose which badges to show"
+      your_badges: "On your profile:"
 
   lifts:
     index:

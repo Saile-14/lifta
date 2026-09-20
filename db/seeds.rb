@@ -7,10 +7,10 @@
 # local development: an admin, a demo lifter, and a few listed lifters so the leaderboard has people on it.
 
 if Rails.env.development?
-  def seed_user(email, username:, sex: :male, admin: false, listed: true)
+  def seed_user(email, username:, sex: :male, admin: false, listed: true, badges: [ ComboCard::KEY ])
     User.find_or_initialize_by(email_address: email).tap do |user|
       user.password = "password123" if user.new_record?
-      user.update!(username: username, sex: sex, admin: admin, public_profile: listed)
+      user.update!(username: username, sex: sex, admin: admin, public_profile: listed, featured_badges: badges)
     end
   end
 
@@ -27,7 +27,7 @@ if Rails.env.development?
 
   seed_user("admin@example.com", username: "coach", admin: true, listed: false)
 
-  demo = seed_user("demo@example.com", username: "demo")
+  demo = seed_user("demo@example.com", username: "demo", badges: [ ComboCard::KEY, "calisthenics" ])
   seed_lifts demo, bodyweight: 80, lifts: [
     [ :squat, 120, 3 ], [ :bench, 90, 1 ], [ :deadlift, 160, 1 ],
     [ :snatch, 70, 1 ], [ :clean_and_jerk, 90, 1 ],
@@ -38,7 +38,7 @@ if Rails.env.development?
     [ :squat, 130, 1 ], [ :bench, 75, 1 ], [ :deadlift, 160, 2 ], [ :snatch, 65, 1 ], [ :clean_and_jerk, 85, 1 ]
   ]
 
-  seed_lifts seed_user("tom@example.com", username: "big_tom"), bodyweight: 105, lifts: [
+  seed_lifts seed_user("tom@example.com", username: "big_tom", badges: [ "powerlifting" ]), bodyweight: 105, lifts: [
     [ :squat, 250, 1 ], [ :bench, 170, 1 ], [ :deadlift, 290, 1 ]
   ]
 
