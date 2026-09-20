@@ -4,7 +4,7 @@ require "rake"
 RSpec.describe "admin rake tasks" do
   before(:all) { Rails.application.load_tasks unless Rake::Task.task_defined?("admin:grant") }
 
-  let(:user) { create(:user, email_address: "boss@example.com") }
+  let!(:user) { create(:user, email_address: "boss@example.com") }
 
   def run(name, *args)
     task = Rake::Task[name]
