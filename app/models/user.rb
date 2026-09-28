@@ -42,11 +42,7 @@ class User < ApplicationRecord
   # Bodyweight as of the end of that day -- the latest weigh-in on or before
   # it, like a meet weigh-in -- falling back to the first one logged after.
   def bodyweight_on(date)
-    return current_bodyweight_kg unless date
-
-    day_end = date.to_date.in_time_zone(time_zone).end_of_day
-    bodyweight_entries.where(recorded_at: ..day_end).order(recorded_at: :desc).pick(:kilograms) ||
-      bodyweight_entries.order(:recorded_at).pick(:kilograms)
+    BodyweightLog.for(self).on(date)
   end
 
   # Logs a weigh-in for the day of a lift, unless that day already has one.
