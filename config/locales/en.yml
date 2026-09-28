@@ -3,6 +3,9 @@
 en:
   locale_name: "English"
   page_title: "%{title} · Lifta"
+  meta:
+    description: "Lifta ranks your lifts against a world-class standard for your bodyweight and sex, from bronze to grandmaster, across powerlifting, weightlifting and calisthenics."
+    image_alt: "The Lifta logo"
 
   date:
     formats:
@@ -182,6 +185,7 @@ en:
   pages:
     home:
       title: "Rank your lifts"
+      description: "Log your squat, bench, deadlift and more, and see how each lift ranks from bronze to grandmaster against a world-class standard for your bodyweight and sex."
       heading: "Welcome to Lifta"
       intro_html: "Log your lifts and see how each one ranks against a world-class standard for your bodyweight and sex: bronze, silver, gold, platinum, diamond, grandmaster. Powerlifting is scored with %{dots}, weightlifting with the %{sinclair}, and calisthenics on reps."
       dots: "DOTS"
@@ -287,6 +291,7 @@ en:
   sessions:
     new:
       title: "Sign in"
+      description: "Sign in to Lifta to log your lifts and check your ranks."
       email_address: "Email address"
       email_placeholder: "Enter your email address"
       password: "Password"
@@ -301,6 +306,7 @@ en:
   registrations:
     new:
       title: "Sign up"
+      description: "Sign up for Lifta for free and see how your lifts rank against a world-class standard."
       email_address: "Email address"
       username: "Username"
       username_hint: "3-20 letters, numbers or underscores. This is the name other lifters see."
@@ -382,6 +388,7 @@ en:
   leaderboards:
     show:
       title: "Leaderboard"
+      description: "The Lifta leaderboards for powerlifting, weightlifting and calisthenics: lifters of every size and sex on one board, ranked by how close they are to world class."
       heading: "%{discipline} leaderboard"
       heading_combined: "Combined leaderboard"
       boards: "Board"

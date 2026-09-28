@@ -2,15 +2,10 @@
 <% summary = ranks_summary(@rank_cards) %>
 <%# Shared links open in the sharer's language, link previews included %>
 <% share_url = lifter_url(@lifter.username, locale: I18n.locale) %>
-<% content_for :head do %>
-  <meta name="description" content="<%= summary %>">
-  <meta property="og:type" content="profile">
-  <meta property="og:site_name" content="Lifta">
-  <meta property="og:locale" content="<%= I18n.locale == :ja ? "ja_JP" : "en_US" %>">
-  <meta property="og:title" content="<%= t(".og_title", username: @lifter.username) %>">
-  <meta property="og:description" content="<%= summary %>">
-  <meta property="og:url" content="<%= share_url %>">
-  <meta name="twitter:card" content="summary">
+<% page_description summary %>
+<% link_preview title: t(".og_title", username: @lifter.username), type: "profile", url: share_url %>
+<% content_for :meta do %>
+  <meta property="profile:username" content="<%= @lifter.username %>">
 <% end %>
 
 <% unless @lifter.public_profile? %>

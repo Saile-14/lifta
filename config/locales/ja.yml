@@ -3,6 +3,9 @@
 ja:
   locale_name: "日本語"
   page_title: "%{title} | Lifta"
+  meta:
+    description: "Liftaは、パワーリフティング・ウエイトリフティング・キャリステニクスの記録を、体重と性別に合わせた世界トップレベルの基準と比べて、ブロンズからグランドマスターまでランク判定するアプリです。"
+    image_alt: "Liftaのロゴ"
 
   date:
     formats:
@@ -180,6 +183,7 @@ ja:
   pages:
     home:
       title: "筋トレの記録をランク判定"
+      description: "BIG3（スクワット・ベンチプレス・デッドリフト）などの記録を入力すると、体重と性別に合わせた世界トップレベルの基準で、ブロンズからグランドマスターまでランク判定します。"
       heading: "Liftaへようこそ"
       intro_html: "記録した挙上を、体重と性別に合わせた世界トップレベルの基準と比べて、ブロンズからグランドマスターまでの6段階でランク付けします。パワーリフティングは%{dots}、ウエイトリフティングは%{sinclair}、キャリステニクスは回数で評価します。"
       dots: "DOTS"
@@ -284,6 +288,7 @@ ja:
   sessions:
     new:
       title: "ログイン"
+      description: "Liftaにログインして、記録の入力やランクの確認ができます。"
       email_address: "メールアドレス"
       email_placeholder: "メールアドレスを入力"
       password: "パスワード"
@@ -298,6 +303,7 @@ ja:
   registrations:
     new:
       title: "新規登録"
+      description: "Liftaに無料で登録して、あなたの記録が世界トップレベルの基準でどのランクになるか確かめましょう。"
       email_address: "メールアドレス"
       username: "ユーザー名"
       username_hint: "3〜20文字の半角英数字とアンダースコア（_）。ほかのユーザーに表示される名前です。"
@@ -379,6 +385,7 @@ ja:
   leaderboards:
     show:
       title: "ランキング"
+      description: "パワーリフティング・ウエイトリフティング・キャリステニクスのLiftaランキング。体格や性別に関係なく、世界トップレベルにどれだけ近いかで全員を一つのランキングで比べます。"
       heading: "%{discipline}ランキング"
       heading_combined: "総合力ランキング"
       boards: "部門"

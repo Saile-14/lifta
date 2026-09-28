@@ -32,6 +32,27 @@ module ApplicationHelper
     content_for :title, t("page_title", title: title)
   end
 
+  # The page's <meta name="description">, also used for link previews. Pages
+  # without one get the site description (meta.description).
+  def page_description(description)
+    content_for :description, description
+  end
+
+  # Overrides for the link-preview (Open Graph) tags, which otherwise default
+  # from the page title and description. See shared/_meta.
+  def link_preview(title: nil, type: nil, url: nil)
+    content_for :og_title, title if title
+    content_for :og_type, type if type
+    content_for :og_url, url if url
+  end
+
+  OG_LOCALES = { en: "en_US", ja: "ja_JP" }.freeze
+
+  # :ja -> "ja_JP", the form og:locale wants.
+  def og_locale(locale)
+    OG_LOCALES.fetch(locale.to_sym)
+  end
+
   # Discipline tabs; `path` builds the link for each discipline.
   def discipline_tabs(current, &path)
     tag.nav(class: "tabs", aria: { label: t("discipline_tabs.label") }) do

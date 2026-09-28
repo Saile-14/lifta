@@ -1,0 +1,25 @@
+<%# The page's description and link-preview tags. Everything defaults from
+    the page title and the site description; pages override with
+    page_description and link_preview (see ApplicationHelper), and add
+    tags of their own with content_for(:meta). Crawlers that build link
+    previews send no cookie or Accept-Language, so og:url carries the
+    page's language: a preview of a Japanese page stays in Japanese. %>
+<% title = content_for(:og_title).presence || content_for(:title).presence || "Lifta" %>
+<% description = content_for(:description).presence || t("meta.description") %>
+<% url = content_for(:og_url).presence || (localized_url(I18n.locale) if request.get?) %>
+<meta name="description" content="<%= description %>">
+<meta property="og:site_name" content="Lifta">
+<meta property="og:type" content="<%= content_for(:og_type).presence || "website" %>">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:description" content="<%= description %>">
+<% if url %>
+  <meta property="og:url" content="<%= url %>">
+<% end %>
+<meta property="og:image" content="<%= "#{request.base_url}/icon.png" %>">
+<meta property="og:image:alt" content="<%= t("meta.image_alt") %>">
+<meta property="og:locale" content="<%= og_locale(I18n.locale) %>">
+<% (I18n.available_locales - [ I18n.locale ]).each do |locale| %>
+  <meta property="og:locale:alternate" content="<%= og_locale(locale) %>">
+<% end %>
+<meta name="twitter:card" content="summary">
+<%= yield :meta %>
