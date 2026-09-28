@@ -65,7 +65,9 @@ RSpec.describe "accessibility", type: :request do
       create(:bodyweight_entry, user: user, kilograms: 80)
       create(:lift, user: user, exercise: :squat, weight_lifted: 150)
 
-      [ dashboard_path, lifts_path, bodyweight_entries_path, leaderboard_path ].each do |path|
+      create(:lift, user: user, exercise: :squat, weight_lifted: 160, lifted_at: 1.day.ago)
+
+      [ dashboard_path, lifts_path, bodyweight_entries_path, leaderboard_path, progress_path ].each do |path|
         get path
 
         response.parsed_body.css("th").each do |th|
@@ -86,6 +88,32 @@ RSpec.describe "accessibility", type: :request do
 
           labelled = body.css("label[for='#{field['id']}']").any? || field["aria-label"].present?
           expect(labelled).to be(true), "#{path}: #{field['name']} has no label"
+        end
+      end
+    end
+  end
+
+  describe "1.1.1 Non-text Content" do
+    it "names and describes every chart, and pairs it with its data" do
+      sign_in_as(user)
+      create(:lift, user: user, exercise: :squat, weight_lifted: 150, lifted_at: 2.days.ago)
+      create(:lift, user: user, exercise: :squat, weight_lifted: 155, lifted_at: 1.day.ago)
+      create(:bodyweight_entry, user: user, kilograms: 80, recorded_at: 2.days.ago)
+      create(:bodyweight_entry, user: user, kilograms: 79, recorded_at: 1.day.ago)
+
+      %w[ en ja ].each do |locale|
+        get progress_path(locale: locale)
+        charts = response.parsed_body.css("svg")
+        expect(charts.size).to eq(2)
+
+        charts.each do |svg|
+          expect(svg["role"]).to eq("img")
+          expect(svg.at_css("##{svg['aria-labelledby']}")&.name).to eq("title")
+          expect(svg.at_css("##{svg['aria-describedby']}")&.name).to eq("desc")
+          expect(svg.at_css("title").text).to be_present
+          expect(svg.at_css("desc").text).to be_present
+          expect(svg.ancestors("figure").first.css("details table th[scope]")).to be_present,
+            "#{svg['id']} has no data table beside it"
         end
       end
     end
