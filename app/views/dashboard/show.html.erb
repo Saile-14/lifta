@@ -39,6 +39,7 @@
     <p class="actions">
       <%= link_to t(".log_lift"), new_lift_path(discipline: @discipline), class: "btn-primary" %>
       <%= link_to t(".history"), lifts_path(discipline: @discipline), class: "btn-secondary" %>
+      <%= link_to t(".progress"), progress_path(discipline: @discipline), class: "btn-secondary" %>
     </p>
   </div>
 </div>

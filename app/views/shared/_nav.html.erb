@@ -3,6 +3,7 @@
   <% if authenticated? %>
     <%= link_to t(".dashboard"), dashboard_path %>
     <%= link_to t(".log_lift"), new_lift_path %>
+    <%= link_to t(".progress"), progress_path %>
     <%= link_to t(".leaderboard"), leaderboard_path %>
     <% if Current.user.admin? %>
       <% pending_count = Lift.pending.count %>
