@@ -268,7 +268,7 @@ en:
       back: "Back"
     edit:
       title: "Edit bodyweight"
-      note: "Lifts you've already logged keep the bodyweight they were scored at. Edit a lift to change its bodyweight."
+      note: "Lifts scored at this weigh-in are rescored to match your change."
       back: "Back to history"
     form:
       bodyweight: "Bodyweight"

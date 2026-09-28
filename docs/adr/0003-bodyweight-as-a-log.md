@@ -44,9 +44,19 @@ first lift with no weigh-in yet, which is why the lift form accepts a
 bodyweight directly and writes it to the log.
 
 **A consequence worth stating.** Because the snapshot is stored per lift,
-correcting a mistyped weigh-in does not retroactively rescore past lifts.
-That is the intended behaviour, but it surprises people, so the settings
-and form copy say the weight is recorded "as of" the lift's date.
+a change to the log has to be carried to the lifts it affects. When a
+weigh-in is logged, corrected, moved or deleted, each lift whose date now
+resolves to a different weight is re-snapshotted and rescored
+(`User#resnapshot_bodyweight`). The common case is backfilling an older
+weigh-in, which fixes lifts that had fallen back to a later one. Lifts the
+change doesn't move keep their score, so logging today's weight still
+leaves March alone. A bodyweight typed into a lift that differs from the
+log is that lift's own and is kept. Emptying the log leaves every lift at
+its last known weight.
+
+*Amended:* this used to say corrections did not rescore past lifts. That
+left lifts logged before the first weigh-in scored at the wrong weight
+for good once an older one was backfilled.
 
 ---
 
@@ -94,7 +104,15 @@ Lifta のスコアはすべて体重に依存します。DOTS もシンクレア
 フォームは体重を直接受け取り、ログにも書き込むようにしています。
 
 **明記しておくべき帰結。** スナップショットを記録ごとに保存しているため、
-打ち間違えた計量値を修正しても、過去の記録のスコアは遡って再計算されません。
-これは意図した挙動ですが、利用者には意外に映るため、設定画面とフォームの
-文言では、体重がその記録の日付「時点」のものとして保存されることを明示して
-います。
+ログの変更は影響を受ける記録に反映する必要があります。計量値を登録・修正・
+日時変更・削除すると、その日付で解決される体重が変わった記録だけを取り直し、
+スコアを再計算します（`User#resnapshot_bodyweight`）。よくあるのは、より
+古い計量値を後から登録したことで、それ以降の計量値にフォールバックしていた
+記録が正しい体重に直るケースです。変更の影響を受けない記録のスコアは変わら
+ないため、今日の体重を記録しても3月の記録はそのままです。記録に直接入力した
+体重がログと異なる場合は、その記録固有の値として残します。ログを空にした
+場合は、すべての記録が最後に分かっていた体重のまま残ります。
+
+*改訂:* 以前は「修正しても過去の記録は再計算しない」としていました。しかし
+それでは、古い計量値を後から登録したときに、最初の計量より前の記録が誤った
+体重で採点されたままになっていました。

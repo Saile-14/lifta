@@ -60,6 +60,18 @@ RSpec.describe "BodyweightEntries", type: :request do
         expect(entry.reload.kilograms).to eq(81.5)
       end
 
+      it "rescores the lifts scored at a corrected entry, and says so" do
+        lift = create(:lift, user: user, bodyweight_kg: nil, lifted_at: entry.recorded_at.to_date)
+        expect(lift.bodyweight_kg).to eq(80)
+
+        get edit_bodyweight_entry_path(entry)
+        expect(response.body).to include(I18n.t("bodyweight_entries.edit.note"))
+
+        patch bodyweight_entry_path(entry), params: { bodyweight_entry: { weight: "85", unit: "kg", recorded_at: entry.recorded_at.strftime("%Y-%m-%dT%H:%M") } }
+
+        expect(lift.reload.bodyweight_kg).to eq(85)
+      end
+
       it "deletes an entry" do
         expect { delete bodyweight_entry_path(entry) }.to change(BodyweightEntry, :count).by(-1)
       end
