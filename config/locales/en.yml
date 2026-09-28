@@ -314,6 +314,7 @@ en:
       have_account: "Already have an account? Sign in"
     create:
       welcome: "Welcome to Lifta, @%{username}."
+      rate_limited: "Too many sign-up attempts. Try again later."
 
   passwords:
     unavailable: "Password resets aren't available yet."

@@ -311,6 +311,7 @@ ja:
       have_account: "アカウントをお持ちの方はこちらからログイン"
     create:
       welcome: "Liftaへようこそ、@%{username}さん！"
+      rate_limited: "登録の試行回数が多すぎます。しばらく時間をおいてから、もう一度お試しください。"
 
   passwords:
     unavailable: "パスワードの再設定は現在ご利用いただけません。"

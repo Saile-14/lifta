@@ -51,5 +51,16 @@ RSpec.describe "Registrations", type: :request do
       expect(response).to have_http_status(:unprocessable_content)
       expect(response.body).to include("Username can&#39;t be blank")
     end
+
+    it "turns away a burst of sign-ups from one address" do
+      10.times { post registrations_path, params: { user: valid_params.merge(email_address: "") } }
+      expect(response).to have_http_status(:unprocessable_content)
+
+      post registrations_path, params: { user: valid_params }
+
+      expect(response).to redirect_to(new_registration_path)
+      expect(flash[:alert]).to eq("Too many sign-up attempts. Try again later.")
+      expect(User.find_by(email_address: "new@example.com")).to be_nil
+    end
   end
 end
