@@ -169,6 +169,7 @@ ja:
     nav:
       dashboard: "ダッシュボード"
       log_lift: "記録する"
+      progress: "推移"
       leaderboard: "ランキング"
       admin: "管理"
       settings: "設定"
@@ -216,6 +217,36 @@ ja:
       combined_hint: "総合力ランクは3競技の平均です。まだ取り組んでいない競技は0%として計算されます。"
       choose_badges: "表示するバッジを選ぶ"
       your_badges: "プロフィールでの表示:"
+      progress: "推移グラフを見る"
+
+  progress:
+    show:
+      title: "推移"
+      weighted:
+        heading: "推定1RM"
+        intro: "各日のベストセットを推定1RM（1回で挙げられる最大重量の推定値）に換算して表示します。5回のセットとシングルを同じ基準で比べられます。承認済みの記録のみ対象です。"
+        chart_title: "%{exercise}の推定1RMの推移"
+        column: "推定1RM（%{unit}）"
+      reps:
+        heading: "最高回数"
+        intro: "各日のベストセットを自重換算の回数で表示します。追加重量の分は回数に上乗せして計算します。承認済みの記録のみ対象です。"
+        chart_title: "%{exercise}の最高回数の推移"
+        column: "回数"
+      reps_unit: "回"
+      empty: "%{exercise}の記録はまだありません。"
+      log_lift: "記録する"
+      bodyweight:
+        heading: "体重の推移"
+        intro: "各日の最後に記録した体重です。このグラフはあなただけが見られます。"
+        chart_title: "体重の推移"
+        column: "体重（%{unit}）"
+        empty: "まだ体重が記録されていません。"
+        log: "体重を記録"
+    chart:
+      caption: "%{name}（%{unit}）"
+      description: "%{first_date}の%{first}から%{last_date}の%{last}まで、%{count}日分の記録。最低%{min}、最高%{max}。"
+      single: "記録はまだ1日分です（%{date}：%{value}）。別の日にも記録すると推移が表示されます。"
+      show_data: "数値を表で見る"
 
   lifts:
     index:

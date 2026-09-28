@@ -1,0 +1,35 @@
+<% page_title t(".title") %>
+
+<%= discipline_tabs(@discipline) { |discipline| progress_path(discipline: discipline) } %>
+
+<% measure = @discipline.weighted? ? "weighted" : "reps" %>
+<section class="box" aria-labelledby="lifts-heading">
+  <h2 class="box__header" id="lifts-heading"><%= t(".#{measure}.heading") %></h2>
+  <p class="muted"><%= t(".#{measure}.intro") %></p>
+
+  <div class="chart-grid">
+    <% @discipline.exercises.each do |exercise| %>
+      <%= render "chart", id: "chart-#{exercise.key.dasherize}", caption: exercise.name,
+            unit: @discipline.weighted? ? weight_unit : t(".reps_unit"), reps: !@discipline.weighted?,
+            data: @progress.lifts(exercise.key),
+            title: t(".#{measure}.chart_title", exercise: exercise.name),
+            column: t(".#{measure}.column", unit: weight_unit),
+            empty: t(".empty", exercise: exercise.name.downcase) %>
+    <% end %>
+  </div>
+
+  <p class="actions"><%= link_to t(".log_lift"), new_lift_path(discipline: @discipline), class: "btn-secondary" %></p>
+</section>
+
+<section class="box" aria-labelledby="bodyweight-heading">
+  <h2 class="box__header" id="bodyweight-heading"><%= t(".bodyweight.heading") %></h2>
+  <p class="muted"><%= t(".bodyweight.intro") %></p>
+
+  <div class="chart-grid">
+    <%= render "chart", id: "chart-bodyweight", caption: t("columns.bodyweight"), unit: weight_unit, reps: false,
+          data: @progress.bodyweight, title: t(".bodyweight.chart_title"),
+          column: t(".bodyweight.column", unit: weight_unit), empty: t(".bodyweight.empty") %>
+  </div>
+
+  <p class="actions"><%= link_to t(".bodyweight.log"), new_bodyweight_entry_path, class: "btn-secondary" %></p>
+</section>

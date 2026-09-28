@@ -786,6 +786,89 @@ input[type="submit"].btn-small:hover {
   color: var(--accent);
 }
 
+/* Progress charts: small multiples, one per lift, two across on a desktop
+   and stacked on a phone. The SVG scales to its column, so its 320-unit
+   viewBox keeps its labels near their real 12px size either way. */
+.chart-grid {
+  display: grid;
+  /* auto-fill, not auto-fit: a lone chart keeps its column's width
+     instead of stretching its labels to twice the size */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px 40px;
+  margin-top: 20px;
+}
+
+.chart-card {
+  margin: 0;
+  min-width: 0;
+}
+
+.chart-card__caption {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.chart-card__empty {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Recessive gridlines and labels, one ink line: a single series needs no
+   colour to tell it apart, and ink on paper is the highest contrast the
+   palette has (WCAG 2.1 1.4.11 non-text contrast, beyond the 2.0 target) */
+.chart__grid line {
+  stroke: var(--hairline);
+  stroke-width: 1;
+}
+
+.chart__label {
+  fill: var(--ink-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* A paper-coloured ring keeps each dot clear of the line under it */
+.chart__point {
+  fill: var(--ink);
+  stroke: var(--bg);
+  stroke-width: 2;
+}
+
+.chart-card__data summary {
+  margin-top: 8px;
+  color: var(--ink-secondary);
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.chart-card__data table {
+  margin-top: 8px;
+}
+
+/* Windows high contrast: browsers don't recolour SVG paint, so map it to
+   the system colours by hand */
+@media (forced-colors: active) {
+  .chart__line { stroke: CanvasText; }
+  .chart__point { fill: CanvasText; stroke: Canvas; }
+  .chart__label { fill: CanvasText; }
+  .chart__grid line { stroke: GrayText; }
+}
+
 /* In a narrow column (landing page grid) the meter drops under its label
    and value, as it does on phones below */
 .grid .rank-row {

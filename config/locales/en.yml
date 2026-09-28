@@ -171,6 +171,7 @@ en:
     nav:
       dashboard: "Dashboard"
       log_lift: "Log a lift"
+      progress: "Progress"
       leaderboard: "Leaderboard"
       admin: "Admin"
       settings: "Settings"
@@ -219,6 +220,36 @@ en:
       combined_hint: "Your combined rank averages all three disciplines, so an untrained one counts as zero."
       choose_badges: "Choose which badges to show"
       your_badges: "On your profile:"
+      progress: "Progress charts"
+
+  progress:
+    show:
+      title: "Progress"
+      weighted:
+        heading: "Estimated 1RM"
+        intro: "Your best set each day as an estimated one-rep max, so a set of five and a single compare fairly. Approved lifts only."
+        chart_title: "%{exercise}: estimated 1RM over time"
+        column: "Estimated 1RM (%{unit})"
+      reps:
+        heading: "Best reps"
+        intro: "Your best set each day in bodyweight-equivalent reps, with added weight counted as extra reps. Approved lifts only."
+        chart_title: "%{exercise}: best reps over time"
+        column: "Reps"
+      reps_unit: "reps"
+      empty: "No %{exercise} logged yet."
+      log_lift: "Log a lift"
+      bodyweight:
+        heading: "Bodyweight"
+        intro: "Your last weigh-in each day. Only you can see this."
+        chart_title: "Bodyweight over time"
+        column: "Bodyweight (%{unit})"
+        empty: "No bodyweight logged yet."
+        log: "Log bodyweight"
+    chart:
+      caption: "%{name} (%{unit})"
+      description: "%{count} days, from %{first} on %{first_date} to %{last} on %{last_date}. Lowest %{min}, highest %{max}."
+      single: "One day logged so far: %{value} on %{date}. Log another day to see a trend."
+      show_data: "Show the numbers"
 
   lifts:
     index:

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :lifts, except: :show
 
   get "dashboard", to: "dashboard#show", as: :dashboard
+  get "progress", to: "progress#show", as: :progress
   get "leaderboard", to: "leaderboards#show", as: :leaderboard
   resources :lifters, only: :show, param: :username
   resource :settings, only: %i[ show update ]

@@ -1,0 +1,34 @@
+<%# One chart with its data table, or an empty state when there's no line to draw yet %>
+<% chart = LineChart.new(data) %>
+<figure class="chart-card">
+  <figcaption class="chart-card__caption"><%= t(".caption", name: caption, unit: unit) %></figcaption>
+
+  <% if chart.empty? %>
+    <p class="chart-card__empty muted"><%= empty %></p>
+  <% elsif !chart.trend? %>
+    <p class="chart-card__empty muted">
+      <%= t(".single", value: progress_value(chart.first.value, reps: reps), date: format_date(chart.first.date)) %>
+    </p>
+  <% else %>
+    <%= line_chart(chart, id: id, title: title,
+          description: t(".description", count: chart.size,
+            first: progress_value(chart.first.value, reps: reps), first_date: format_date(chart.first.date),
+            last: progress_value(chart.last.value, reps: reps), last_date: format_date(chart.last.date),
+            min: progress_value(chart.min.value, reps: reps), max: progress_value(chart.max.value, reps: reps))) %>
+
+    <%# WCAG 1.1.1 / 1.3.1: the numbers the chart was drawn from, for anyone who can't read it %>
+    <details class="chart-card__data">
+      <summary><%= t(".show_data") %></summary>
+      <table aria-label="<%= title %>">
+        <thead>
+          <tr><th scope="col"><%= t("columns.date") %></th><th scope="col"><%= column %></th></tr>
+        </thead>
+        <tbody>
+          <% chart.points.each do |point| %>
+            <tr><td><%= format_date(point.date) %></td><td><%= chart_number(point.value) %></td></tr>
+          <% end %>
+        </tbody>
+      </table>
+    </details>
+  <% end %>
+</figure>

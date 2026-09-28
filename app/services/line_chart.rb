@@ -10,8 +10,8 @@ class LineChart
   Point = Data.define(:date, :value, :x, :y)
   Tick = Data.define(:value, :y)
 
-  WIDTH = 360
-  HEIGHT = 200
+  WIDTH = 320
+  HEIGHT = 190
   # Room for the value labels on the left and the date labels underneath.
   PADDING = { top: 12, right: 14, bottom: 30, left: 46 }.freeze
   # A nice step is 1, 2, 2.5 or 5 times a power of ten.
