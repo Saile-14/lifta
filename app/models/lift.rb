@@ -32,8 +32,10 @@ class Lift < ApplicationRecord
   before_save :review, if: -> { score && (new_record? || will_save_change_to_score?) }
 
   # Any lift can move a board: a new best changes a rank, and an approval or
-  # rejection changes whether it counts at all.
-  after_commit :refresh_leaderboards
+  # rejection changes whether it counts at all. A batch rescored together
+  # (see User#resnapshot_bodyweight) skips this and refreshes once instead.
+  attr_accessor :skip_leaderboard_refresh
+  after_commit :refresh_leaderboards, unless: :skip_leaderboard_refresh
 
   def discipline
     Discipline.for_exercise(exercise) if exercise

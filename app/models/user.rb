@@ -45,6 +45,34 @@ class User < ApplicationRecord
     BodyweightLog.for(self).on(date)
   end
 
+  # Called when a weigh-in is logged, corrected or deleted (see
+  # BodyweightEntry), with the log as it was and as it is now. Each lift
+  # snapshots the bodyweight its date resolved to, so a change to the log can
+  # leave a lift scored at a weight the log no longer says -- most often a
+  # lift from before the first weigh-in, snapshotted at the fallback, when an
+  # older weigh-in is backfilled.
+  #
+  # Only lifts whose date now resolves differently are touched, and only if
+  # they still carry the old resolved weight; one that doesn't had its own
+  # bodyweight typed in, and keeps it. Emptying the log touches nothing:
+  # better the last known weight than none to score at.
+  #
+  # Returns the lifts it rescored. Their leaderboard refresh is left to the
+  # caller, to do once for the lot.
+  def resnapshot_bodyweight(was:, now:)
+    # A relation, not the association itself: loading the association would
+    # cache it on this user, and a later `destroy` would then see that list.
+    lifts.order(:lifted_at).filter_map do |lift|
+      before, after = was.on(lift.lifted_at), now.on(lift.lifted_at)
+      next unless after && after != before && lift.bodyweight_kg == before
+
+      lift.bodyweight_kg = after
+      lift.skip_leaderboard_refresh = true
+      lift.rescore!
+      lift
+    end
+  end
+
   # Logs a weigh-in for the day of a lift, unless that day already has one.
   def record_weigh_in(kilograms, on:)
     day = on.in_time_zone(time_zone).all_day
