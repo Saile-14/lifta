@@ -369,6 +369,12 @@ ja:
       best: "ベスト: %{result}（%{date}）"
       no_ranks: "まだランク付きの記録がありません。"
       see_leaderboard: "ランキングを見る"
+    not_found:
+      title: "リフターが見つかりません"
+      heading: "リフターが見つかりません"
+      explanation: "@%{username} の公開プロフィールはありません。ユーザー名が間違っているか、プロフィールが非公開に設定されている可能性があります。"
+      see_leaderboard: "ランキングを見る"
+      home: "ホームに戻る"
 
   leaderboards:
     show:

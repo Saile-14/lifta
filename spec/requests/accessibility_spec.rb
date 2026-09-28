@@ -9,12 +9,15 @@ require "rails_helper"
 # real browser and a person.
 RSpec.describe "accessibility", type: :request do
   # Eager: the profile page is one of the pages under test, so the lifter has
-  # to exist before any example runs or it renders the static 404 instead.
+  # to exist before any example runs or it's the not-found page that gets
+  # checked instead of the profile.
   let!(:user) { create(:user, :listed, username: "taro") }
 
+  # The not-found profile is rendered in the layout too, so it's held to the
+  # same criteria as the rest.
   def every_page
     [ root_path, new_session_path, new_registration_path, leaderboard_path,
-      leaderboard_path(discipline: "combo"), lifter_path("taro") ]
+      leaderboard_path(discipline: "combo"), lifter_path("taro"), lifter_path("nobody_here") ]
   end
 
   describe "3.1.1 Language of Page" do

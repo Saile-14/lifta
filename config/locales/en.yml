@@ -372,6 +372,12 @@ en:
       best: "Best: %{result} · %{date}"
       no_ranks: "No ranked lifts yet."
       see_leaderboard: "See the leaderboard"
+    not_found:
+      title: "Lifter not found"
+      heading: "Lifter not found"
+      explanation: "There's no public profile for @%{username}. The username may be misspelled, or the lifter keeps their profile private."
+      see_leaderboard: "See the leaderboard"
+      home: "Back to the home page"
 
   leaderboards:
     show:

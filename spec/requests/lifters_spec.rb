@@ -57,9 +57,35 @@ RSpec.describe "Lifter profiles", type: :request do
     end
   end
 
-  it "404s for an unknown username" do
-    get lifter_path("nobody_here")
+  describe "an unknown username" do
+    it "404s inside the app, keeping the nav and the language button" do
+      get lifter_path("nobody_here")
+
+      expect(response).to have_http_status(:not_found)
+      body = response.parsed_body
+      expect(body.at_css("title").text).to eq("Lifter not found · Lifta")
+      expect(body.at_css("main h1").text).to eq("Lifter not found")
+      expect(body.text).to include("@nobody_here")
+      expect(body.at_css("a.locale-switch")).to be_present
+      expect(body.at_css("meta[name=robots]")["content"]).to eq("noindex")
+    end
+
+    it "404s in the visitor's language" do
+      get lifter_path("nobody_here", locale: "ja")
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.parsed_body.at_css("html")["lang"]).to eq("ja")
+      expect(response.parsed_body.at_css("main h1").text).to eq("リフターが見つかりません")
+    end
+  end
+
+  it "reads the same for a private profile as for a missing one" do
+    lifter.update!(public_profile: false)
+
+    get lifter_path("iron_ivy")
+
     expect(response).to have_http_status(:not_found)
+    expect(response.parsed_body.at_css("main h1").text).to eq("Lifter not found")
   end
 
   describe "rank badges" do
