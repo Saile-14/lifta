@@ -7,6 +7,7 @@
   --hairline: #ddd8cc;
   --hairline-strong: #c2bcac;
   --link: #1a1a1a;
+  --surface: #fbf9f4;
 
   --tier-bronze: #a6631e;
   --tier-silver: #5c5fb0;
@@ -27,9 +28,97 @@
 
   --pending: #886b19;
   --danger: #8a2a22;
+  --notice: #305a30;
+  --notice-border: #4a7a4a;
+  --self-row: rgba(198, 54, 44, 0.06);
+
+  /* The primary button keeps a deep red in both themes so white text on it
+     stays above 4.5:1; --accent alone brightens in the dark */
+  --button: #c6362c;
+  --button-hover: #a82c23;
+  --on-button: #ffffff;
 
   /* Wide enough for the longest lift or discipline name */
   --rank-label-width: 7.5em;
+
+  color-scheme: light;
+}
+
+/* Dark: the same warm paper-and-ink language, inverted. Every text colour is
+   at least 4.5:1 on --bg and every meter fill at least 3:1 on its track (see
+   docs/adr/0008). It follows the system setting unless the lifter has picked
+   a theme, which the server writes to <html data-theme>. Plain CSS can't share
+   one block between a media query and an attribute, hence the two copies. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161513;
+    --ink: #ece8df;
+    --ink-secondary: #bdb7aa;
+    --ink-muted: #a09a8c;
+    --accent: #ef6b5f;
+    --hairline: #2f2c27;
+    --hairline-strong: #57524a;
+    --link: #ece8df;
+    --surface: #1e1c19;
+
+    --tier-bronze: #d38c47;
+    --tier-silver: #9a9de6;
+    --tier-gold: #d9ac3f;
+    --tier-platinum: #3fc2ad;
+    --tier-diamond: #5ea6f2;
+    --tier-grandmaster: #ef6b5f;
+    --tier-track: #2e2b26;
+
+    --combo-dormant: #8f8b7f;
+    --combo-awakened: #8fb37a;
+    --combo-evolved: #4fbb9e;
+    --combo-apex: #62a0d8;
+    --combo-transcendent: #a488e0;
+    --combo-ultimate_lifeform: #e0609f;
+
+    --pending: #d9b451;
+    --danger: #f28b80;
+    --notice: #8cc48c;
+    --notice-border: #6a9f6a;
+    --self-row: rgba(239, 107, 95, 0.12);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #161513;
+  --ink: #ece8df;
+  --ink-secondary: #bdb7aa;
+  --ink-muted: #a09a8c;
+  --accent: #ef6b5f;
+  --hairline: #2f2c27;
+  --hairline-strong: #57524a;
+  --link: #ece8df;
+  --surface: #1e1c19;
+
+  --tier-bronze: #d38c47;
+  --tier-silver: #9a9de6;
+  --tier-gold: #d9ac3f;
+  --tier-platinum: #3fc2ad;
+  --tier-diamond: #5ea6f2;
+  --tier-grandmaster: #ef6b5f;
+  --tier-track: #2e2b26;
+
+  --combo-dormant: #8f8b7f;
+  --combo-awakened: #8fb37a;
+  --combo-evolved: #4fbb9e;
+  --combo-apex: #62a0d8;
+  --combo-transcendent: #a488e0;
+  --combo-ultimate_lifeform: #e0609f;
+
+  --pending: #d9b451;
+  --danger: #f28b80;
+  --notice: #8cc48c;
+  --notice-border: #6a9f6a;
+  --self-row: rgba(239, 107, 95, 0.12);
+
+  color-scheme: dark;
 }
 
 * {
@@ -123,14 +212,35 @@ h1, h2, h3 {
   border-color: var(--accent);
 }
 
+/* The theme button: the language button's twin, inked while dark is on */
+.theme-switch {
+  padding: 1px 10px;
+  border: 1px solid var(--hairline-strong);
+  background: transparent;
+  color: var(--ink-secondary);
+  font: inherit;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.theme-switch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-switch[aria-pressed="true"] {
+  border-color: var(--ink-secondary);
+  color: var(--ink);
+}
+
 .site-nav__count {
   display: inline-block;
   min-width: 1.5em;
   padding: 0 5px;
   margin-left: 4px;
   border-radius: 999px;
-  background: var(--accent);
-  color: #ffffff;
+  background: var(--button);
+  color: var(--on-button);
   font-size: 0.75em;
   font-weight: 700;
   text-align: center;
@@ -297,7 +407,7 @@ h1, h2, h3 {
   padding: 24px;
   margin-bottom: 36px;
   border: 1px solid var(--hairline-strong);
-  background: #fbf9f4;
+  background: var(--surface);
 }
 
 .profile-card__head {
@@ -370,7 +480,7 @@ table.details th {
 }
 
 tr.is-self td {
-  background: rgba(198, 54, 44, 0.06);
+  background: var(--self-row);
 }
 
 label {
@@ -474,20 +584,20 @@ input[type="submit"], .btn-primary {
   font-size: 0.95em;
   font-weight: 600;
   padding: 10px 24px;
-  background: var(--accent);
-  color: #ffffff;
-  border: 1px solid var(--accent);
+  background: var(--button);
+  color: var(--on-button);
+  border: 1px solid var(--button);
   text-decoration: none;
   cursor: pointer;
 }
 
 input[type="submit"]:hover, .btn-primary:hover {
-  background: #a82c23;
-  color: #ffffff;
+  background: var(--button-hover);
+  color: var(--on-button);
 }
 
 .btn-primary:visited {
-  color: #ffffff;
+  color: var(--on-button);
 }
 
 .btn-secondary {
@@ -554,8 +664,8 @@ input[type="submit"].btn-small:hover {
 }
 
 .flash--notice {
-  border-left-color: #4a7a4a;
-  color: #305a30;
+  border-left-color: var(--notice-border);
+  color: var(--notice);
 }
 
 .flash--alert {

@@ -176,6 +176,7 @@ ja:
       sign_in: "ログイン"
       sign_up: "新規登録"
       language: "言語"
+      dark_mode: "ダークモード"
 
   pages:
     home:

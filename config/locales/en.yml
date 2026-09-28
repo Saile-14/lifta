@@ -178,6 +178,7 @@ en:
       sign_in: "Sign in"
       sign_up: "Sign up"
       language: "Language"
+      dark_mode: "Dark mode"
 
   pages:
     home:

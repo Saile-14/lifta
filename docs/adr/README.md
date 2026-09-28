@@ -19,6 +19,7 @@ can't drift apart the way parallel directories do.
 | [0005](0005-bilingual-from-the-start.md) | Bilingual from the first commit, enforced by a test | Accepted |
 | [0006](0006-formula-based-scoring.md) | Scores are computed and stored; tiers are not | Accepted |
 | [0007](0007-combined-rank-rewards-breadth.md) | The combined rank rewards breadth, not peak strength | Accepted |
+| [0008](0008-dark-mode-from-tokens.md) | Dark mode swaps the palette tokens, and the server renders the choice | Accepted |
 
 A record is written when a decision is hard to reverse, or when the
 obvious choice was rejected. Small reversible choices stay in code
@@ -50,6 +51,7 @@ Lifta の設計を形づくった決定の記録です。何を選び、ほか�
 | [0005](0005-bilingual-from-the-start.md) | 最初から2言語対応とし、テストで担保する | 採用 |
 | [0006](0006-formula-based-scoring.md) | スコアは計算して保存し、ティアは保存しない | 採用 |
 | [0007](0007-combined-rank-rewards-breadth.md) | 総合力ランクは突出した強さではなく幅広さを評価する | 採用 |
+| [0008](0008-dark-mode-from-tokens.md) | ダークモードはパレットのトークンを差し替え、選択はサーバーが描画する | 採用 |
 
 記録を書くのは、決定を覆すのが難しい場合か、自明に見える選択肢をあえて
 退けた場合です。小さく元に戻せる判断は、説明する対象に近いコード内の

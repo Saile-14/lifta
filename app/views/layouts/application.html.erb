@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
+<html lang="<%= I18n.locale %>"<% if chosen_theme %> data-theme="<%= chosen_theme %>"<% end %>>
   <head>
     <title><%= content_for(:title) || "Lifta" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Lifta">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="color-scheme" content="light dark">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

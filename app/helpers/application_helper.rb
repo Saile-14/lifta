@@ -55,4 +55,18 @@ module ApplicationHelper
     link_to t("locale_name", locale: other), localized_url(other),
       class: "locale-switch", lang: other, hreflang: other, data: { turbo: false }
   end
+
+  # "light" or "dark" once the lifter has picked one with the theme button,
+  # otherwise nil and the page follows the system setting.
+  def chosen_theme
+    cookies[:theme].presence_in(%w[ light dark ])
+  end
+
+  # The theme button. Hidden until its controller connects and knows which
+  # theme is showing, since without JavaScript it couldn't do anything.
+  def theme_switch_button
+    tag.button t("shared.nav.dark_mode"), type: "button", class: "theme-switch", hidden: true,
+      aria: { pressed: chosen_theme == "dark" },
+      data: { controller: "theme", action: "theme#toggle" }
+  end
 end
