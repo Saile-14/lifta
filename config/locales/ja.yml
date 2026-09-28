@@ -3,6 +3,10 @@
 ja:
   locale_name: "日本語"
   page_title: "%{title} | Lifta"
+  pwa:
+    name: "Lifta：筋トレの記録をランク判定"
+    short_name: "Lifta"
+    description: "記録した挙上が、世界トップレベルの基準でどのランクになるかがわかります。"
   meta:
     description: "Liftaは、パワーリフティング・ウエイトリフティング・キャリステニクスの記録を、体重と性別に合わせた世界トップレベルの基準と比べて、ブロンズからグランドマスターまでランク判定するアプリです。"
     image_alt: "Liftaのロゴ"

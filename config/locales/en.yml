@@ -3,6 +3,10 @@
 en:
   locale_name: "English"
   page_title: "%{title} · Lifta"
+  pwa:
+    name: "Lifta: rank your lifts"
+    short_name: "Lifta"
+    description: "Log your lifts and see how each one ranks against a world-class standard."
   meta:
     description: "Lifta ranks your lifts against a world-class standard for your bodyweight and sex, from bronze to grandmaster, across powerlifting, weightlifting and calisthenics."
     image_alt: "The Lifta logo"

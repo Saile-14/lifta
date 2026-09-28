@@ -19,8 +19,8 @@
       <% end %>
     <% end %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <%# Installable as an app, named in this page's language (see PwaController) %>
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json, locale: I18n.locale) %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
