@@ -8,7 +8,7 @@ source "https://rubygems.org"
 gem "json", "~> 2.9"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.3"
+gem "rails", "~> 8.1.4"
 # Rails' built-in messages (validation errors, dates) in Japanese [https://github.com/svenfuchs/rails-i18n]
 gem "rails-i18n", "~> 8.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
